@@ -452,20 +452,49 @@
     .footer-copy { font-size: 12px; color: var(--text-dim); }
     .footer-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
 
+    /* ── Converted from inline styles ─────────────────── */
+    .features-wide {
+      grid-column: 1 / -1;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1px; background: var(--border);
+    }
+    .pricing-btn-row { display: flex; gap: 10px; margin-top: auto; }
+
     /* ── Responsive ────────────────────────────────────── */
     @media (max-width: 900px) {
       .hero-grid { grid-template-columns: 1fr; }
-      .broadcast-mock { display: none; } /* hide carousel on narrow screens */
+      .broadcast-mock { display: none; }
       .steps-grid { grid-template-columns: 1fr; }
       .features-grid { grid-template-columns: 1fr 1fr; }
       .step-connector, .step-connector-2 { display: none; }
       .nav-links { display: none; }
+      .section { padding: 64px 0; }
     }
     @media (max-width: 600px) {
       .features-grid { grid-template-columns: 1fr; }
+      .features-wide { grid-template-columns: 1fr; }
       .cta-form { flex-direction: column; }
       .footer-inner { flex-direction: column; align-items: flex-start; }
       .footer-right { align-items: flex-start; }
+      .hero { padding: 48px 0 40px; min-height: unset; }
+      .hero-sub { font-size: 16px; }
+      .hero-stats { grid-template-columns: 1fr; }
+      .hero-stats > div {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        flex-direction: row; justify-content: space-between; text-align: left;
+      }
+      .hero-stats > div:last-child { border-bottom: none; }
+      .hero-stat-label { margin-top: 0; }
+      .section { padding: 48px 0; }
+      .section-sub { font-size: 15px; }
+      .step { padding: 24px 20px; }
+      .feature-card { padding: 24px 20px; }
+      .cta-inner { padding: 40px 20px; }
+      .pricing-card { padding: 28px 20px; }
+      .pricing-btn-row { flex-direction: column; }
+      .tech-grid { gap: 10px; }
+      .tech-pill { padding: 8px 14px; }
     }
 
     /* ── Scroll fade-in ────────────────────────────────── */
@@ -639,7 +668,7 @@
           <h3>Live Prop Lines</h3>
           <p>Current odds from major sportsbooks, right on the player badge. In context — not buried in another app.</p>
         </div>
-        <div style="grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border);">
+        <div class="features-wide">
           <div class="feature-card">
             <div class="feature-icon feature-icon--green">🏦</div>
             <h3>Built for Sportsbooks</h3>
@@ -772,7 +801,7 @@
             <li><span class="check">✓</span> No sportsbook account required to use</li>
             <li><span class="check">✓</span> Free updates &amp; new sport support</li>
           </ul>
-          <div style="display:flex;gap:10px;margin-top:auto;">
+          <div class="pricing-btn-row">
             <a href="#waitlist" class="btn btn--primary btn--lg" style="flex:1;justify-content:center;">Join Waitlist</a>
             <div class="btn btn--ghost btn--lg" style="flex:1;justify-content:center;cursor:default;opacity:.55;">Standard — $19.99</div>
           </div>
