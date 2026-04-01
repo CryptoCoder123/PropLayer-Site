@@ -503,9 +503,126 @@
       transition: opacity .6s ease, transform .6s ease;
     }
     .fade-up.visible { opacity: 1; transform: none; }
+
+    /* ── Splash Screen ───────────────────────────────────── */
+    #splash {
+      position: fixed; inset: 0; z-index: 9999;
+      background: #000;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 48px;
+      animation: splashFadeOut .9s ease forwards;
+      animation-delay: 3.8s;
+    }
+    .splash-stage {
+      position: relative;
+      width: min(90vw, 900px);
+      aspect-ratio: 16/9;
+      display: grid; place-items: center;
+    }
+    .splash-logo-wrap {
+      position: relative;
+      width: min(62vw, 520px);
+      aspect-ratio: 1.2/1;
+      filter: drop-shadow(0 0 4px rgba(114,255,84,.45)) drop-shadow(0 0 14px rgba(114,255,84,.1));
+      animation: splashGlowPulse 3s ease-in-out infinite;
+    }
+    .splash-badge {
+      position: absolute; top: 7%; left: 50%;
+      transform: translateX(-55%) scale(.3);
+      color: #72ff54;
+      font-size: clamp(28px, 4vw, 58px);
+      font-weight: 700; letter-spacing: .5px;
+      text-shadow: 0 0 10px rgba(114,255,84,.3);
+      font-family: Arial, Helvetica, sans-serif;
+      opacity: 0;
+      animation: splashBadgePop .5s forwards;
+      animation-delay: 2.8s;
+    }
+    .splash-logo-wrap svg { width: 100%; height: 100%; }
+    .splash-stroke { fill: none; stroke: #72ff54; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+    .splash-filled { fill: #000; }
+    .splash-dotted { stroke-dasharray: 2 10; }
+    .splash-detail { stroke: #72ff54; stroke-width: 3; fill: none; }
+    .splash-layer-mid { animation: splashFallBounce 1s linear both; animation-delay: .85s; }
+    .splash-layer-top { animation: splashFallBounce 1s linear both; animation-delay: 1.55s; }
+    .splash-bar-track {
+      width: min(260px, 70vw); height: 3px;
+      border-radius: 99px;
+      background: rgba(114,255,84,.1);
+      overflow: hidden;
+    }
+    .splash-bar-fill {
+      height: 100%; width: 0;
+      background: #72ff54;
+      box-shadow: 0 0 10px #72ff54, 0 0 4px #72ff54;
+      animation: splashBarGrow 3.8s cubic-bezier(.4,0,.6,1) forwards;
+    }
+    @keyframes splashFallBounce {
+      0%   { opacity: 0; transform: translateY(-520px); }
+      62%  { transform: translateY(0); }
+      74%  { transform: translateY(-22px); }
+      84%  { transform: translateY(0); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes splashBadgePop {
+      0%   { opacity: 0; transform: translateX(-55%) scale(.3); }
+      100% { opacity: 1; transform: translateX(-55%) scale(1); }
+    }
+    @keyframes splashGlowPulse {
+      0%,100% { filter: drop-shadow(0 0 4px rgba(114,255,84,.45)) drop-shadow(0 0 14px rgba(114,255,84,.1)); }
+      50%     { filter: drop-shadow(0 0 7px rgba(114,255,84,.8))  drop-shadow(0 0 20px rgba(114,255,84,.18)); }
+    }
+    @keyframes splashBarGrow {
+      0%   { width: 0; }
+      100% { width: 100%; }
+    }
+    @keyframes splashFadeOut {
+      0%   { opacity: 1; pointer-events: all; }
+      100% { opacity: 0; pointer-events: none; }
+    }
   </style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y0S7K0W3W5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Y0S7K0W3W5');
+  </script>
 </head>
 <body>
+
+<!-- ── Splash Screen ───────────────────────────────────────── -->
+<div id="splash">
+  <div class="splash-stage">
+    <div class="splash-logo-wrap">
+      <div class="splash-badge">+100</div>
+      <svg viewBox="0 0 540 420">
+        <g class="splash-layer-mid">
+          <polygon class="splash-stroke splash-filled" points="145,200 270,260 395,200 270,140"/>
+          <line class="splash-detail" x1="208" y1="170" x2="332" y2="230"/>
+          <ellipse class="splash-detail" cx="270" cy="200" rx="26" ry="12"/>
+        </g>
+        <g class="splash-layer-top">
+          <polygon class="splash-stroke splash-dotted" points="145,170 270,230 395,170 270,110"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+  <div class="splash-bar-track">
+    <div class="splash-bar-fill"></div>
+  </div>
+</div>
+<script>
+  history.scrollRestoration = 'manual';
+  window.scrollTo(0, 0);
+  document.body.style.overflow = 'hidden';
+  document.getElementById('splash').addEventListener('animationend', function(e) {
+    if (e.animationName === 'splashFadeOut') {
+      this.remove();
+      document.body.style.overflow = '';
+    }
+  });
+</script>
 
   <!-- ═══ NAV ═══════════════════════════════════════════ -->
   <nav>
