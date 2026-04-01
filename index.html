@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PropVision — AR Overlay for Sports Broadcasts</title>
-  <meta name="description" content="PropVision detects players in live NBA broadcasts and overlays real-time AR badges with stats and prop odds — right on your screen." />
+  <title>PropLayer — AR Overlay for Sports Broadcasts</title>
+  <meta name="description" content="PropLayer detects players in live NBA broadcasts and overlays real-time AR badges with stats and prop odds — right on your screen." />
   <style>
     /* ── Design Tokens ─────────────────────────────────── */
     :root {
@@ -182,7 +182,7 @@
     /* overlay label */
     .carousel-label {
       position: absolute; top: 12px; right: 12px; z-index: 2;
-      font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      font-size: 10px; font-weight: 700; letter-spacing: .1em;
       color: var(--green);
       display: flex; align-items: center; gap: 6px;
       background: rgba(0,0,0,.5); padding: 4px 10px; border-radius: 99px;
@@ -483,7 +483,7 @@
     <div class="container nav-inner">
       <div class="nav-logo">
         <div class="dot"></div>
-        PropVision
+        PropLayer
       </div>
       <div class="nav-links">
         <a href="#how-it-works">How It Works</a>
@@ -510,7 +510,7 @@
             Broadcasts
           </h1>
           <p class="hero-sub">
-            PropVision overlays live player stats and prop insights directly onto the game — so you can make faster, more informed decisions without switching apps, tabs, or screens. Currently NBA only. NFL, MLB, NHL &amp; Soccer coming soon.
+            PropLayer overlays live player stats and prop insights directly onto the game — so you can make faster, more informed decisions without switching apps, tabs, or screens. Currently NBA only. NFL, MLB, NHL &amp; Soccer coming soon.
           </p>
           <div class="hero-cta">
             <a href="#waitlist" class="btn btn--primary btn--lg">
@@ -537,25 +537,25 @@
 
         <!-- SCREENSHOT CAROUSEL -->
         <div class="broadcast-mock">
-          <div class="carousel-label">PropVision Active</div>
+          <div class="carousel-label">PropLayer Active</div>
 
           <div class="carousel-track" id="carouselTrack">
             <div class="carousel-slide">
               <picture>
                 <source srcset="assets/lebron.webp" type="image/webp" />
-                <img src="assets/lebron.png" alt="PropVision overlay on LeBron James #23 — live prop odds and stats badge" />
+                <img src="assets/lebron.png" alt="PropLayer overlay on LeBron James #23 — live prop odds and stats badge" />
               </picture>
             </div>
             <div class="carousel-slide">
               <picture>
                 <source srcset="assets/curry.webp" type="image/webp" />
-                <img src="assets/curry.png" alt="PropVision overlay on Stephen Curry #30 — live prop odds and stats badge" />
+                <img src="assets/curry.png" alt="PropLayer overlay on Stephen Curry #30 — live prop odds and stats badge" />
               </picture>
             </div>
             <div class="carousel-slide">
               <picture>
                 <source srcset="assets/jokic.webp" type="image/webp" />
-                <img src="assets/jokic.png" alt="PropVision overlay on Nikola Jokic #15 — live prop odds and stats badge" />
+                <img src="assets/jokic.png" alt="PropLayer overlay on Nikola Jokic #15 — live prop odds and stats badge" />
               </picture>
             </div>
           </div>
@@ -576,7 +576,7 @@
       <div class="section-header fade-up">
         <div class="section-tag"><span class="tag tag--dim">The Process</span></div>
         <h2 class="section-title">From broadcast to insight in seconds</h2>
-        <p class="section-sub">PropVision runs silently in the background while you watch. Zero setup required after install.</p>
+        <p class="section-sub">PropLayer runs silently in the background while you watch. Zero setup required after install.</p>
       </div>
       <div class="steps-grid">
         <div class="step-connector"></div>
@@ -584,7 +584,7 @@
         <div class="step fade-up">
           <div class="step-num step-num--green">1</div>
           <h3>Watch Any Broadcast</h3>
-          <p>Open your stream — YouTube, ESPN app, cable TV, whatever you use. PropVision's always-on-top overlay sits transparently above without touching your source.</p>
+          <p>Open your stream — YouTube, ESPN app, cable TV, whatever you use. PropLayer's always-on-top overlay sits transparently above without touching your source.</p>
         </div>
         <div class="step fade-up" style="transition-delay:.1s">
           <div class="step-num step-num--amber">2</div>
@@ -632,7 +632,7 @@
         <div class="feature-card">
           <div class="feature-icon feature-icon--amber">📡</div>
           <h3>Works Over Any Source</h3>
-          <p>YouTube TV, ESPN+, League Pass, cable box capture — if it's on your screen, PropVision can overlay it.</p>
+          <p>YouTube TV, ESPN+, League Pass, cable box capture — if it's on your screen, PropLayer can overlay it.</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon feature-icon--blue">🏀</div>
@@ -651,7 +651,7 @@
               <h3 style="margin:0;">More Sports Coming Soon</h3>
               <span class="tag tag--amber" style="font-size:10px;">Roadmap</span>
             </div>
-            <p>PropVision is built to be sport-agnostic. NFL, MLB, NHL, and college sports are on the roadmap — same real-time overlay, same AI identification, new leagues.</p>
+            <p>PropLayer is built to be sport-agnostic. NFL, MLB, NHL, and college sports are on the roadmap — same real-time overlay, same AI identification, new leagues.</p>
           </div>
         </div>
       </div>
@@ -664,7 +664,7 @@
       <div class="section-header fade-up">
         <div class="section-tag"><span class="tag tag--amber">Live Demo</span></div>
         <h2 class="section-title">See it in action</h2>
-        <p class="section-sub">Real footage. No editing. PropVision running live over an NBA broadcast.</p>
+        <p class="section-sub">Real footage. No editing. PropLayer running live over an NBA broadcast.</p>
       </div>
     </div>
     <div class="video-grid fade-up">
@@ -676,7 +676,7 @@
           ></video>
           <div class="video-card-label">
             <div class="live-dot"></div>
-            <span>PropVision Demo — player detection &amp; badge overlay</span>
+            <span>PropLayer Demo — player detection &amp; badge overlay</span>
           </div>
         </div>
         <div class="video-card">
@@ -759,7 +759,7 @@
       <div class="pricing-grid fade-up">
         <div class="pricing-card pricing-card--featured">
           <div class="pricing-badge">Early Access Price</div>
-          <div class="pricing-plan">PropVision Desktop</div>
+          <div class="pricing-plan">PropLayer Desktop</div>
           <div class="pricing-price"><sup>$</sup>9.99</div>
           <div class="pricing-desc">One-time early access purchase for the full desktop app and future updates.</div>
           <div class="pricing-divider"></div>
@@ -781,7 +781,7 @@
           <span class="byok-note-icon">🔑</span>
           <div>
             <strong style="color:var(--text);display:block;margin-bottom:4px;">Bring Your Own API Keys (BYOK)</strong>
-            PropVision uses your own <strong style="color:var(--amber)">Anthropic Claude API key</strong> and <strong style="color:var(--amber)">The Odds API key</strong> — so your data never touches our servers and you stay in full control of your costs. Both have generous free tiers that cover typical game-night usage.
+            PropLayer uses your own <strong style="color:var(--amber)">Anthropic Claude API key</strong> and <strong style="color:var(--amber)">The Odds API key</strong> — so your data never touches our servers and you stay in full control of your costs. Both have generous free tiers that cover typical game-night usage.
           </div>
         </div>
       </div>
@@ -794,9 +794,11 @@
       <div class="cta-inner fade-up">
         <div style="margin-bottom:20px"><span class="tag tag--green">Early Access</span></div>
         <h2>Get early access before public release</h2>
-        <p>Join the waitlist for beta access, early pricing, and first access to PropVision as we onboard users in batches.</p>
+        <p>Join the waitlist for beta access, early pricing, and first access to PropLayer as we onboard users in batches.</p>
         <form class="cta-form" onsubmit="handleWaitlist(event)">
-          <input type="email" class="cta-input" placeholder="your@email.com" required />
+          <!-- Honeypot: bots fill this out, humans don't — Formspree ignores submissions where it's filled -->
+          <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
+          <input type="email" name="email" class="cta-input" placeholder="your@email.com" required />
           <button type="submit" class="btn btn--primary">
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 1L15 8L8 15M1 8H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             Join
@@ -814,7 +816,7 @@
       <div>
         <div class="footer-logo">
           <div class="dot" style="width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green)"></div>
-          PropVision
+          PropLayer
         </div>
         <div style="font-size:12px;color:var(--text-dim);margin-top:6px">AR Overlay for Sports Broadcasts</div>
       </div>
@@ -822,10 +824,10 @@
         <a href="#how-it-works">How It Works</a>
         <a href="#features">Features</a>
         <a href="#pricing">Pricing</a>
-        <a href="mailto:hello@propvision.app">Contact</a>
+        <a href="#waitlist">Contact</a>
       </div>
       <div class="footer-right">
-        <div class="footer-copy">&copy; 2026 PropVision. All rights reserved.</div>
+        <div class="footer-copy">&copy; 2026 PropLayer. All rights reserved.</div>
         <div style="display:flex;gap:16px">
           <a href="privacy.html" style="font-size:12px;color:var(--text-dim)">Privacy</a>
           <a href="terms.html" style="font-size:12px;color:var(--text-dim)">Terms</a>
@@ -861,12 +863,40 @@
     mock.addEventListener('mouseleave', () => { carouselTimer = setInterval(() => goToSlide((currentSlide + 1) % slides.length), 3500); });
 
     // ── Waitlist form ───────────────────────────────────
-    function handleWaitlist(e) {
+    // Replace YOUR_FORM_ID below with the ID from your Formspree dashboard (e.g. "xabcdefg")
+    const FORMSPREE_ID = 'mpqorvvk';
+
+    async function handleWaitlist(e) {
       e.preventDefault();
+      const form = e.target;
       const msg = document.getElementById('waitlist-msg');
-      msg.textContent = "You're on the list. We'll be in touch!";
-      msg.style.color = 'var(--green)';
-      e.target.reset();
+      const btn = form.querySelector('button[type="submit"]');
+
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
+
+      try {
+        const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+          method: 'POST',
+          headers: { 'Accept': 'application/json' },
+          body: new FormData(form)
+        });
+
+        if (res.ok) {
+          msg.textContent = "You're on the list. We'll be in touch!";
+          msg.style.color = 'var(--green)';
+          form.reset();
+        } else {
+          msg.textContent = 'Something went wrong. Please try again.';
+          msg.style.color = 'var(--amber)';
+        }
+      } catch {
+        msg.textContent = 'Network error. Please try again.';
+        msg.style.color = 'var(--amber)';
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 1L15 8L8 15M1 8H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Join';
+      }
     }
   </script>
 </body>
