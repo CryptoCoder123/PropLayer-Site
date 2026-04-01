@@ -1007,11 +1007,17 @@
       dots.forEach((d, i) => d.classList.toggle('active', i === idx));
     }
 
-    // Auto-advance every 3.5 s, pause on hover
-    let carouselTimer = setInterval(() => goToSlide((currentSlide + 1) % slides.length), 3500);
+    // Auto-advance every 3.5 s, pause on hover or when out of view
+    let carouselTimer = null;
     const mock = document.querySelector('.broadcast-mock');
-    mock.addEventListener('mouseenter', () => clearInterval(carouselTimer));
-    mock.addEventListener('mouseleave', () => { carouselTimer = setInterval(() => goToSlide((currentSlide + 1) % slides.length), 3500); });
+
+    function startCarousel() { if (!carouselTimer) carouselTimer = setInterval(() => goToSlide((currentSlide + 1) % slides.length), 3500); }
+    function stopCarousel()  { clearInterval(carouselTimer); carouselTimer = null; }
+
+    new IntersectionObserver(([entry]) => entry.isIntersecting ? startCarousel() : stopCarousel(), { threshold: 0.5 }).observe(mock);
+
+    mock.addEventListener('mouseenter', stopCarousel);
+    mock.addEventListener('mouseleave', startCarousel);
 
     // Touch swipe support
     let touchStartX = 0;
