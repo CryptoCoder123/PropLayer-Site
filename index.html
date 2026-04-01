@@ -463,7 +463,12 @@
     /* ── Responsive ────────────────────────────────────── */
     @media (max-width: 900px) {
       .hero-grid { grid-template-columns: 1fr; }
-      .broadcast-mock { display: none; }
+      .broadcast-mock {
+        width: 100%;
+        max-width: 360px;
+        margin: 40px auto 0;
+        aspect-ratio: 3/4;
+      }
       .steps-grid { grid-template-columns: 1fr; }
       .features-grid { grid-template-columns: 1fr 1fr; }
       .step-connector, .step-connector-2 { display: none; }
@@ -1007,6 +1012,16 @@
     const mock = document.querySelector('.broadcast-mock');
     mock.addEventListener('mouseenter', () => clearInterval(carouselTimer));
     mock.addEventListener('mouseleave', () => { carouselTimer = setInterval(() => goToSlide((currentSlide + 1) % slides.length), 3500); });
+
+    // Touch swipe support
+    let touchStartX = 0;
+    track.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+    track.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      if (Math.abs(dx) > 40) goToSlide(dx < 0
+        ? Math.min(currentSlide + 1, slides.length - 1)
+        : Math.max(currentSlide - 1, 0));
+    }, { passive: true });
 
     // ── Waitlist form ───────────────────────────────────
     // Replace YOUR_FORM_ID below with the ID from your Formspree dashboard (e.g. "xabcdefg")
