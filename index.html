@@ -354,6 +354,18 @@
     .tech-pill-role { font-size: 11px; color: var(--text-dim); }
 
     /* ── PRICING ───────────────────────────────────────── */
+    /* ── PARTNERS GRID (responsive) ───────────────────────── */
+    .partners-grid {
+      grid-template-columns: repeat(3, 1fr);
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 900px) {
+      .partners-grid {
+        grid-template-columns: 1fr;
+      }
+    }
     .pricing-section { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
     .pricing-grid { display: grid; grid-template-columns: 1fr; gap: 20px; max-width: 520px; margin: 0 auto; }
     .byok-note {
@@ -904,7 +916,7 @@
     <div class="container">
       <div class="section-header fade-up">
         <div class="section-tag"><span class="tag tag--green">Pricing</span></div>
-        <h2 class="section-title">One price. Everything included.</h2>
+        <h2 class="section-title">Early access starts at $19.99/month.</h2>
         <p class="section-sub">Early Access: $19.99/month</p>
       </div>
       <div class="pricing-grid fade-up">
@@ -970,7 +982,7 @@
         <p class="section-sub">PropLayer creates high-intent betting moments by connecting live player visibility to real-time prop context. We do not replace sportsbooks or broadcasts — we route users back to licensed partners.</p>
       </div>
 
-      <div class="features-grid fade-up" style="grid-template-columns: repeat(3, 1fr); max-width:900px; margin:0 auto;">
+      <div class="features-grid partners-grid fade-up">
         <div class="feature-card">
           <h3 style="margin-top:0;">Player-aware prop discovery</h3>
           <p class="pricing-desc">Player-aware prop discovery directly on the live viewing experience</p>
