@@ -354,6 +354,18 @@
     .tech-pill-role { font-size: 11px; color: var(--text-dim); }
 
     /* ── PRICING ───────────────────────────────────────── */
+    /* ── PARTNERS GRID (responsive) ───────────────────────── */
+    .partners-grid {
+      grid-template-columns: repeat(3, 1fr);
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 900px) {
+      .partners-grid {
+        grid-template-columns: 1fr;
+      }
+    }
     .pricing-section { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
     .pricing-grid { display: grid; grid-template-columns: 1fr; gap: 20px; max-width: 520px; margin: 0 auto; }
     .byok-note {
@@ -652,7 +664,7 @@
       <div class="hero-grid">
         <div class="hero-copy">
           <div class="hero-eyebrow" style="display:flex;gap:8px;flex-wrap:wrap;">
-            <span class="tag tag--green">Now in Beta</span>
+            <span class="tag tag--green">Now in Alpha</span>
             <span class="tag tag--dim">Patent Pending</span>
           </div>
           <h1 class="hero-title">
@@ -904,15 +916,15 @@
     <div class="container">
       <div class="section-header fade-up">
         <div class="section-tag"><span class="tag tag--green">Pricing</span></div>
-        <h2 class="section-title">One price. Everything included.</h2>
-        <p class="section-sub">No subscription. No recurring fees. Pay once, own it.</p>
+        <h2 class="section-title">Early access starts at $19.99/month.</h2>
+        <p class="section-sub">Early Access: $19.99/month</p>
       </div>
       <div class="pricing-grid fade-up">
         <div class="pricing-card pricing-card--featured">
           <div class="pricing-badge">Early Access Price</div>
           <div class="pricing-plan">PropLayer Desktop</div>
-          <div class="pricing-price"><sup>$</sup>9.99</div>
-          <div class="pricing-desc">Full desktop app. Every future update. Pay once.</div>
+          <div class="pricing-price">Early Access: $19.99/month</div>
+          <div class="pricing-desc">Full desktop app. Monthly subscription during Early Access.</div>
           <div class="pricing-divider"></div>
           <ul class="pricing-features">
             <li><span class="check">✓</span> Real-time player stats on any stream</li>
@@ -925,7 +937,7 @@
           </ul>
           <div class="pricing-btn-row">
             <a href="#waitlist" class="btn btn--primary btn--lg" style="flex:1;justify-content:center;">Join Waitlist</a>
-            <div class="btn btn--ghost btn--lg" style="flex:1;justify-content:center;cursor:default;opacity:.55;">Standard — $19.99</div>
+            <div class="btn btn--ghost btn--lg" style="flex:1;justify-content:center;cursor:default;opacity:.55;">Regular price after launch</div>
           </div>
         </div>
         <div class="byok-note">
@@ -945,7 +957,7 @@
       <div class="cta-inner fade-up">
         <div style="margin-bottom:20px"><span class="tag tag--green">Early Access</span></div>
         <h2>Watch the game smarter.</h2>
-        <p>Beta access is rolling out now. NBA first — NFL, MLB, and NHL coming next.</p>
+        <p>Alpha access is rolling out now. NBA first — NFL, MLB, and NHL coming next.</p>
         <form class="cta-form" onsubmit="handleWaitlist(event)">
           <!-- Honeypot: bots fill this out, humans don't — Formspree ignores submissions where it's filled -->
           <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
@@ -957,6 +969,36 @@
         </form>
         <p class="cta-note" id="waitlist-msg">No spam. Unsubscribe anytime.</p>
         <p style="margin-top:16px;color:var(--text-dim);font-size:13px;">NBA live now. More sports coming soon.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PARTNERS SECTION — Sportsbooks & Media Partners -->
+  <section class="section partners-section" id="partners">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="section-tag"><span class="tag tag--dim">For Partners</span></div>
+        <h2 class="section-title">For Sportsbooks &amp; Media Partners</h2>
+        <p class="section-sub">PropLayer creates high-intent betting moments by connecting live player visibility to real-time prop context. We do not replace sportsbooks or broadcasts — we route users back to licensed partners.</p>
+      </div>
+
+      <div class="features-grid partners-grid fade-up">
+        <div class="feature-card">
+          <h3 style="margin-top:0;">Player-aware prop discovery</h3>
+          <p class="pricing-desc">Player-aware prop discovery directly on the live viewing experience</p>
+        </div>
+        <div class="feature-card">
+          <h3 style="margin-top:0;">Sponsored &amp; white-label</h3>
+          <p class="pricing-desc">Sponsored or white-label overlay opportunities for sportsbook and media partners</p>
+        </div>
+        <div class="feature-card">
+          <h3 style="margin-top:0;">Drive engagement &amp; traffic</h3>
+          <p class="pricing-desc">Designed to drive engagement, intent, and sportsbook traffic without disrupting the broadcast</p>
+        </div>
+      </div>
+
+      <div style="text-align:center;margin-top:28px;">
+        <a href="#waitlist" class="btn btn--primary btn--lg">Partner with PropLayer</a>
       </div>
     </div>
   </section>
