@@ -719,13 +719,23 @@
 <script>
   history.scrollRestoration = 'manual';
   window.scrollTo(0, 0);
-  document.body.style.overflow = 'hidden';
-  document.getElementById('splash').addEventListener('animationend', function(e) {
-    if (e.animationName === 'splashFadeOut') {
-      this.remove();
-      document.body.style.overflow = '';
-    }
-  });
+  
+  // Check if returning from another page — if so, skip splash
+  const skipSplash = sessionStorage.getItem('skipSplash');
+  const splash = document.getElementById('splash');
+  
+  if (skipSplash) {
+    splash.remove();
+    sessionStorage.removeItem('skipSplash');
+  } else {
+    document.body.style.overflow = 'hidden';
+    splash.addEventListener('animationend', function(e) {
+      if (e.animationName === 'splashFadeOut') {
+        this.remove();
+        document.body.style.overflow = '';
+      }
+    });
+  }
 </script>
 
   <!-- ═══ NAV ═══════════════════════════════════════════ -->
