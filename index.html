@@ -472,6 +472,81 @@
     }
     .pricing-btn-row { display: flex; gap: 10px; margin-top: auto; }
 
+    /* ── Visual polish ─────────────────────────────────── */
+    /* Slightly increase section spacing and add subtle contrast */
+    .section { padding: 120px 0; }
+    .section-header { margin-bottom: 72px; }
+    .section-title { letter-spacing: -.02em; }
+
+    /* Subtle dark gradients for panel separation */
+    .features-section, .pricing-section, .video-section, .tech-section, .cta-section {
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent 30%);
+      border-top: 1px solid rgba(255,255,255,0.02);
+    }
+
+    /* Reusable card style for a unified, premium look */
+    .feature-card, .step, .pricing-card, .tech-pill, .video-card, .broadcast-mock {
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      padding: 26px 22px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6), 0 0 30px rgba(74,222,128,0.03);
+      transition: transform .22s ease, box-shadow .22s ease;
+    }
+
+    /* Slightly different padding for pricing card to emphasize */
+    .pricing-card { padding: 36px 32px; }
+
+    /* Hover lift effect for cards */
+    .feature-card:hover, .step:hover, .pricing-card:hover, .video-card:hover, .broadcast-mock:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.72), 0 0 50px rgba(74,222,128,0.06);
+    }
+
+    /* Premium button styles and smoother hover */
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 14px; font-weight: 700; border-radius: 12px;
+      padding: 11px 22px; height: 48px; cursor: pointer; transition: all .22s cubic-bezier(.2,.9,.2,1); border: none;
+    }
+    .btn--primary {
+      background: linear-gradient(180deg, var(--green), #4de07a);
+      color: #000; box-shadow: 0 10px 30px rgba(74,222,128,0.14);
+    }
+    .btn--primary:hover { transform: translateY(-3px); box-shadow: 0 18px 50px rgba(74,222,128,0.18); filter: brightness(1.03); }
+    .btn--ghost { background: transparent; color: var(--text); border: 1px solid var(--border-2); padding: 10px 18px; border-radius: 12px; }
+
+    /* Pricing visual polish */
+    .pricing-price { font-size: 42px; font-weight: 900; letter-spacing: -.03em; color: var(--text); margin-bottom: 6px; }
+    .pricing-desc { color: var(--text-muted); }
+    .byok-note { margin-top: 18px; font-size: 13px; }
+
+    /* Hero subtle polish */
+    .hero { padding: 120px 0 96px; }
+    .hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.14), transparent 40%); pointer-events: none; }
+    .broadcast-mock { box-shadow: 0 20px 60px rgba(0,0,0,0.75), 0 0 40px rgba(74,222,128,0.04); }
+
+    /* Badge and overlay polish */
+    .carousel-label { background: rgba(0,0,0,.55); border: 1px solid rgba(74,222,128,.18); }
+
+    /* Demo/video frame polish */
+    .video-card { border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border); }
+    .video-card .video-card-label { padding: 20px 18px 14px; }
+
+    /* Footer polish */
+    footer { padding: 48px 0; border-top: 1px solid rgba(255,255,255,0.03); }
+    .footer-inner { gap: 28px; }
+    .footer-links a { color: var(--text-dim); }
+
+    /* Subtle load animation support */
+    .fade-up { will-change: opacity, transform; }
+
+    /* Preserve responsive behavior with updated spacing */
+    @media (max-width: 900px) {
+      .section { padding: 72px 0; }
+      .partners-grid { grid-template-columns: 1fr; }
+    }
+
     /* ── Responsive ────────────────────────────────────── */
     @media (max-width: 900px) {
       .hero-grid { grid-template-columns: 1fr; }
@@ -512,6 +587,18 @@
       .pricing-btn-row { flex-direction: column; }
       .tech-grid { gap: 10px; }
       .tech-pill { padding: 8px 14px; }
+    }
+
+    @media (max-width:420px) {
+      .btn { padding:8px 14px; height:auto; font-size:13px; }
+      .btn--lg { padding:10px 16px; font-size:14px; }
+      .hero { padding: 36px 0 28px; }
+      .hero-title { font-size: clamp(28px, 6vw, 40px); }
+      .section-header { margin-bottom: 40px; }
+      .pricing-price { font-size: 32px; }
+      .pricing-card { padding: 20px; }
+      .feature-card, .step { padding: 18px 14px; }
+      .carousel-label { font-size: 10px; padding: 4px 8px; }
     }
 
     /* ── Scroll fade-in ────────────────────────────────── */
@@ -632,13 +719,23 @@
 <script>
   history.scrollRestoration = 'manual';
   window.scrollTo(0, 0);
-  document.body.style.overflow = 'hidden';
-  document.getElementById('splash').addEventListener('animationend', function(e) {
-    if (e.animationName === 'splashFadeOut') {
-      this.remove();
-      document.body.style.overflow = '';
-    }
-  });
+  
+  // Check if returning from another page — if so, skip splash
+  const skipSplash = sessionStorage.getItem('skipSplash');
+  const splash = document.getElementById('splash');
+  
+  if (skipSplash) {
+    splash.remove();
+    sessionStorage.removeItem('skipSplash');
+  } else {
+    document.body.style.overflow = 'hidden';
+    splash.addEventListener('animationend', function(e) {
+      if (e.animationName === 'splashFadeOut') {
+        this.remove();
+        document.body.style.overflow = '';
+      }
+    });
+  }
 </script>
 
   <!-- ═══ NAV ═══════════════════════════════════════════ -->
@@ -653,6 +750,7 @@
         <a href="#features">Features</a>
         <a href="#pricing">Pricing</a>
         <a href="#waitlist">Early Access</a>
+        <a href="partners.html">For Partners</a>
       </div>
       <a href="#waitlist" class="btn btn--primary">Join Waitlist</a>
     </div>
@@ -973,35 +1071,6 @@
     </div>
   </section>
 
-  <!-- ═══ PARTNERS SECTION — Sportsbooks & Media Partners -->
-  <section class="section partners-section" id="partners">
-    <div class="container">
-      <div class="section-header fade-up">
-        <div class="section-tag"><span class="tag tag--dim">For Partners</span></div>
-        <h2 class="section-title">For Sportsbooks &amp; Media Partners</h2>
-        <p class="section-sub">PropLayer creates high-intent betting moments by connecting live player visibility to real-time prop context. We do not replace sportsbooks or broadcasts — we route users back to licensed partners.</p>
-      </div>
-
-      <div class="features-grid partners-grid fade-up">
-        <div class="feature-card">
-          <h3 style="margin-top:0;">Player-aware prop discovery</h3>
-          <p class="pricing-desc">Player-aware prop discovery directly on the live viewing experience</p>
-        </div>
-        <div class="feature-card">
-          <h3 style="margin-top:0;">Sponsored &amp; white-label</h3>
-          <p class="pricing-desc">Sponsored or white-label overlay opportunities for sportsbook and media partners</p>
-        </div>
-        <div class="feature-card">
-          <h3 style="margin-top:0;">Drive engagement &amp; traffic</h3>
-          <p class="pricing-desc">Designed to drive engagement, intent, and sportsbook traffic without disrupting the broadcast</p>
-        </div>
-      </div>
-
-      <div style="text-align:center;margin-top:28px;">
-        <a href="#waitlist" class="btn btn--primary btn--lg">Partner with PropLayer</a>
-      </div>
-    </div>
-  </section>
 
   <!-- ═══ FOOTER ═══════════════════════════════════════════ -->
   <footer>

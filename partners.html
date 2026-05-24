@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Partner with PropLayer</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body { background: #09090b; color: #fafafa; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; }
+    .container { max-width: 520px; margin: 0 auto; padding: 48px 16px; }
+    h1 { font-size: 2.2rem; margin-bottom: 18px; }
+    p { color: #a1a1aa; margin-bottom: 32px; }
+    form { background: #18181f; border-radius: 16px; padding: 32px 24px; box-shadow: 0 8px 32px rgba(0,0,0,0.18); border: 1px solid #27272a; }
+    label { display: block; margin-bottom: 8px; font-weight: 600; }
+    input, textarea { width: 100%; padding: 12px 14px; border-radius: 8px; border: 1px solid #3f3f46; background: #111116; color: #fafafa; margin-bottom: 18px; font-size: 1rem; }
+    input:focus, textarea:focus { outline: none; border-color: #4ade80; }
+    button { background: linear-gradient(180deg, #4ade80, #4de07a); color: #000; font-weight: 700; border: none; border-radius: 10px; padding: 13px 28px; font-size: 1rem; cursor: pointer; box-shadow: 0 4px 18px rgba(74,222,128,0.13); transition: box-shadow .2s, transform .2s; }
+    button:hover { box-shadow: 0 8px 32px rgba(74,222,128,0.18); transform: translateY(-2px); }
+    .success, .error { margin-top: 18px; font-size: 1rem; }
+    .success { color: #4ade80; }
+    .error { color: #f87171; }
+  </style>
+</head>
+<body>
+  <!-- ── Back Button Nav ─────────────────────────────── -->
+  <nav style="background: rgba(9,9,11,.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);">
+    <div class="container" style="display: flex; align-items: center; height: 60px;">
+      <a href="index.html" style="display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(180deg, #4ade80, #4de07a); color: #000; font-weight: 700; border: none; border-radius: 10px; padding: 13px 28px; font-size: 1rem; cursor: pointer; box-shadow: 0 4px 18px rgba(74,222,128,0.13); transition: box-shadow .2s, transform .2s; text-decoration: none;"><svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M11.25 15L5.25 9L11.25 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Back</a>
+    </div>
+  </nav>
+  <div class="container">
+    <h1>For Sportsbooks & Media Partners</h1>
+    <p class="section-sub">PropLayer creates high-intent betting moments by connecting live player visibility to real-time prop context. We do not replace sportsbooks or broadcasts — we route users back to licensed partners.</p>
+    <div class="features-grid partners-grid fade-up" style="margin-bottom:36px;">
+      <div class="feature-card">
+        <h3 style="margin-top:0;">Player-aware prop discovery</h3>
+        <p class="pricing-desc">Player-aware prop discovery directly on the live viewing experience</p>
+      </div>
+      <div class="feature-card">
+        <h3 style="margin-top:0;">Sponsored &amp; white-label</h3>
+        <p class="pricing-desc">Sponsored or white-label overlay opportunities for sportsbook and media partners</p>
+      </div>
+      <div class="feature-card">
+        <h3 style="margin-top:0;">Drive engagement &amp; traffic</h3>
+        <p class="pricing-desc">Designed to drive engagement, intent, and sportsbook traffic without disrupting the broadcast</p>
+      </div>
+    </div>
+    <form id="partnerForm" autocomplete="off" method="POST" action="https://formspree.io/f/mpqorvvk">
+      <label for="email">Business Email</label>
+      <input type="email" id="email" name="email" required autocomplete="email" style="box-sizing:border-box;min-width:0;max-width:100%;font-size:1rem;" />
+      <label for="message">Message</label>
+      <textarea id="message" name="message" rows="5" required placeholder="Tell us about your partnership interest" style="box-sizing:border-box;min-width:0;max-width:100%;font-size:1rem;"></textarea>
+      <!-- Honeypot field for spam bots -->
+      <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
+      <button type="submit">Submit</button>
+      <div id="formMsg"></div>
+    </form>
+  </div>
+  <script>
+    // Prevent splash screen on return navigation
+    sessionStorage.setItem('skipSplash', 'true');
+    
+    // Secure client-side form handling
+    document.getElementById('partnerForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const msg = document.getElementById('formMsg');
+      msg.textContent = '';
+      const data = new FormData(form);
+      // Basic client-side validation
+      if (!data.get('email') || !data.get('message')) {
+        msg.textContent = 'Please fill out all fields.';
+        msg.className = 'error';
+        return;
+      }
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          headers: { 'Accept': 'application/json' },
+          body: data
+        });
+        if (res.ok) {
+          msg.textContent = "Thank you! We'll be in touch soon.";
+          msg.className = 'success';
+          form.reset();
+        } else {
+          msg.textContent = 'Submission failed. Please try again.';
+          msg.className = 'error';
+        }
+      } catch {
+        msg.textContent = 'Network error. Please try again.';
+        msg.className = 'error';
+      }
+    });
+  </script>
+</body>
+</html>
