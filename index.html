@@ -108,17 +108,92 @@
       min-height: calc(100vh - 60px);
       display: flex; align-items: center;
     }
-    /* radial glow bg */
+    /* radial glow bg — anchored to the left over the copy column so it
+       doesn't bleed green onto the video. */
     .hero::before {
       content: '';
-      position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-      width: 900px; height: 500px;
-      background: radial-gradient(ellipse at 50% 0%, rgba(74,222,128,.12) 0%, transparent 70%);
+      position: absolute; top: 0; left: 0; transform: none;
+      width: 560px; height: 360px;
+      background: radial-gradient(ellipse at 30% 0%, rgba(74,222,128,.08) 0%, transparent 70%);
       pointer-events: none;
+      z-index: 1;
     }
     .hero-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 60px; align-items: center;
+      display: grid; grid-template-columns: 1fr;
+      gap: 0; align-items: center;
+    }
+    .hero-copy { max-width: 560px; position: relative; z-index: 2; }
+    /* Pin hero content hard to the left edge (with viewport-relative gutter)
+       instead of inheriting the centered 1120px container. */
+    .hero .container {
+      position: relative;
+      z-index: 2;
+      max-width: none;
+      margin: 0;
+      padding-left: clamp(24px, 6vw, 96px);
+      padding-right: clamp(24px, 4vw, 64px);
+    }
+
+    /* ── HERO VIDEO (full-bleed, with diagonal fade) ──
+       Wrap spans the entire hero so no hard rectangular edge can show.
+       The diagonal slash (angle < 90°) makes the dark wall TILT to the
+       right as it descends — narrower at top-left, widening toward the
+       lower-right. Video subject is biased right via object-position. */
+    .hero-video-wrap {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      z-index: 0;
+      pointer-events: none;
+      /* Poster fallback shows if video fails or is disabled */
+      background: #000 url('assets/lebron.png') right center/cover no-repeat;
+    }
+    .hero-video {
+      /* Scale up + translate right so the subject sits past the
+         dark gradient zone, even on wide aspect ratios where
+         object-position alone would have no effect. The vertical
+         anchor at 75% lifts the action up in the visible frame. */
+      width: 115%; height: 100%;
+      object-fit: cover;
+      object-position: right 55%;
+      transform: translateX(15%);
+      display: block;
+    }
+    /* 72° diagonal — dark slopes DOWN from the upper-left toward the
+       lower-right, full opacity through 32% so the video is fully masked
+       behind the copy and there is no visible seam. Two extra vertical
+       gradients darken the top edge (so the video doesn't bleed through
+       the semi-transparent nav) and the bottom edge (fade into the page). */
+    .hero-video-overlay {
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(72deg,
+          var(--bg)         0%,
+          var(--bg)         32%,
+          rgba(9,9,11,.85)  44%,
+          rgba(9,9,11,.4)   56%,
+          rgba(9,9,11,.1)   70%,
+          transparent       84%),
+        linear-gradient(180deg,
+          var(--bg)         0%,
+          rgba(9,9,11,.9)   2%,
+          rgba(9,9,11,.4)   4%,
+          rgba(9,9,11,.05)  6%,
+          transparent       7%,
+          transparent       70%,
+          rgba(9,9,11,.55)  88%,
+          var(--bg)         100%);
+      pointer-events: none;
+    }
+    /* Very subtle slash along the diagonal seam — green dialed way back */
+    .hero-video-wrap::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(72deg,
+        transparent 36%,
+        rgba(74,222,128,.015) 42%,
+        transparent 48%);
+      pointer-events: none;
     }
     .hero-eyebrow { margin-bottom: 20px; }
     .hero-title {
@@ -134,20 +209,21 @@
     .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
     .hero-stats {
       display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 0; margin-top: 44px;
+      gap: 0; margin-top: 36px;
       border: 1px solid var(--border);
       border-radius: var(--radius);
       overflow: hidden;
       background: var(--surface);
+      max-width: 520px;
     }
     .hero-stats > div {
-      padding: 16px 20px;
+      padding: 12px 16px;
       display: flex; flex-direction: column; align-items: center; text-align: center;
       border-right: 1px solid var(--border);
     }
     .hero-stats > div:last-child { border-right: none; }
-    .hero-stat-val { font-size: 15px; font-weight: 800; color: var(--green); white-space: nowrap; }
-    .hero-stat-label { font-size: 11px; color: var(--text-dim); margin-top: 3px; }
+    .hero-stat-val { font-size: 13px; font-weight: 800; color: var(--green); white-space: nowrap; }
+    .hero-stat-label { font-size: 10px; color: var(--text-dim); margin-top: 2px; }
 
     /* ── AR Badge Mock ─────────────────────────────────── */
     /* ── Screenshot Carousel ──────────────────────────── */
@@ -522,7 +598,7 @@
     .byok-note { margin-top: 18px; font-size: 13px; }
 
     /* Hero subtle polish */
-    .hero { padding: 120px 0 96px; }
+    .hero { padding: 40px 0 72px; }
     .hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.14), transparent 40%); pointer-events: none; }
     .broadcast-mock { box-shadow: 0 20px 60px rgba(0,0,0,0.75), 0 0 40px rgba(74,222,128,0.04); }
 
@@ -550,10 +626,22 @@
     /* ── Responsive ────────────────────────────────────── */
     @media (max-width: 900px) {
       .hero-grid { grid-template-columns: 1fr; }
+      .hero-copy { max-width: 100%; }
+      /* On tablet/mobile: video becomes a subtle full-width backdrop */
+      .hero-video-wrap { opacity: .5; }
+      .hero-video { object-position: center; }
+      .hero-video-overlay {
+        background:
+          linear-gradient(180deg,
+            rgba(9,9,11,.7)  0%,
+            rgba(9,9,11,.82) 50%,
+            rgba(9,9,11,.95) 100%);
+      }
+      .hero-video-wrap::after { display: none; }
       .broadcast-mock {
         width: 100%;
         max-width: 360px;
-        margin: 40px auto 0;
+        margin: 0 auto;
         aspect-ratio: 3/4;
       }
       .steps-grid { grid-template-columns: 1fr; }
@@ -607,6 +695,52 @@
       transition: opacity .6s ease, transform .6s ease;
     }
     .fade-up.visible { opacity: 1; transform: none; }
+
+    /* ── Product Preview (relocated carousel + side copy) ── */
+    .preview-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .preview-copy { max-width: 480px; }
+    .preview-eyebrow { margin-bottom: 16px; }
+    .preview-copy h2 {
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 800; letter-spacing: -.03em; line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .preview-sub {
+      font-size: 17px; color: var(--text-muted);
+      line-height: 1.65; margin-bottom: 32px;
+    }
+    .preview-features {
+      list-style: none;
+      display: grid; gap: 16px;
+    }
+    .preview-features li {
+      display: flex; gap: 12px; align-items: flex-start;
+      font-size: 14.5px; color: var(--text-muted); line-height: 1.55;
+    }
+    .preview-features li .check {
+      color: var(--green); flex-shrink: 0;
+      font-weight: 800; margin-top: 1px;
+    }
+    .preview-features li strong { color: var(--text); font-weight: 600; }
+    .preview-stage {
+      max-width: 380px;
+      margin-left: auto;  /* push carousel to the right edge of its column */
+    }
+    @media (max-width: 900px) {
+      .preview-grid { grid-template-columns: 1fr; gap: 48px; }
+      .preview-stage { margin: 0 auto; }
+    }
+
+    /* ── Reduced motion: hide hero video, keep poster ──── */
+    @media (prefers-reduced-motion: reduce) {
+      .hero-video { display: none; }
+      .carousel-track { transition: none; }
+    }
 
     /* ── Splash Screen ───────────────────────────────────── */
     #splash {
@@ -757,7 +891,24 @@
   </nav>
 
   <!-- ═══ HERO ════════════════════════════════════════════ -->
+  <!--
+    Hero layout: left column = copy/CTAs, right side = full-bleed looping demo video.
+    A diagonal gradient overlay (.hero-video-overlay) blends the video into the dark
+    text column. On mobile, the video collapses to a subtle full-width backdrop.
+    Swap the video by replacing the <source> path below.
+  -->
   <section class="hero">
+    <!-- Right-side hero video + diagonal dark fade -->
+    <div class="hero-video-wrap" aria-hidden="true">
+      <video class="hero-video"
+             autoplay muted loop playsinline
+             preload="metadata"
+             poster="assets/lebron.png">
+        <source src="assets/landing%20page%20video%202.mp4" type="video/mp4" />
+      </video>
+      <div class="hero-video-overlay"></div>
+    </div>
+
     <div class="container">
       <div class="hero-grid">
         <div class="hero-copy">
@@ -795,9 +946,44 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
 
-        <!-- SCREENSHOT CAROUSEL -->
-        <div class="broadcast-mock">
+  <!-- ═══ PRODUCT PREVIEW (relocated screenshot carousel) ═══
+       Two-column: copy on the left, carousel pushed to the right.
+       Carousel UX (autoplay, dots, touch swipe) is preserved. -->
+  <section class="section" id="preview">
+    <div class="container">
+      <div class="preview-grid">
+        <div class="preview-copy fade-up">
+          <div class="preview-eyebrow"><span class="tag tag--green">Product Preview</span></div>
+          <h2>See PropLayer in action.</h2>
+          <p class="preview-sub">
+            The moment a player steps on screen, PropLayer takes over. Stats, prop lines, and live context — surfaced where you're already looking.
+          </p>
+          <ul class="preview-features">
+            <li>
+              <span class="check">✓</span>
+              <span><strong>Auto-identified players.</strong> Names, numbers, and teams the second they appear — no searching, no selecting.</span>
+            </li>
+            <li>
+              <span class="check">✓</span>
+              <span><strong>Live prop lines.</strong> Current odds from major sportsbooks, pinned right to the player's badge.</span>
+            </li>
+            <li>
+              <span class="check">✓</span>
+              <span><strong>Season context.</strong> Points, rebounds, assists, 3PM — the splits that matter, live as the game unfolds.</span>
+            </li>
+            <li>
+              <span class="check">✓</span>
+              <span><strong>Confidence scoring.</strong> High-confidence identification only — the noise stays off your screen.</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="preview-stage fade-up">
+          <div class="broadcast-mock">
           <div class="carousel-label">PropLayer Active</div>
 
           <div class="carousel-track" id="carouselTrack">
@@ -827,8 +1013,9 @@
             <button class="carousel-dot" onclick="goToSlide(2)" aria-label="Nikola Jokic"></button>
           </div>
         </div>
-      </div>
-    </div>
+      </div><!-- /.preview-stage -->
+    </div><!-- /.preview-grid -->
+  </div><!-- /.container -->
   </section>
 
   <!-- ═══ HOW IT WORKS ════════════════════════════════════ -->
@@ -1105,6 +1292,22 @@
       { threshold: 0.12 }
     );
     document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    // ── Reduced-motion: stop the hero video from autoplaying ──
+    (() => {
+      const heroVideo = document.querySelector('.hero-video');
+      if (!heroVideo) return;
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const apply = () => {
+        if (reduce.matches) {
+          heroVideo.removeAttribute('autoplay');
+          heroVideo.pause();
+          heroVideo.currentTime = 0;
+        }
+      };
+      apply();
+      reduce.addEventListener?.('change', apply);
+    })();
 
     // ── Screenshot Carousel ─────────────────────────────
     let currentSlide = 0;
