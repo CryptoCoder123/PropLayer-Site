@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PropLayer — Real-Time Player Insights on Any Sports Stream</title>
-  <meta name="description" content="PropLayer overlays real-time player stats and prop context directly on any live sports broadcast — no app switching, no second screen, no missing the action." />
+  <title>PropLayer — Multi-Sport AI Overlay for Live Sports Streams</title>
+  <meta name="description" content="PropLayer is a multi-sport AI overlay that adds real-time player stats and prop context to any live sports stream. NBA and MLB live in alpha — NFL, NHL, and college sports next." />
   <style>
     /* ── Design Tokens ─────────────────────────────────── */
     :root {
@@ -411,6 +411,15 @@
     @media (max-width: 700px) {
       .video-grid { grid-template-columns: 1fr; }
     }
+    /* Per-demo supporting copy beneath each video card */
+    .video-cell-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-top: 14px;
+      padding: 0 4px;
+      line-height: 1.55;
+    }
+    .video-cell-desc strong { color: var(--text); font-weight: 600; }
 
     /* ── TECH STACK ────────────────────────────────────── */
     .tech-section { border-top: 1px solid var(--border); }
@@ -886,7 +895,7 @@
         <a href="#waitlist">Early Access</a>
         <a href="partners.html">For Partners</a>
       </div>
-      <a href="#waitlist" class="btn btn--primary">Join Waitlist</a>
+      <a href="#waitlist" class="btn btn--primary">Join Early Access</a>
     </div>
   </nav>
 
@@ -922,7 +931,7 @@
             <span class="accent glow-green">the game.</span>
           </h1>
           <p class="hero-sub">
-            PropLayer overlays live player stats and prop context directly on your stream — Amazon, ESPN, YouTube, anything. No app switching. No missed plays.
+            PropLayer adds real-time player stats and prop context directly on top of your live sports stream — NBA, MLB, and more. No app switching. No missed plays.
           </p>
           <div class="hero-cta">
             <a href="#demo" class="btn btn--primary btn--lg">
@@ -941,8 +950,8 @@
               <div class="hero-stat-label">Live odds — on screen</div>
             </div>
             <div>
-              <div class="hero-stat-val">Any Stream</div>
-              <div class="hero-stat-label">YouTube, ESPN, Prime</div>
+              <div class="hero-stat-val">NBA + MLB</div>
+              <div class="hero-stat-label">Alpha — more leagues next</div>
             </div>
           </div>
         </div>
@@ -1042,7 +1051,7 @@
         <div class="step fade-up" style="transition-delay:.2s">
           <div class="step-num step-num--blue">3</div>
           <h3>Stats Appear on Screen</h3>
-          <p>Stats and prop context appear right on the broadcast. Put the phone down — it's already on screen.</p>
+          <p>Stats and prop context appear right on the broadcast — no second look at your phone needed.</p>
         </div>
       </div>
     </div>
@@ -1070,7 +1079,7 @@
         <div class="feature-card">
           <div class="feature-icon feature-icon--amber">📈</div>
           <h3>Season Stats on Every Badge</h3>
-          <p>Points, rebounds, assists, blocks, 3PM — live the moment a player appears on screen.</p>
+          <p>Season averages, splits, and game-by-game form — surfaced live for every player the broadcast cuts to.</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon feature-icon--green">📡</div>
@@ -1096,10 +1105,10 @@
           <div class="feature-card">
             <div class="feature-icon feature-icon--amber">🏈</div>
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-              <h3 style="margin:0;">More Sports Coming Soon</h3>
+              <h3 style="margin:0;">Multi-Sport Overlay Engine</h3>
               <span class="tag tag--amber" style="font-size:10px;">Roadmap</span>
             </div>
-            <p>NBA is live. NFL, MLB, NHL, and college sports are next — same overlay, new leagues.</p>
+            <p>NBA and MLB support are now in alpha. NFL, NHL, and college sports are next — same overlay engine, expanded league coverage.</p>
           </div>
         </div>
       </div>
@@ -1110,33 +1119,45 @@
   <section class="section video-section" id="demo">
     <div class="container">
       <div class="section-header fade-up">
-        <div class="section-tag"><span class="tag tag--amber">Live Demo</span></div>
-        <h2 class="section-title">See it in real time</h2>
-        <p class="section-sub">Actual footage. No staging. PropLayer running live over a real NBA broadcast.</p>
+        <div class="section-tag"><span class="tag tag--amber">Live Demo · Multi-Sport Alpha</span></div>
+        <h2 class="section-title">See PropLayer Working Across Live Sports</h2>
+        <p class="section-sub">PropLayer is no longer just a concept. NBA and MLB alpha demos show the same overlay engine working across different live sports environments — proof the platform is built to expand beyond one sport.</p>
       </div>
     </div>
     <div class="video-grid fade-up">
-        <div class="video-card">
-          <video
-            src="assets/demo.mp4"
-            autoplay muted loop playsinline
-            preload="metadata"
-          ></video>
-          <div class="video-card-label">
-            <div class="live-dot"></div>
-            <span>PropLayer active — player detection &amp; stat overlay</span>
+        <!-- NBA Demo -->
+        <div class="video-cell">
+          <div class="video-card">
+            <video
+              src="assets/Lebron%20freethrow.mp4"
+              autoplay muted loop playsinline
+              preload="metadata"
+            ></video>
+            <div class="video-card-label">
+              <div class="live-dot"></div>
+              <span><strong style="color:var(--text);font-weight:700;">NBA Demo</strong> &nbsp;·&nbsp; alpha</span>
+            </div>
           </div>
+          <p class="video-cell-desc">
+            <strong>NBA Demo.</strong> Real-time player recognition and stat overlays during live basketball footage.
+          </p>
         </div>
-        <div class="video-card">
-          <video
-            src="assets/demo2.mp4"
-            autoplay muted loop playsinline
-            preload="metadata"
-          ></video>
-          <div class="video-card-label">
-            <div class="live-dot"></div>
-            <span>Live NBA broadcast — real-time prop context overlay</span>
+        <!-- MLB Demo -->
+        <div class="video-cell">
+          <div class="video-card">
+            <video
+              src="assets/pitcher%20video.mp4"
+              autoplay muted loop playsinline
+              preload="metadata"
+            ></video>
+            <div class="video-card-label">
+              <div class="live-dot"></div>
+              <span><strong style="color:var(--text);font-weight:700;">MLB Demo</strong> &nbsp;·&nbsp; alpha</span>
+            </div>
           </div>
+          <p class="video-cell-desc">
+            <strong>MLB Demo.</strong> Baseball player recognition and contextual overlays during live game footage.
+          </p>
         </div>
       </div>
   </section>
@@ -1202,26 +1223,26 @@
       <div class="section-header fade-up">
         <div class="section-tag"><span class="tag tag--green">Pricing</span></div>
         <h2 class="section-title">Early access starts at $19.99/month.</h2>
-        <p class="section-sub">Early Access: $19.99/month</p>
+        <p class="section-sub">Includes NBA and MLB alpha support — NFL, NHL, and college sports planned.</p>
       </div>
       <div class="pricing-grid fade-up">
         <div class="pricing-card pricing-card--featured">
           <div class="pricing-badge">Early Access Price</div>
           <div class="pricing-plan">PropLayer Desktop</div>
           <div class="pricing-price">Early Access: $19.99/month</div>
-          <div class="pricing-desc">Full desktop app. Monthly subscription during Early Access.</div>
+          <div class="pricing-desc">Full desktop overlay. Monthly subscription during alpha — locks in your early-access price.</div>
           <div class="pricing-divider"></div>
           <ul class="pricing-features">
-            <li><span class="check">✓</span> Real-time player stats on any stream</li>
-            <li><span class="check">✓</span> Live prop line context per player</li>
+            <li><span class="check">✓</span> NBA and MLB alpha access included</li>
+            <li><span class="check">✓</span> Real-time player stats and prop context</li>
             <li><span class="check">✓</span> Works on YouTube, ESPN+, Amazon, and more</li>
-            <li><span class="check">✓</span> Season averages on every player badge</li>
-            <li><span class="check">✓</span> Always-on-top transparent overlay</li>
-            <li><span class="check">✓</span> No sportsbook account required to use</li>
-            <li><span class="check">✓</span> Free updates &amp; new sport support</li>
+            <li><span class="check">✓</span> Always-on-top local overlay — no extra screen</li>
+            <li><span class="check">✓</span> No sportsbook account required</li>
+            <li><span class="check">✓</span> Free updates as new leagues roll out</li>
+            <li><span class="check">✓</span> Patent-pending detection engine</li>
           </ul>
           <div class="pricing-btn-row">
-            <a href="#waitlist" class="btn btn--primary btn--lg" style="flex:1;justify-content:center;">Join Waitlist</a>
+            <a href="#waitlist" class="btn btn--primary btn--lg" style="flex:1;justify-content:center;">Join Early Access</a>
             <div class="btn btn--ghost btn--lg" style="flex:1;justify-content:center;cursor:default;opacity:.55;">Regular price after launch</div>
           </div>
         </div>
@@ -1242,7 +1263,7 @@
       <div class="cta-inner fade-up">
         <div style="margin-bottom:20px"><span class="tag tag--green">Early Access</span></div>
         <h2>Watch the game smarter.</h2>
-        <p>Alpha access is rolling out now. NBA first — NFL, MLB, and NHL coming next.</p>
+        <p>Get access to NBA and MLB alpha support before public launch. NFL, NHL, and college sports next.</p>
         <form class="cta-form" onsubmit="handleWaitlist(event)">
           <!-- Honeypot: bots fill this out, humans don't — Formspree ignores submissions where it's filled -->
           <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
@@ -1253,7 +1274,7 @@
           </button>
         </form>
         <p class="cta-note" id="waitlist-msg">No spam. Unsubscribe anytime.</p>
-        <p style="margin-top:16px;color:var(--text-dim);font-size:13px;">NBA live now. More sports coming soon.</p>
+        <p style="margin-top:16px;color:var(--text-dim);font-size:13px;">NBA and MLB live in alpha. Multi-sport rollout continues.</p>
       </div>
     </div>
   </section>
@@ -1267,7 +1288,7 @@
           <div class="dot" style="width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green)"></div>
           PropLayer
         </div>
-        <div style="font-size:12px;color:var(--text-dim);margin-top:6px">Real-Time Player Insights on Any Stream</div>
+        <div style="font-size:12px;color:var(--text-dim);margin-top:6px">Multi-Sport AI Overlay — NBA, MLB, and more</div>
       </div>
       <div class="footer-links">
         <a href="#how-it-works">How It Works</a>
