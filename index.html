@@ -134,30 +134,39 @@
       padding-right: clamp(24px, 4vw, 64px);
     }
 
-    /* ── HERO VIDEO (full-bleed, with diagonal fade) ──
+    /* ── HERO SLIDESHOW (full-bleed, with diagonal fade) ──
        Wrap spans the entire hero so no hard rectangular edge can show.
        The diagonal slash (angle < 90°) makes the dark wall TILT to the
        right as it descends — narrower at top-left, widening toward the
-       lower-right. Video subject is biased right via object-position. */
+       lower-right. Slides cross-fade with a slow Ken Burns drift;
+       subjects are biased right via object-position so they sit clear
+       of the dark copy column. */
     .hero-video-wrap {
       position: absolute;
       inset: 0;
       overflow: hidden;
       z-index: 0;
       pointer-events: none;
-      /* Poster fallback shows if video fails or is disabled */
-      background: #000 url('assets/lebron.png') right center/cover no-repeat;
+      background: var(--bg);
     }
-    .hero-video {
-      /* Scale up + translate right so the subject sits past the
-         dark gradient zone, even on wide aspect ratios where
-         object-position alone would have no effect. The vertical
-         anchor at 75% lifts the action up in the visible frame. */
-      width: 115%; height: 100%;
+    /* Slides sit as a smaller, right-anchored stage rather than full-bleed.
+       A soft elliptical mask feathers every edge so the frame dissolves into
+       the page instead of showing a hard rectangle. */
+    .hero-slide {
+      position: absolute;
+      top: 9%; right: 1%; left: auto; bottom: auto;
+      width: 60%; height: 82%;
       object-fit: cover;
-      object-position: right 55%;
-      transform: translateX(15%);
-      display: block;
+      object-position: center 22%;
+      opacity: 0;
+      transform: scale(1.005);
+      transition: opacity 1.4s ease-in-out, transform 7s ease-out;
+      -webkit-mask-image: radial-gradient(ellipse 78% 84% at 52% 50%, #000 52%, rgba(0,0,0,0) 100%);
+      mask-image: radial-gradient(ellipse 78% 84% at 52% 50%, #000 52%, rgba(0,0,0,0) 100%);
+    }
+    .hero-slide.active {
+      opacity: 1;
+      transform: scale(1.05);
     }
     /* 72° diagonal — dark slopes DOWN from the upper-left toward the
        lower-right, full opacity through 32% so the video is fully masked
@@ -233,7 +242,7 @@
       overflow: hidden;
       border: 1px solid var(--border);
       box-shadow: 0 0 60px rgba(74,222,128,.1), 0 40px 80px rgba(0,0,0,.7);
-      aspect-ratio: 2/3;
+      aspect-ratio: 9/16;
       background: #000;
     }
     .carousel-track {
@@ -242,7 +251,8 @@
       transition: transform .7s cubic-bezier(.4,0,.2,1);
     }
     .carousel-slide {
-      flex: 0 0 100%; width: 100%; height: 100%; position: relative;
+      flex: 0 0 100%; min-width: 100%; height: 100%; position: relative;
+      overflow: hidden;
     }
     .carousel-slide img {
       width: 100%; height: 100%; object-fit: cover; object-position: center top;
@@ -368,58 +378,58 @@
     .feature-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
     .feature-card p  { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
 
-    /* ── OVERLAY DEMO ──────────────────────────────────── */
-    /* ── Video Section ─────────────────────────────────── */
+    /* ── OVERLAY DEMO (multi-sport collage) ────────────── */
     .video-section { overflow: hidden; }
-    .video-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      max-width: 1600px; margin: 0 auto; padding: 0 24px;
-    }
-    .video-card {
+    .demo-stage { max-width: 960px; margin: 0 auto; }
+    .demo-collage {
       position: relative;
       border-radius: var(--radius-lg);
       overflow: hidden;
       border: 1px solid var(--border);
       background: #000;
-      box-shadow: 0 0 0 1px transparent, 0 32px 64px rgba(0,0,0,.6);
+      box-shadow: 0 0 60px rgba(74,222,128,.08), 0 32px 64px rgba(0,0,0,.6);
       transition: border-color .3s, box-shadow .3s;
     }
-    .video-card:hover {
+    .demo-collage:hover {
       border-color: rgba(74,222,128,.35);
-      box-shadow: 0 0 40px rgba(74,222,128,.08), 0 32px 64px rgba(0,0,0,.6);
+      box-shadow: 0 0 40px rgba(74,222,128,.12), 0 32px 64px rgba(0,0,0,.6);
     }
-    .video-card video {
-      width: 100%; display: block;
-      aspect-ratio: 16/9; object-fit: cover;
+    .demo-collage img { width: 100%; display: block; }
+    .demo-collage-label {
+      position: absolute; top: 14px; right: 14px; z-index: 2;
+      font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--green);
+      display: flex; align-items: center; gap: 6px;
+      background: rgba(0,0,0,.55); padding: 5px 12px; border-radius: 99px;
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(74,222,128,.25);
     }
-    .video-card-label {
-      position: absolute; bottom: 0; left: 0; right: 0;
-      padding: 28px 18px 16px;
-      background: linear-gradient(0deg, rgba(0,0,0,.85) 0%, transparent 100%);
-      display: flex; align-items: center; gap: 8px;
-    }
-    .video-card-label .live-dot {
-      width: 7px; height: 7px; border-radius: 50%;
+    .demo-collage-label::before {
+      content: '';
+      width: 6px; height: 6px; border-radius: 50%;
       background: var(--green); box-shadow: 0 0 6px var(--green);
-      flex-shrink: 0;
       animation: pulse-dot 1.8s ease-in-out infinite;
+      flex-shrink: 0;
     }
-    .video-card-label span {
-      font-size: 12px; font-weight: 600; color: var(--text-muted);
+    /* "Request the full demo" strip beneath the collage */
+    .demo-request {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 20px; flex-wrap: wrap;
+      margin-top: 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
     }
-    @media (max-width: 700px) {
-      .video-grid { grid-template-columns: 1fr; }
+    .demo-request p {
+      font-size: 14px; color: var(--text-muted);
+      line-height: 1.6; max-width: 560px;
     }
-    /* Per-demo supporting copy beneath each video card */
-    .video-cell-desc {
-      font-size: 14px;
-      color: var(--text-muted);
-      margin-top: 14px;
-      padding: 0 4px;
-      line-height: 1.55;
+    .demo-request p strong { color: var(--text); font-weight: 600; }
+    .demo-disclaimer {
+      text-align: center; font-size: 12px;
+      color: var(--text-dim); margin-top: 16px;
     }
-    .video-cell-desc strong { color: var(--text); font-weight: 600; }
 
     /* ── TECH STACK ────────────────────────────────────── */
     .tech-section { border-top: 1px solid var(--border); }
@@ -453,14 +463,6 @@
     }
     .pricing-section { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
     .pricing-grid { display: grid; grid-template-columns: 1fr; gap: 20px; max-width: 520px; margin: 0 auto; }
-    .byok-note {
-      display: flex; align-items: flex-start; gap: 12px;
-      background: rgba(245,158,11,.06); border: 1px solid rgba(245,158,11,.2);
-      border-radius: var(--radius); padding: 16px 18px;
-      margin-top: 20px; font-size: 13px; color: var(--text-muted); line-height: 1.6;
-    }
-    .byok-note-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
-    .byok-note a { color: var(--amber); text-decoration: underline; text-underline-offset: 3px; }
     .pricing-card {
       background: var(--bg);
       border: 1px solid var(--border);
@@ -569,8 +571,11 @@
       border-top: 1px solid rgba(255,255,255,0.02);
     }
 
-    /* Reusable card style for a unified, premium look */
-    .feature-card, .step, .pricing-card, .tech-pill, .video-card, .broadcast-mock {
+    /* Reusable card style for a unified, premium look.
+       .broadcast-mock is deliberately excluded: it is a media frame, not a
+       padded card — any padding shrinks the track below the frame width and
+       lets the adjacent slides show through the gutters. */
+    .feature-card, .step, .pricing-card, .tech-pill {
       border-radius: var(--radius-lg);
       border: 1px solid var(--border);
       background: var(--surface);
@@ -578,12 +583,13 @@
       box-shadow: 0 10px 30px rgba(0,0,0,0.6), 0 0 30px rgba(74,222,128,0.03);
       transition: transform .22s ease, box-shadow .22s ease;
     }
+    .broadcast-mock { padding: 0; transition: transform .22s ease, box-shadow .22s ease; }
 
     /* Slightly different padding for pricing card to emphasize */
     .pricing-card { padding: 36px 32px; }
 
     /* Hover lift effect for cards */
-    .feature-card:hover, .step:hover, .pricing-card:hover, .video-card:hover, .broadcast-mock:hover {
+    .feature-card:hover, .step:hover, .pricing-card:hover, .broadcast-mock:hover {
       transform: translateY(-6px);
       box-shadow: 0 18px 40px rgba(0,0,0,0.72), 0 0 50px rgba(74,222,128,0.06);
     }
@@ -604,7 +610,6 @@
     /* Pricing visual polish */
     .pricing-price { font-size: 42px; font-weight: 900; letter-spacing: -.03em; color: var(--text); margin-bottom: 6px; }
     .pricing-desc { color: var(--text-muted); }
-    .byok-note { margin-top: 18px; font-size: 13px; }
 
     /* Hero subtle polish */
     .hero { padding: 40px 0 72px; }
@@ -614,9 +619,6 @@
     /* Badge and overlay polish */
     .carousel-label { background: rgba(0,0,0,.55); border: 1px solid rgba(74,222,128,.18); }
 
-    /* Demo/video frame polish */
-    .video-card { border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border); }
-    .video-card .video-card-label { padding: 20px 18px 14px; }
 
     /* Footer polish */
     footer { padding: 48px 0; border-top: 1px solid rgba(255,255,255,0.03); }
@@ -636,9 +638,15 @@
     @media (max-width: 900px) {
       .hero-grid { grid-template-columns: 1fr; }
       .hero-copy { max-width: 100%; }
-      /* On tablet/mobile: video becomes a subtle full-width backdrop */
+      /* On tablet/mobile: slideshow returns to a subtle full-width backdrop */
       .hero-video-wrap { opacity: .5; }
-      .hero-video { object-position: center; }
+      .hero-slide, .hero-slide.active {
+        top: 0; right: 0; left: 0;
+        width: 100%; height: 100%;
+        object-position: center 25%;
+        -webkit-mask-image: none;
+        mask-image: none;
+      }
       .hero-video-overlay {
         background:
           linear-gradient(180deg,
@@ -649,9 +657,9 @@
       .hero-video-wrap::after { display: none; }
       .broadcast-mock {
         width: 100%;
-        max-width: 360px;
+        max-width: 320px;
         margin: 0 auto;
-        aspect-ratio: 3/4;
+        aspect-ratio: 9/16;
       }
       .steps-grid { grid-template-columns: 1fr; }
       .features-grid { grid-template-columns: 1fr 1fr; }
@@ -745,9 +753,9 @@
       .preview-stage { margin: 0 auto; }
     }
 
-    /* ── Reduced motion: hide hero video, keep poster ──── */
+    /* ── Reduced motion: freeze slideshow on first frame ── */
     @media (prefers-reduced-motion: reduce) {
-      .hero-video { display: none; }
+      .hero-slide, .hero-slide.active { transition: none; transform: none; }
       .carousel-track { transition: none; }
     }
 
@@ -901,20 +909,20 @@
 
   <!-- ═══ HERO ════════════════════════════════════════════ -->
   <!--
-    Hero layout: left column = copy/CTAs, right side = full-bleed looping demo video.
-    A diagonal gradient overlay (.hero-video-overlay) blends the video into the dark
-    text column. On mobile, the video collapses to a subtle full-width backdrop.
-    Swap the video by replacing the <source> path below.
+    Hero layout: left column = copy/CTAs, right side = full-bleed multi-sport
+    slideshow. A diagonal gradient overlay (.hero-video-overlay) blends the
+    imagery into the dark text column. On mobile, the slideshow collapses to
+    a subtle full-width backdrop. All imagery is original AI-generated
+    concept art — fictional players and teams.
   -->
   <section class="hero">
-    <!-- Right-side hero video + diagonal dark fade -->
+    <!-- Right-side hero slideshow + diagonal dark fade -->
     <div class="hero-video-wrap" aria-hidden="true">
-      <video class="hero-video"
-             autoplay muted loop playsinline
-             preload="metadata"
-             poster="assets/lebron.png">
-        <source src="assets/landing%20page%20video%202.mp4" type="video/mp4" />
-      </video>
+      <img class="hero-slide active" src="assets/newAssets/basketball1.webp" alt="" />
+      <img class="hero-slide" src="assets/newAssets/football1.webp" alt="" loading="lazy" />
+      <img class="hero-slide" src="assets/newAssets/baseball1.webp" alt="" loading="lazy" />
+      <img class="hero-slide" src="assets/newAssets/hockey1.webp" alt="" loading="lazy" />
+      <img class="hero-slide" src="assets/newAssets/soccer1.webp" alt="" loading="lazy" />
       <div class="hero-video-overlay"></div>
     </div>
 
@@ -936,7 +944,7 @@
           <div class="hero-cta">
             <a href="#demo" class="btn btn--primary btn--lg">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1L15 8L8 15M1 8H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              Watch Demo
+              See the Demo
             </a>
             <a href="#waitlist" class="btn btn--ghost btn--lg">Join Early Access</a>
           </div>
@@ -982,7 +990,7 @@
             </li>
             <li>
               <span class="check">✓</span>
-              <span><strong>Season context.</strong> Points, rebounds, assists, 3PM — the splits that matter, live as the game unfolds.</span>
+              <span><strong>Season context.</strong> Points, rebounds, home runs, goals — the splits that matter for every sport, live as the game unfolds.</span>
             </li>
             <li>
               <span class="check">✓</span>
@@ -998,28 +1006,42 @@
           <div class="carousel-track" id="carouselTrack">
             <div class="carousel-slide">
               <picture>
-                <source srcset="assets/lebron.webp" type="image/webp" />
-                <img src="assets/lebron.png" alt="PropLayer overlay on LeBron James #23 — live prop odds and stats badge" />
+                <source srcset="assets/newAssets/basketball2.webp" type="image/webp" />
+                <img src="assets/newAssets/basketball2.png" alt="PropLayer overlay concept on a basketball broadcast — player badge with live prop line and odds" />
               </picture>
             </div>
             <div class="carousel-slide">
               <picture>
-                <source srcset="assets/curry.webp" type="image/webp" />
-                <img src="assets/curry.png" alt="PropLayer overlay on Stephen Curry #30 — live prop odds and stats badge" />
+                <source srcset="assets/newAssets/baseball2.webp" type="image/webp" />
+                <img src="assets/newAssets/baseball2.png" alt="PropLayer overlay concept on a baseball broadcast — player badge with live prop line and odds" loading="lazy" />
               </picture>
             </div>
             <div class="carousel-slide">
               <picture>
-                <source srcset="assets/jokic.webp" type="image/webp" />
-                <img src="assets/jokic.png" alt="PropLayer overlay on Nikola Jokic #15 — live prop odds and stats badge" />
+                <source srcset="assets/newAssets/football2.webp" type="image/webp" />
+                <img src="assets/newAssets/football2.png" alt="PropLayer overlay concept on a football broadcast — player badge with live prop line and odds" loading="lazy" />
+              </picture>
+            </div>
+            <div class="carousel-slide">
+              <picture>
+                <source srcset="assets/newAssets/hockey2.webp" type="image/webp" />
+                <img src="assets/newAssets/hockey2.png" alt="PropLayer overlay concept on a hockey broadcast — player badge with live prop line and odds" loading="lazy" />
+              </picture>
+            </div>
+            <div class="carousel-slide">
+              <picture>
+                <source srcset="assets/newAssets/soccer2.webp" type="image/webp" />
+                <img src="assets/newAssets/soccer2.png" alt="PropLayer overlay concept on a soccer broadcast — player badge with live prop line and odds" loading="lazy" />
               </picture>
             </div>
           </div>
 
           <div class="carousel-dots" id="carouselDots">
-            <button class="carousel-dot active" onclick="goToSlide(0)" aria-label="LeBron James"></button>
-            <button class="carousel-dot" onclick="goToSlide(1)" aria-label="Stephen Curry"></button>
-            <button class="carousel-dot" onclick="goToSlide(2)" aria-label="Nikola Jokic"></button>
+            <button class="carousel-dot active" onclick="goToSlide(0)" aria-label="Basketball"></button>
+            <button class="carousel-dot" onclick="goToSlide(1)" aria-label="Baseball"></button>
+            <button class="carousel-dot" onclick="goToSlide(2)" aria-label="Football"></button>
+            <button class="carousel-dot" onclick="goToSlide(3)" aria-label="Hockey"></button>
+            <button class="carousel-dot" onclick="goToSlide(4)" aria-label="Soccer"></button>
           </div>
         </div>
       </div><!-- /.preview-stage -->
@@ -1115,51 +1137,29 @@
     </div>
   </section>
 
-  <!-- ═══ VIDEO / SEE IT IN ACTION ════════════════════════ -->
+  <!-- ═══ DEMO / SEE IT IN ACTION ═════════════════════════ -->
   <section class="section video-section" id="demo">
     <div class="container">
       <div class="section-header fade-up">
-        <div class="section-tag"><span class="tag tag--amber">Live Demo · Multi-Sport Alpha</span></div>
-        <h2 class="section-title">See PropLayer Working Across Live Sports</h2>
-        <p class="section-sub">PropLayer is no longer just a concept. NBA and MLB alpha demos show the same overlay engine working across different live sports environments — proof the platform is built to expand beyond one sport.</p>
+        <div class="section-tag"><span class="tag tag--amber">The Demo · Multi-Sport Alpha</span></div>
+        <h2 class="section-title">One overlay engine. Every sport.</h2>
+        <p class="section-sub">The same recognition engine identifies players and surfaces live prop context across basketball, baseball, football, hockey, and soccer — the concept below, live on your stream.</p>
+      </div>
+      <div class="demo-stage fade-up">
+        <div class="demo-collage">
+          <div class="demo-collage-label">Multi-Sport Engine</div>
+          <picture>
+            <source srcset="assets/newAssets/collage.webp" type="image/webp" />
+            <img src="assets/newAssets/collage.png" alt="PropLayer overlay concept across five sports — basketball, baseball, football, hockey, and soccer, each with a live player prop badge" />
+          </picture>
+        </div>
+        <div class="demo-request">
+          <p><strong>Want to see it running live?</strong> Full video demos of the NBA and MLB alpha are shared upon request — reach out and we'll send one over.</p>
+          <a href="#waitlist" class="btn btn--ghost">Request the Demo</a>
+        </div>
+        <p class="demo-disclaimer">Imagery is original concept art — fictional players and teams, generated for illustration.</p>
       </div>
     </div>
-    <div class="video-grid fade-up">
-        <!-- NBA Demo -->
-        <div class="video-cell">
-          <div class="video-card">
-            <video
-              src="assets/Lebron%20freethrow.mp4"
-              autoplay muted loop playsinline
-              preload="metadata"
-            ></video>
-            <div class="video-card-label">
-              <div class="live-dot"></div>
-              <span><strong style="color:var(--text);font-weight:700;">NBA Demo</strong> &nbsp;·&nbsp; alpha</span>
-            </div>
-          </div>
-          <p class="video-cell-desc">
-            <strong>NBA Demo.</strong> Real-time player recognition and stat overlays during live basketball footage.
-          </p>
-        </div>
-        <!-- MLB Demo -->
-        <div class="video-cell">
-          <div class="video-card">
-            <video
-              src="assets/pitcher%20video.mp4"
-              autoplay muted loop playsinline
-              preload="metadata"
-            ></video>
-            <div class="video-card-label">
-              <div class="live-dot"></div>
-              <span><strong style="color:var(--text);font-weight:700;">MLB Demo</strong> &nbsp;·&nbsp; alpha</span>
-            </div>
-          </div>
-          <p class="video-cell-desc">
-            <strong>MLB Demo.</strong> Baseball player recognition and contextual overlays during live game footage.
-          </p>
-        </div>
-      </div>
   </section>
 
   <!-- ═══ HOW IT ACTUALLY WORKS ══════════════════════════ -->
@@ -1217,20 +1217,20 @@
     </div>
   </section>
 
-  <!-- ═══ PRICING ══════════════════════════════════════════ -->
+  <!-- ═══ PRICING (coming soon) ═══════════════════════════ -->
   <section class="section pricing-section" id="pricing">
     <div class="container">
       <div class="section-header fade-up">
-        <div class="section-tag"><span class="tag tag--green">Pricing</span></div>
-        <h2 class="section-title">Early access starts at $19.99/month.</h2>
-        <p class="section-sub">Includes NBA and MLB alpha support — NFL, NHL, and college sports planned.</p>
+        <div class="section-tag"><span class="tag tag--amber">Pricing</span></div>
+        <h2 class="section-title">Pricing is coming soon.</h2>
+        <p class="section-sub">We're finalizing plans during alpha. Early-access members hear first — and lock in the best price we'll ever offer.</p>
       </div>
       <div class="pricing-grid fade-up">
         <div class="pricing-card pricing-card--featured">
-          <div class="pricing-badge">Early Access Price</div>
+          <div class="pricing-badge">Coming Soon</div>
           <div class="pricing-plan">PropLayer Desktop</div>
-          <div class="pricing-price">Early Access: $19.99/month</div>
-          <div class="pricing-desc">Full desktop overlay. Monthly subscription during alpha — locks in your early-access price.</div>
+          <div class="pricing-price">Stay tuned<span class="period"> — plans announced soon</span></div>
+          <div class="pricing-desc">The full desktop overlay, priced for fans. Join early access now and you'll be first to know when plans go live.</div>
           <div class="pricing-divider"></div>
           <ul class="pricing-features">
             <li><span class="check">✓</span> NBA and MLB alpha access included</li>
@@ -1239,18 +1239,10 @@
             <li><span class="check">✓</span> Always-on-top local overlay — no extra screen</li>
             <li><span class="check">✓</span> No sportsbook account required</li>
             <li><span class="check">✓</span> Free updates as new leagues roll out</li>
-            <li><span class="check">✓</span> Patent-pending detection engine</li>
           </ul>
           <div class="pricing-btn-row">
             <a href="#waitlist" class="btn btn--primary btn--lg" style="flex:1;justify-content:center;">Join Early Access</a>
-            <div class="btn btn--ghost btn--lg" style="flex:1;justify-content:center;cursor:default;opacity:.55;">Regular price after launch</div>
-          </div>
-        </div>
-        <div class="byok-note">
-          <span class="byok-note-icon">🔑</span>
-          <div>
-            <strong style="color:var(--text);display:block;margin-bottom:4px;">Bring Your Own API Keys (BYOK)</strong>
-            PropLayer uses your own <strong style="color:var(--amber)">Anthropic Claude API key</strong> and <strong style="color:var(--amber)">The Odds API key</strong> — your data stays yours, your costs stay low. Both have free tiers that cover a full game night.
+            <div class="btn btn--ghost btn--lg" style="flex:1;justify-content:center;cursor:default;opacity:.55;">Early members get launch pricing</div>
           </div>
         </div>
       </div>
@@ -1314,20 +1306,21 @@
     );
     document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
-    // ── Reduced-motion: stop the hero video from autoplaying ──
+    // How long each hero slide holds before cross-fading to the next.
+    const HERO_SLIDE_MS = 5000;
+
+    // ── Hero slideshow (cross-fade, respects reduced motion) ──
     (() => {
-      const heroVideo = document.querySelector('.hero-video');
-      if (!heroVideo) return;
+      const heroSlides = document.querySelectorAll('.hero-slide');
+      if (heroSlides.length < 2) return;
       const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-      const apply = () => {
-        if (reduce.matches) {
-          heroVideo.removeAttribute('autoplay');
-          heroVideo.pause();
-          heroVideo.currentTime = 0;
-        }
-      };
-      apply();
-      reduce.addEventListener?.('change', apply);
+      let heroIdx = 0;
+      setInterval(() => {
+        if (reduce.matches || document.hidden) return;
+        heroSlides[heroIdx].classList.remove('active');
+        heroIdx = (heroIdx + 1) % heroSlides.length;
+        heroSlides[heroIdx].classList.add('active');
+      }, HERO_SLIDE_MS);
     })();
 
     // ── Screenshot Carousel ─────────────────────────────
@@ -1342,11 +1335,13 @@
       dots.forEach((d, i) => d.classList.toggle('active', i === idx));
     }
 
-    // Auto-advance every 3.5 s, pause on hover or when out of view
+    // Auto-advance, pausing on hover or when out of view. Slides dwell for the
+    // same beat as the hero slideshow.
     let carouselTimer = null;
     const mock = document.querySelector('.broadcast-mock');
+    const CAROUSEL_SLIDE_MS = HERO_SLIDE_MS;
 
-    function startCarousel() { if (!carouselTimer) carouselTimer = setInterval(() => goToSlide((currentSlide + 1) % slides.length), 3500); }
+    function startCarousel() { if (!carouselTimer) carouselTimer = setInterval(() => goToSlide((currentSlide + 1) % slides.length), CAROUSEL_SLIDE_MS); }
     function stopCarousel()  { clearInterval(carouselTimer); carouselTimer = null; }
 
     new IntersectionObserver(([entry]) => entry.isIntersecting ? startCarousel() : stopCarousel(), { threshold: 0.5 }).observe(mock);
