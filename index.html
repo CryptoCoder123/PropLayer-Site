@@ -168,6 +168,10 @@
       opacity: 1;
       transform: scale(1.05);
     }
+    /* Mobile-only chrome for the hero slideshow: a live label pinned to the
+       card. Hidden on desktop, where the slideshow is a full-bleed backdrop
+       rather than a discrete card. */
+    .hero-preview-head { display: none; }
     /* 72° diagonal — dark slopes DOWN from the upper-left toward the
        lower-right, full opacity through 32% so the video is fully masked
        behind the copy and there is no visible seam. Two extra vertical
@@ -265,15 +269,18 @@
       background: linear-gradient(180deg, transparent 55%, rgba(0,0,0,.45) 100%);
       pointer-events: none;
     }
-    /* overlay label */
+    /* overlay label — flush into the top-right corner as a tab; its top-right
+       radius matches the frame so it sits seamlessly against the rounded edge */
     .carousel-label {
-      position: absolute; top: 12px; right: 12px; z-index: 2;
+      position: absolute; top: 0; right: 0; z-index: 2;
       font-size: 10px; font-weight: 700; letter-spacing: .1em;
       color: var(--green);
       display: flex; align-items: center; gap: 6px;
-      background: rgba(0,0,0,.5); padding: 4px 10px; border-radius: 99px;
+      background: rgba(0,0,0,.5); padding: 6px 12px;
+      border-radius: 0 var(--radius-lg) 0 12px;
       backdrop-filter: blur(6px);
       border: 1px solid rgba(74,222,128,.25);
+      border-top: none; border-right: none;
     }
     .carousel-label::before {
       content: '';
@@ -395,14 +402,17 @@
       box-shadow: 0 0 40px rgba(74,222,128,.12), 0 32px 64px rgba(0,0,0,.6);
     }
     .demo-collage img { width: 100%; display: block; }
+    /* Collage badge sits ABOVE the image, pushed to the right edge (not an
+       overlay tab) — margin-left:auto right-aligns the fit-content pill. */
     .demo-collage-label {
-      position: absolute; top: 14px; right: 14px; z-index: 2;
+      width: fit-content;
+      margin: 0 0 12px auto;
       font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
       color: var(--green);
       display: flex; align-items: center; gap: 6px;
-      background: rgba(0,0,0,.55); padding: 5px 12px; border-radius: 99px;
-      backdrop-filter: blur(6px);
-      border: 1px solid rgba(74,222,128,.25);
+      background: var(--surface-2); padding: 6px 13px;
+      border-radius: 99px;
+      border: 1px solid rgba(74,222,128,.3);
     }
     .demo-collage-label::before {
       content: '';
@@ -430,6 +440,10 @@
       text-align: center; font-size: 12px;
       color: var(--text-dim); margin-top: 16px;
     }
+    /* Frames wrap each media element so their "light-up" badges can be
+       absolutely pinned to the corner on desktop, yet lifted out to sit
+       ABOVE the (overflow-clipped) media on mobile. */
+    .collage-frame, .mock-frame { position: relative; }
 
     /* ── TECH STACK ────────────────────────────────────── */
     .tech-section { border-top: 1px solid var(--border); }
@@ -636,31 +650,98 @@
 
     /* ── Responsive ────────────────────────────────────── */
     @media (max-width: 900px) {
+      /* Hero becomes a vertical stack: copy first, then the slideshow as a
+         real framed "live preview" card — not a passive backdrop behind text. */
+      .hero {
+        display: flex;
+        flex-direction: column;
+        /* Override the base .hero's align-items:center — in a flex column that
+           centers on the cross-axis and shrink-wraps each item. The preview
+           card has only absolutely-positioned children, so it would collapse to
+           zero width. Stretch makes both the copy and the card fill the width. */
+        align-items: stretch;
+        min-height: unset;
+      }
+      .hero > .container   { order: 1; }
+      .hero-video-wrap     { order: 2; }
       .hero-grid { grid-template-columns: 1fr; }
       .hero-copy { max-width: 100%; }
-      /* On tablet/mobile: slideshow returns to a subtle full-width backdrop */
-      .hero-video-wrap { opacity: .5; }
+
+      /* Slideshow reflows from an absolute full-bleed backdrop into an
+         in-flow, self-contained showcase card beneath the CTAs. */
+      .hero-video-wrap {
+        position: relative;
+        inset: auto;
+        width: auto;
+        opacity: 1;
+        margin: 22px clamp(24px, 4vw, 64px) 0 clamp(24px, 6vw, 96px);
+        /* Explicit height (not aspect-ratio): the card's children are all
+           absolutely positioned, so an aspect-ratio box collapses to 0 in a
+           flex column. vw keeps it proportional; the cap bounds it on tablet. */
+        height: 60vw;
+        max-height: 300px;
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        border: 1px solid var(--border);
+        box-shadow: 0 20px 50px rgba(0,0,0,.6), 0 0 40px rgba(74,222,128,.06);
+      }
       .hero-slide, .hero-slide.active {
-        top: 0; right: 0; left: 0;
+        top: 0; right: 0; left: 0; bottom: 0;
         width: 100%; height: 100%;
-        object-position: center 25%;
+        object-position: center;
         -webkit-mask-image: none;
         mask-image: none;
       }
+      /* Light bottom-only fade so the slide dots stay legible */
       .hero-video-overlay {
-        background:
-          linear-gradient(180deg,
-            rgba(9,9,11,.7)  0%,
-            rgba(9,9,11,.82) 50%,
-            rgba(9,9,11,.95) 100%);
+        background: linear-gradient(180deg, transparent 60%, rgba(0,0,0,.55) 100%);
       }
       .hero-video-wrap::after { display: none; }
+
+      /* Live label pinned to the bottom of the preview card (replaces dots) */
+      .hero-preview-head {
+        display: inline-flex; align-items: center; gap: 7px;
+        position: absolute; z-index: 2;
+        bottom: 12px; left: 50%; transform: translateX(-50%);
+        white-space: nowrap;
+        font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+        color: var(--green);
+        background: rgba(0,0,0,.55);
+        border: 1px solid rgba(74,222,128,.3);
+        border-radius: 99px; padding: 6px 14px;
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+      }
+      .hero-preview-dot {
+        width: 7px; height: 7px; border-radius: 50%;
+        background: var(--green); box-shadow: 0 0 7px var(--green);
+        animation: pulse-dot 1.6s ease-in-out infinite;
+      }
+
+      /* ── Lift the corner "light-up" badges ABOVE their media on mobile ── */
+      .mock-frame { width: 100%; max-width: 320px; margin: 0 auto; }
+      .carousel-label, .demo-collage-label {
+        position: static;
+        display: inline-flex;
+        margin: 0 0 12px;
+        padding: 5px 12px;
+        border-radius: 99px;
+        border: 1px solid rgba(74,222,128,.3);
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        background: var(--surface-2);
+      }
+      /* Collage badge: right-aligned above the image (block flex + auto left margin) */
+      .demo-collage-label {
+        display: flex;
+        width: fit-content;
+        margin-left: auto;
+      }
       .broadcast-mock {
         width: 100%;
-        max-width: 320px;
-        margin: 0 auto;
         aspect-ratio: 9/16;
       }
+
       .steps-grid { grid-template-columns: 1fr; }
       .features-grid { grid-template-columns: 1fr 1fr; }
       .step-connector, .step-connector-2 { display: none; }
@@ -916,7 +997,7 @@
     concept art — fictional players and teams.
   -->
   <section class="hero">
-    <!-- Right-side hero slideshow + diagonal dark fade -->
+    <!-- Hero slideshow: desktop backdrop / mobile framed preview card -->
     <div class="hero-video-wrap" aria-hidden="true">
       <img class="hero-slide active" src="assets/newAssets/basketball1.webp" alt="" />
       <img class="hero-slide" src="assets/newAssets/football1.webp" alt="" loading="lazy" />
@@ -924,6 +1005,10 @@
       <img class="hero-slide" src="assets/newAssets/hockey1.webp" alt="" loading="lazy" />
       <img class="hero-slide" src="assets/newAssets/soccer1.webp" alt="" loading="lazy" />
       <div class="hero-video-overlay"></div>
+      <!-- Mobile-only live label pinned to the card (replaces the slide dots) -->
+      <div class="hero-preview-head">
+        <span class="hero-preview-dot"></span> Live Multi-Sport Preview
+      </div>
     </div>
 
     <div class="container">
@@ -1000,8 +1085,9 @@
         </div>
 
         <div class="preview-stage fade-up">
-          <div class="broadcast-mock">
+          <div class="mock-frame">
           <div class="carousel-label">PropLayer Active</div>
+          <div class="broadcast-mock">
 
           <div class="carousel-track" id="carouselTrack">
             <div class="carousel-slide">
@@ -1043,7 +1129,8 @@
             <button class="carousel-dot" onclick="goToSlide(3)" aria-label="Hockey"></button>
             <button class="carousel-dot" onclick="goToSlide(4)" aria-label="Soccer"></button>
           </div>
-        </div>
+        </div><!-- /.broadcast-mock -->
+        </div><!-- /.mock-frame -->
       </div><!-- /.preview-stage -->
     </div><!-- /.preview-grid -->
   </div><!-- /.container -->
@@ -1146,12 +1233,14 @@
         <p class="section-sub">The same recognition engine identifies players and surfaces live prop context across basketball, baseball, football, hockey, and soccer — the concept below, live on your stream.</p>
       </div>
       <div class="demo-stage fade-up">
-        <div class="demo-collage">
+        <div class="collage-frame">
           <div class="demo-collage-label">Multi-Sport Engine</div>
-          <picture>
-            <source srcset="assets/newAssets/collage.webp" type="image/webp" />
-            <img src="assets/newAssets/collage.png" alt="PropLayer overlay concept across five sports — basketball, baseball, football, hockey, and soccer, each with a live player prop badge" />
-          </picture>
+          <div class="demo-collage">
+            <picture>
+              <source srcset="assets/newAssets/collage.webp" type="image/webp" />
+              <img src="assets/newAssets/collage.png" alt="PropLayer overlay concept across five sports — basketball, baseball, football, hockey, and soccer, each with a live player prop badge" />
+            </picture>
+          </div>
         </div>
         <div class="demo-request">
           <p><strong>Want to see it running live?</strong> Full video demos of the NBA and MLB alpha are shared upon request — reach out and we'll send one over.</p>
