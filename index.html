@@ -852,10 +852,44 @@
 
     /* ── Scroll fade-in ────────────────────────────────── */
     .fade-up {
-      opacity: 0; transform: translateY(24px);
-      transition: opacity .6s ease, transform .6s ease;
+      opacity: 0; transform: translateY(28px);
+      transition: opacity .8s cubic-bezier(.22,1,.36,1), transform .8s cubic-bezier(.22,1,.36,1);
     }
     .fade-up.visible { opacity: 1; transform: none; }
+
+    /* ── Flow layer: gradient accents, ambient glows, micro-motion ── */
+    /* Gradient ink on accent lines — reads as product, not plain colored text */
+    .hero-title .accent, .section-title .accent,
+    .cta-inner h2 .accent, .preview-copy h2 .accent {
+      background: linear-gradient(105deg, #8ec2ff 5%, var(--brand) 90%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      text-shadow: none;
+    }
+    /* Soft radial glows so sections blend into one another instead of
+       sitting as flat black slabs */
+    .section { position: relative; }
+    #how-it-works::before, #sports::before, #partners-preview::before {
+      content: ''; position: absolute; z-index: -1; pointer-events: none;
+      top: -40px; left: 50%; transform: translateX(-50%);
+      width: min(880px, 90vw); height: 420px;
+      background: radial-gradient(closest-side, rgba(59,130,246,.075), transparent);
+    }
+    /* Nav links: sliding underline */
+    .nav-links a { position: relative; transition: color .2s; }
+    .nav-links a::after {
+      content: ''; position: absolute; left: 0; right: 0; bottom: -5px; height: 2px;
+      border-radius: 2px; background: var(--brand);
+      transform: scaleX(0); transform-origin: left; transition: transform .25s cubic-bezier(.22,1,.36,1);
+    }
+    .nav-links a:hover::after { transform: scaleX(1); }
+    /* Sport row body eases in when expanded */
+    @keyframes bodyReveal { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+    .sport-item[open] .sport-body { animation: bodyReveal .3s cubic-bezier(.22,1,.36,1); }
+    @media (prefers-reduced-motion: reduce) {
+      .fade-up { transition: none; opacity: 1; transform: none; }
+      .sport-item[open] .sport-body { animation: none; }
+      .sport-item:hover { transform: none; }
+    }
 
     /* ── Product Preview (relocated carousel + side copy) ── */
     .preview-grid {
@@ -957,19 +991,29 @@
       border: 1px solid var(--border); border-radius: var(--radius);
       background: var(--surface); transition: border-color .2s;
     }
-    .sport-item:hover { border-color: var(--border-2); }
-    .sport-item[open] { border-color: rgba(59,130,246,.45); }
-    /* Faded sport photo bleeding in from the right edge of the row */
-    .sport-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
-    .sport-bg img {
-      width: 100%; height: 100%; object-fit: cover; opacity: .3;
-      -webkit-mask-image: linear-gradient(90deg, transparent 30%, #000 100%);
-      mask-image: linear-gradient(90deg, transparent 30%, #000 100%);
+    .sport-item:hover {
+      border-color: rgba(59,130,246,.35); transform: translateY(-2px);
+      box-shadow: 0 12px 34px rgba(0,0,0,.45), 0 0 24px rgba(59,130,246,.06);
     }
+    .sport-item { transition: border-color .25s, transform .25s, box-shadow .25s; }
+    .sport-item[open] { border-color: rgba(59,130,246,.45); }
+    /* Sport photo anchored to the right half of the row — a tall enough crop
+       to actually read as its sport, fading out toward the text side.
+       Lives INSIDE the summary (children of a closed <details> don't render). */
+    .sport-bg {
+      position: absolute; top: 0; bottom: 0; right: 0; width: 58%;
+      z-index: -1; pointer-events: none;
+    }
+    .sport-bg img {
+      width: 100%; height: 100%; object-fit: cover; opacity: .5;
+      -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 55%);
+      mask-image: linear-gradient(90deg, transparent 0%, #000 55%);
+    }
+    .sport-item:hover .sport-bg img { opacity: .62; }
     .sport-summary {
       position: relative; z-index: 1;
       list-style: none; cursor: pointer; display: flex; align-items: center; gap: 18px;
-      padding: 20px 24px;
+      padding: 26px 24px; min-height: 100px;
     }
     .sport-summary::-webkit-details-marker { display: none; }
     .sport-badge {
@@ -1495,13 +1539,13 @@
       </div>
       <div class="sports-list fade-up">
         <details class="sport-item">
-          <div class="sport-bg" aria-hidden="true">
-            <picture>
-              <source srcset="assets/newAssets/basketball1.webp" type="image/webp" />
-              <img src="assets/newAssets/basketball1.png" alt="" loading="lazy" />
-            </picture>
-          </div>
           <summary class="sport-summary">
+            <span class="sport-bg" aria-hidden="true">
+              <picture>
+                <source srcset="assets/newAssets/basketball1.webp" type="image/webp" />
+                <img src="assets/newAssets/basketball1.png" alt="" loading="lazy" style="object-position:center 48%" />
+              </picture>
+            </span>
             <span class="sport-badge">🏀</span>
             <span class="sport-titles">
               <span class="sport-name">NBA</span>
@@ -1514,13 +1558,13 @@
           </div>
         </details>
         <details class="sport-item">
-          <div class="sport-bg" aria-hidden="true">
-            <picture>
-              <source srcset="assets/newAssets/baseball1.webp" type="image/webp" />
-              <img src="assets/newAssets/baseball1.png" alt="" loading="lazy" />
-            </picture>
-          </div>
           <summary class="sport-summary">
+            <span class="sport-bg" aria-hidden="true">
+              <picture>
+                <source srcset="assets/newAssets/baseball1.webp" type="image/webp" />
+                <img src="assets/newAssets/baseball1.png" alt="" loading="lazy" style="object-position:center 42%" />
+              </picture>
+            </span>
             <span class="sport-badge">⚾</span>
             <span class="sport-titles">
               <span class="sport-name">MLB</span>
@@ -1533,13 +1577,13 @@
           </div>
         </details>
         <details class="sport-item">
-          <div class="sport-bg" aria-hidden="true">
-            <picture>
-              <source srcset="assets/newAssets/football1.webp" type="image/webp" />
-              <img src="assets/newAssets/football1.png" alt="" loading="lazy" />
-            </picture>
-          </div>
           <summary class="sport-summary">
+            <span class="sport-bg" aria-hidden="true">
+              <picture>
+                <source srcset="assets/newAssets/football1.webp" type="image/webp" />
+                <img src="assets/newAssets/football1.png" alt="" loading="lazy" style="object-position:center 45%" />
+              </picture>
+            </span>
             <span class="sport-badge">🏈</span>
             <span class="sport-titles">
               <span class="sport-name">NFL</span>
@@ -1552,13 +1596,13 @@
           </div>
         </details>
         <details class="sport-item">
-          <div class="sport-bg" aria-hidden="true">
-            <picture>
-              <source srcset="assets/newAssets/hockey1.webp" type="image/webp" />
-              <img src="assets/newAssets/hockey1.png" alt="" loading="lazy" />
-            </picture>
-          </div>
           <summary class="sport-summary">
+            <span class="sport-bg" aria-hidden="true">
+              <picture>
+                <source srcset="assets/newAssets/hockey1.webp" type="image/webp" />
+                <img src="assets/newAssets/hockey1.png" alt="" loading="lazy" style="object-position:center 46%" />
+              </picture>
+            </span>
             <span class="sport-badge">🏒</span>
             <span class="sport-titles">
               <span class="sport-name">NHL</span>
@@ -1571,13 +1615,13 @@
           </div>
         </details>
         <details class="sport-item">
-          <div class="sport-bg" aria-hidden="true">
-            <picture>
-              <source srcset="assets/newAssets/soccer1.webp" type="image/webp" />
-              <img src="assets/newAssets/soccer1.png" alt="" loading="lazy" />
-            </picture>
-          </div>
           <summary class="sport-summary">
+            <span class="sport-bg" aria-hidden="true">
+              <picture>
+                <source srcset="assets/newAssets/soccer1.webp" type="image/webp" />
+                <img src="assets/newAssets/soccer1.png" alt="" loading="lazy" style="object-position:center 55%" />
+              </picture>
+            </span>
             <span class="sport-badge">⚽</span>
             <span class="sport-titles">
               <span class="sport-name">Soccer</span>
