@@ -5,14 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PropLayer — Multi-Sport AI Overlay for Live Sports Streams</title>
   <meta name="description" content="PropLayer is a multi-sport AI overlay that adds real-time player stats and prop context to any live sports stream. NBA and MLB live in alpha — NFL, NHL, and college sports next." />
+  <link rel="icon" type="image/png" href="assets/newAssets/prop-layer-logo-blue.png" />
   <style>
     /* ── Design Tokens ─────────────────────────────────── */
     :root {
-      --bg:        #09090b;
-      --surface:   #111116;
-      --surface-2: #18181f;
-      --border:    #27272a;
-      --border-2:  #3f3f46;
+      --bg:        #08090d;
+      --surface:   #0f131c;
+      --surface-2: #151b28;
+      --border:    #22283a;
+      --border-2:  #38425a;
+      /* Brand accent — blue is the primary interactive color across the site.
+         Green is kept only for literal "live" status dots/pills (an existing,
+         narrow convention), never for buttons or headline accents. */
+      --brand:      #3b82f6;
+      --brand-light:#60a5fa;
+      --brand-dim:  #1d4ed8;
       --green:     #4ade80;
       --green-dim: #166534;
       --amber:     #f59e0b;
@@ -47,12 +54,19 @@
       padding: 4px 10px; border-radius: 99px;
     }
     .tag--green { background: rgba(74,222,128,.12); color: var(--green); border: 1px solid rgba(74,222,128,.25); }
+    .tag--brand { background: rgba(59,130,246,.12); color: var(--brand-light); border: 1px solid rgba(59,130,246,.3); }
     .tag--amber { background: rgba(245,158,11,.12); color: var(--amber); border: 1px solid rgba(245,158,11,.25); }
     .tag--blue  { background: rgba(96,165,250,.12); color: var(--blue);  border: 1px solid rgba(96,165,250,.25); }
     .tag--dim   { background: var(--surface-2);     color: var(--text-muted); border: 1px solid var(--border); }
+    .tag .live-dot {
+      width: 6px; height: 6px; border-radius: 50%; margin-right: 2px;
+      background: var(--green); box-shadow: 0 0 6px var(--green);
+      animation: pulse-dot 1.6s ease-in-out infinite;
+    }
 
     /* ── Glow helpers ──────────────────────────────────── */
     .glow-green { text-shadow: 0 0 40px rgba(74,222,128,.5); }
+    .glow-brand { text-shadow: 0 0 40px rgba(59,130,246,.5); }
     .glow-amber { text-shadow: 0 0 40px rgba(245,158,11,.5); }
 
     /* ── NAV ───────────────────────────────────────────── */
@@ -68,8 +82,8 @@
       height: 60px;
     }
     .nav-logo {
-      font-size: 18px; font-weight: 800; letter-spacing: -.02em;
-      display: flex; align-items: center; gap: 8px;
+      font-size: 17px; font-weight: 800; letter-spacing: -.02em;
+      display: flex; align-items: center; gap: 10px;
     }
     .nav-logo .dot {
       width: 8px; height: 8px; border-radius: 50%;
@@ -90,15 +104,15 @@
       padding: 9px 18px; cursor: pointer; transition: all .2s; border: none;
     }
     .btn--primary {
-      background: var(--green); color: #000;
-      box-shadow: 0 0 20px rgba(74,222,128,.3);
+      background: var(--brand); color: #fff;
+      box-shadow: 0 0 20px rgba(59,130,246,.35);
     }
-    .btn--primary:hover { background: #6ee7a0; box-shadow: 0 0 30px rgba(74,222,128,.5); transform: translateY(-1px); }
+    .btn--primary:hover { background: var(--brand-light); box-shadow: 0 0 30px rgba(59,130,246,.5); transform: translateY(-1px); }
     .btn--ghost {
       background: transparent; color: var(--text);
       border: 1px solid var(--border-2);
     }
-    .btn--ghost:hover { border-color: var(--green); color: var(--green); transform: translateY(-1px); }
+    .btn--ghost:hover { border-color: var(--brand); color: var(--brand-light); transform: translateY(-1px); }
     .btn--lg { font-size: 15px; padding: 13px 28px; border-radius: 10px; }
 
     /* ── HERO ──────────────────────────────────────────── */
@@ -114,7 +128,7 @@
       content: '';
       position: absolute; top: 0; left: 0; transform: none;
       width: 560px; height: 360px;
-      background: radial-gradient(ellipse at 30% 0%, rgba(74,222,128,.08) 0%, transparent 70%);
+      background: radial-gradient(ellipse at 30% 0%, rgba(59,130,246,.1) 0%, transparent 70%);
       pointer-events: none;
       z-index: 1;
     }
@@ -204,17 +218,18 @@
       position: absolute; inset: 0;
       background: linear-gradient(72deg,
         transparent 36%,
-        rgba(74,222,128,.015) 42%,
+        rgba(59,130,246,.02) 42%,
         transparent 48%);
       pointer-events: none;
     }
     .hero-eyebrow { margin-bottom: 20px; }
     .hero-title {
-      font-size: clamp(36px, 5vw, 58px);
-      font-weight: 900; letter-spacing: -.03em; line-height: 1.08;
+      font-size: clamp(36px, 5vw, 60px);
+      font-weight: 900; letter-spacing: -.02em; line-height: 1.04;
+      text-transform: uppercase;
       margin-bottom: 20px;
     }
-    .hero-title .accent { color: var(--green); }
+    .hero-title .accent { color: var(--brand-light); }
     .hero-sub {
       font-size: 18px; color: var(--text-muted); line-height: 1.65;
       margin-bottom: 36px; max-width: 480px;
@@ -235,8 +250,30 @@
       border-right: 1px solid var(--border);
     }
     .hero-stats > div:last-child { border-right: none; }
-    .hero-stat-val { font-size: 13px; font-weight: 800; color: var(--green); white-space: nowrap; }
+    .hero-stat-val { font-size: 13px; font-weight: 800; color: var(--brand-light); white-space: nowrap; }
     .hero-stat-label { font-size: 10px; color: var(--text-dim); margin-top: 2px; }
+    /* Sports strip beneath the hero stats (mirrors the reference league row) */
+    .hero-sports {
+      display: flex; gap: 22px; flex-wrap: wrap; margin-top: 28px;
+      padding-top: 22px; border-top: 1px solid var(--border); max-width: 520px;
+    }
+    .hero-sport {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: 12px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .hero-sport .i { font-size: 15px; }
+    /* Scroll-to-explore cue pinned to the hero's lower edge */
+    .hero-scroll {
+      position: absolute; z-index: 3; right: clamp(24px, 4vw, 64px); bottom: 26px;
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--text-dim); transition: color .2s;
+    }
+    .hero-scroll:hover { color: var(--brand-light); }
+    .hero-scroll svg { width: 16px; height: 16px; animation: scrollBob 1.8s ease-in-out infinite; }
+    @keyframes scrollBob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
+    @media (max-width: 900px) { .hero-scroll { display: none; } }
 
     /* ── AR Badge Mock ─────────────────────────────────── */
     /* ── Screenshot Carousel ──────────────────────────── */
@@ -245,7 +282,7 @@
       border-radius: var(--radius-lg);
       overflow: hidden;
       border: 1px solid var(--border);
-      box-shadow: 0 0 60px rgba(74,222,128,.1), 0 40px 80px rgba(0,0,0,.7);
+      box-shadow: 0 0 60px rgba(59,130,246,.12), 0 40px 80px rgba(0,0,0,.7);
       aspect-ratio: 9/16;
       background: #000;
     }
@@ -310,17 +347,21 @@
       transition: background .3s, width .3s;
       border: none; padding: 0;
     }
-    .carousel-dot.active { background: var(--green); width: 20px; box-shadow: 0 0 6px var(--green); }
+    .carousel-dot.active { background: var(--brand); width: 20px; box-shadow: 0 0 6px var(--brand); }
 
     /* ── HOW IT WORKS ──────────────────────────────────── */
     .section { padding: 96px 0; }
     .section-header { text-align: center; margin-bottom: 64px; }
     .section-tag { margin-bottom: 16px; }
     .section-title {
-      font-size: clamp(28px, 4vw, 42px);
-      font-weight: 800; letter-spacing: -.03em; line-height: 1.15;
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 900; letter-spacing: -.02em; line-height: 1.1;
+      text-transform: uppercase;
       margin-bottom: 16px;
     }
+    /* Accent the second sentence of a headline, mirroring the reference's
+       two-line "BUILT FOR FANS. / DESIGNED FOR ACTION." treatment. */
+    .section-title .accent { color: var(--brand-light); }
     .section-sub { font-size: 17px; color: var(--text-muted); max-width: 520px; margin: 0 auto; }
 
     .steps-grid {
@@ -328,13 +369,14 @@
       gap: 2px; position: relative;
     }
     .step-connector {
-      position: absolute; top: 44px; left: calc(33.33% + 20px);
+      position: absolute; top: 52px; left: calc(33.33% + 20px);
       width: calc(33.33% - 40px); height: 1px;
-      background: linear-gradient(90deg, var(--green), var(--amber));
+      background: linear-gradient(90deg, var(--brand), var(--brand-light));
+      opacity: .5;
     }
     .step-connector-2 {
       left: calc(66.66% + 20px);
-      background: linear-gradient(90deg, var(--amber), #60a5fa);
+      background: linear-gradient(90deg, var(--brand-light), var(--brand));
     }
     .step {
       background: var(--surface);
@@ -345,16 +387,24 @@
       transition: border-color .2s, transform .2s;
     }
     .step:hover { border-color: var(--border-2); transform: translateY(-3px); }
+    /* Large "01 / 02 / 03" numerals, echoing the reference's step markers */
     .step-num {
-      width: 40px; height: 40px; border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 15px; font-weight: 800; margin-bottom: 20px;
+      display: inline-block;
+      font-size: 40px; font-weight: 900; letter-spacing: -.03em; line-height: 1;
+      margin-bottom: 16px;
     }
-    .step-num--green { background: rgba(74,222,128,.12); color: var(--green); border: 1px solid rgba(74,222,128,.25); }
-    .step-num--amber { background: rgba(245,158,11,.12); color: var(--amber); border: 1px solid rgba(245,158,11,.25); }
-    .step-num--blue  { background: rgba(96,165,250,.12);  color: var(--blue);  border: 1px solid rgba(96,165,250,.25); }
+    .step-num--green { color: var(--green); }
+    .step-num--amber { color: var(--amber); }
+    .step-num--blue  { color: var(--blue); }
+    .step-num--brand { color: var(--brand-light); }
     .step h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
     .step p  { font-size: 14px; color: var(--text-muted); line-height: 1.65; }
+    /* Step images are all landscape (16:9); match the box so nothing is cropped */
+    .step-media {
+      margin-top: 20px; border-radius: 12px; overflow: hidden;
+      border: 1px solid var(--border); aspect-ratio: 16/9; background: #000;
+    }
+    .step-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
     /* ── FEATURES ──────────────────────────────────────── */
     .features-section { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
@@ -394,12 +444,12 @@
       overflow: hidden;
       border: 1px solid var(--border);
       background: #000;
-      box-shadow: 0 0 60px rgba(74,222,128,.08), 0 32px 64px rgba(0,0,0,.6);
+      box-shadow: 0 0 60px rgba(59,130,246,.1), 0 32px 64px rgba(0,0,0,.6);
       transition: border-color .3s, box-shadow .3s;
     }
     .demo-collage:hover {
-      border-color: rgba(74,222,128,.35);
-      box-shadow: 0 0 40px rgba(74,222,128,.12), 0 32px 64px rgba(0,0,0,.6);
+      border-color: rgba(59,130,246,.35);
+      box-shadow: 0 0 40px rgba(59,130,246,.15), 0 32px 64px rgba(0,0,0,.6);
     }
     .demo-collage img { width: 100%; display: block; }
     /* Collage badge sits ABOVE the image, pushed to the right edge (not an
@@ -488,13 +538,13 @@
     }
     .pricing-card:hover { transform: translateY(-4px); }
     .pricing-card--featured {
-      border-color: rgba(74,222,128,.4);
-      box-shadow: 0 0 40px rgba(74,222,128,.08);
+      border-color: rgba(59,130,246,.4);
+      box-shadow: 0 0 40px rgba(59,130,246,.1);
     }
     .pricing-badge {
       position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
       font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
-      background: var(--green); color: #000;
+      background: var(--brand); color: #fff;
       padding: 3px 12px; border-radius: 99px; white-space: nowrap;
     }
     .pricing-plan { font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: .08em; }
@@ -511,32 +561,33 @@
       display: flex; align-items: center; gap: 10px;
       font-size: 13.5px; color: var(--text-muted); margin-bottom: 10px;
     }
-    .pricing-features li .check { color: var(--green); font-size: 12px; flex-shrink: 0; }
+    .pricing-features li .check { color: var(--brand-light); font-size: 12px; flex-shrink: 0; }
     .pricing-features li .cross { color: var(--text-dim); font-size: 12px; flex-shrink: 0; }
     .pricing-cta { width: 100%; text-align: center; justify-content: center; }
 
     /* ── CTA BANNER ────────────────────────────────────── */
     .cta-section {
-      padding: 96px 0;
+      padding: 80px 0;
       position: relative; overflow: hidden;
     }
     .cta-section::before {
       content: '';
       position: absolute; inset: 0;
-      background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(74,222,128,.07) 0%, transparent 70%);
+      background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(59,130,246,.09) 0%, transparent 70%);
       pointer-events: none;
     }
     .cta-inner {
       text-align: center;
-      border: 1px solid rgba(74,222,128,.2);
+      border: 1px solid rgba(59,130,246,.25);
       border-radius: var(--radius-lg);
       padding: 72px 48px;
-      background: rgba(74,222,128,.03);
+      background: rgba(59,130,246,.04);
       position: relative;
       max-width: 700px;
       margin: 0 auto;
     }
-    .cta-inner h2 { font-size: clamp(28px, 4vw, 44px); font-weight: 900; letter-spacing: -.03em; margin-bottom: 16px; }
+    .cta-inner h2 { font-size: clamp(28px, 4vw, 44px); font-weight: 900; letter-spacing: -.02em; text-transform: uppercase; margin-bottom: 16px; }
+    .cta-inner h2 .accent { color: var(--brand-light); }
     .cta-inner p  { font-size: 17px; color: var(--text-muted); margin-bottom: 36px; }
     .cta-form { display: flex; gap: 10px; max-width: 440px; margin: 0 auto 16px; }
     .cta-input {
@@ -544,9 +595,15 @@
       border-radius: 8px; padding: 12px 16px; color: var(--text);
       font-size: 14px; outline: none; transition: border-color .2s;
     }
-    .cta-input:focus { border-color: var(--green); }
+    .cta-input:focus { border-color: var(--brand); }
     .cta-input::placeholder { color: var(--text-dim); }
     .cta-note { font-size: 12px; color: var(--text-dim); }
+    .cta-os {
+      display: inline-flex; align-items: center; gap: 8px; margin-top: 18px;
+      font-size: 12px; font-weight: 600; letter-spacing: .04em;
+      color: var(--text-muted);
+    }
+    .cta-os svg { width: 14px; height: 14px; color: var(--brand-light); }
 
     /* ── FOOTER ────────────────────────────────────────── */
     footer {
@@ -574,9 +631,9 @@
     .pricing-btn-row { display: flex; gap: 10px; margin-top: auto; }
 
     /* ── Visual polish ─────────────────────────────────── */
-    /* Slightly increase section spacing and add subtle contrast */
-    .section { padding: 120px 0; }
-    .section-header { margin-bottom: 72px; }
+    /* Section rhythm — tightened so panels sit closer together */
+    .section { padding: 80px 0; }
+    .section-header { margin-bottom: 48px; }
     .section-title { letter-spacing: -.02em; }
 
     /* Subtle dark gradients for panel separation */
@@ -594,7 +651,7 @@
       border: 1px solid var(--border);
       background: var(--surface);
       padding: 26px 22px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.6), 0 0 30px rgba(74,222,128,0.03);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6), 0 0 30px rgba(59,130,246,0.04);
       transition: transform .22s ease, box-shadow .22s ease;
     }
     .broadcast-mock { padding: 0; transition: transform .22s ease, box-shadow .22s ease; }
@@ -605,7 +662,7 @@
     /* Hover lift effect for cards */
     .feature-card:hover, .step:hover, .pricing-card:hover, .broadcast-mock:hover {
       transform: translateY(-6px);
-      box-shadow: 0 18px 40px rgba(0,0,0,0.72), 0 0 50px rgba(74,222,128,0.06);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.72), 0 0 50px rgba(59,130,246,0.08);
     }
 
     /* Premium button styles and smoother hover */
@@ -615,10 +672,10 @@
       padding: 11px 22px; height: 48px; cursor: pointer; transition: all .22s cubic-bezier(.2,.9,.2,1); border: none;
     }
     .btn--primary {
-      background: linear-gradient(180deg, var(--green), #4de07a);
-      color: #000; box-shadow: 0 10px 30px rgba(74,222,128,0.14);
+      background: linear-gradient(180deg, var(--brand-light), var(--brand));
+      color: #fff; box-shadow: 0 10px 30px rgba(59,130,246,0.2);
     }
-    .btn--primary:hover { transform: translateY(-3px); box-shadow: 0 18px 50px rgba(74,222,128,0.18); filter: brightness(1.03); }
+    .btn--primary:hover { transform: translateY(-3px); box-shadow: 0 18px 50px rgba(59,130,246,0.28); filter: brightness(1.06); }
     .btn--ghost { background: transparent; color: var(--text); border: 1px solid var(--border-2); padding: 10px 18px; border-radius: 12px; }
 
     /* Pricing visual polish */
@@ -628,7 +685,7 @@
     /* Hero subtle polish */
     .hero { padding: 40px 0 72px; }
     .hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.14), transparent 40%); pointer-events: none; }
-    .broadcast-mock { box-shadow: 0 20px 60px rgba(0,0,0,0.75), 0 0 40px rgba(74,222,128,0.04); }
+    .broadcast-mock { box-shadow: 0 20px 60px rgba(0,0,0,0.75), 0 0 40px rgba(59,130,246,0.06); }
 
     /* Badge and overlay polish */
     .carousel-label { background: rgba(0,0,0,.55); border: 1px solid rgba(74,222,128,.18); }
@@ -644,7 +701,7 @@
 
     /* Preserve responsive behavior with updated spacing */
     @media (max-width: 900px) {
-      .section { padding: 72px 0; }
+      .section { padding: 58px 0; }
       .partners-grid { grid-template-columns: 1fr; }
     }
 
@@ -789,10 +846,44 @@
 
     /* ── Scroll fade-in ────────────────────────────────── */
     .fade-up {
-      opacity: 0; transform: translateY(24px);
-      transition: opacity .6s ease, transform .6s ease;
+      opacity: 0; transform: translateY(28px);
+      transition: opacity .8s cubic-bezier(.22,1,.36,1), transform .8s cubic-bezier(.22,1,.36,1);
     }
     .fade-up.visible { opacity: 1; transform: none; }
+
+    /* ── Flow layer: gradient accents, ambient glows, micro-motion ── */
+    /* Gradient ink on accent lines — reads as product, not plain colored text */
+    .hero-title .accent, .section-title .accent,
+    .cta-inner h2 .accent, .preview-copy h2 .accent {
+      background: linear-gradient(105deg, #8ec2ff 5%, var(--brand) 90%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      text-shadow: none;
+    }
+    /* Soft radial glows so sections blend into one another instead of
+       sitting as flat black slabs */
+    .section { position: relative; }
+    #how-it-works::before, #sports::before, #partners-preview::before {
+      content: ''; position: absolute; z-index: -1; pointer-events: none;
+      top: -40px; left: 50%; transform: translateX(-50%);
+      width: min(880px, 90vw); height: 420px;
+      background: radial-gradient(closest-side, rgba(59,130,246,.075), transparent);
+    }
+    /* Nav links: sliding underline */
+    .nav-links a { position: relative; transition: color .2s; }
+    .nav-links a::after {
+      content: ''; position: absolute; left: 0; right: 0; bottom: -5px; height: 2px;
+      border-radius: 2px; background: var(--brand);
+      transform: scaleX(0); transform-origin: left; transition: transform .25s cubic-bezier(.22,1,.36,1);
+    }
+    .nav-links a:hover::after { transform: scaleX(1); }
+    /* Sport row body eases in when expanded */
+    @keyframes bodyReveal { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+    .sport-item[open] .sport-body { animation: bodyReveal .3s cubic-bezier(.22,1,.36,1); }
+    @media (prefers-reduced-motion: reduce) {
+      .fade-up { transition: none; opacity: 1; transform: none; }
+      .sport-item[open] .sport-body { animation: none; }
+      .sport-item:hover { transform: none; }
+    }
 
     /* ── Product Preview (relocated carousel + side copy) ── */
     .preview-grid {
@@ -805,9 +896,11 @@
     .preview-eyebrow { margin-bottom: 16px; }
     .preview-copy h2 {
       font-size: clamp(28px, 4vw, 42px);
-      font-weight: 800; letter-spacing: -.03em; line-height: 1.15;
+      font-weight: 900; letter-spacing: -.02em; line-height: 1.1;
+      text-transform: uppercase;
       margin-bottom: 16px;
     }
+    .preview-copy h2 .accent { color: var(--brand-light); }
     .preview-sub {
       font-size: 17px; color: var(--text-muted);
       line-height: 1.65; margin-bottom: 32px;
@@ -821,7 +914,7 @@
       font-size: 14.5px; color: var(--text-muted); line-height: 1.55;
     }
     .preview-features li .check {
-      color: var(--green); flex-shrink: 0;
+      color: var(--brand-light); flex-shrink: 0;
       font-weight: 800; margin-top: 1px;
     }
     .preview-features li strong { color: var(--text); font-weight: 600; }
@@ -838,6 +931,164 @@
     @media (prefers-reduced-motion: reduce) {
       .hero-slide, .hero-slide.active { transition: none; transform: none; }
       .carousel-track { transition: none; }
+      .hero-scroll svg { animation: none; }
+    }
+
+    /* ── Logo mark (provided brand mark — kept as-is, not recolored) ── */
+    /* Real brand mark (supplied artwork, on black). Presented as a rounded
+       tile so its black backdrop reads as an intentional logo badge against
+       the site's near-black surfaces. */
+    .logo-mark {
+      width: 34px; height: 34px; border-radius: 9px; flex-shrink: 0;
+      object-fit: cover; background: #000; border: 1px solid var(--border);
+      display: block;
+    }
+    .logo-mark--lg { width: 64px; height: 64px; border-radius: 15px; }
+    .nav-logo { font-size: 17px; }
+
+    /* ── Panel card (boxed "tile" treatment for section content) ── */
+    .panel-card {
+      max-width: 740px; margin: 0 auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: var(--surface);
+      padding: 40px 36px;
+    }
+    @media (max-width: 600px) { .panel-card { padding: 24px 18px; } }
+
+    /* ── Features: photo + text row list ─────────────────── */
+    .feature-list { display: flex; flex-direction: column; gap: 6px; }
+    .feature-row {
+      display: grid; grid-template-columns: 122px 1fr; gap: 22px; align-items: center;
+      padding: 16px; border-radius: var(--radius); transition: background .2s;
+    }
+    .feature-row:hover { background: var(--surface-2); }
+    /* Portrait frame — matches the portrait (9:16) player shots so the full
+       figure and its baked-in prop badge show instead of a cropped sliver. */
+    .feature-row-media {
+      width: 122px; aspect-ratio: 3/4; border-radius: 12px; overflow: hidden;
+      border: 1px solid var(--border); flex-shrink: 0; background: #000;
+    }
+    .feature-row-media img { width: 100%; height: 100%; object-fit: cover; object-position: center 22%; display: block; }
+    .feature-row h3 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+    .feature-row p { font-size: 13.5px; color: var(--text-muted); line-height: 1.55; }
+    @media (max-width: 600px) {
+      .feature-row { grid-template-columns: 92px 1fr; gap: 14px; padding: 12px 8px; }
+      .feature-row-media { width: 92px; }
+      .feature-row h3 { font-size: 14.5px; }
+    }
+
+    /* ── Sports: overlay-style accordion rows ─────────────── */
+    .sports-list { display: flex; flex-direction: column; gap: 12px; max-width: 900px; margin: 0 auto; }
+    .sport-item {
+      position: relative; overflow: hidden;
+      border: 1px solid var(--border); border-radius: var(--radius);
+      background: var(--surface); transition: border-color .2s;
+    }
+    .sport-item:hover {
+      border-color: rgba(59,130,246,.35); transform: translateY(-2px);
+      box-shadow: 0 12px 34px rgba(0,0,0,.45), 0 0 24px rgba(59,130,246,.06);
+    }
+    .sport-item { transition: border-color .25s, transform .25s, box-shadow .25s; }
+    .sport-item[open] { border-color: rgba(59,130,246,.45); }
+    /* Sport photo anchored to the right half of the row — a tall enough crop
+       to actually read as its sport, fading out toward the text side.
+       Lives INSIDE the summary (children of a closed <details> don't render). */
+    .sport-bg {
+      position: absolute; top: 0; bottom: 0; right: 0; width: 58%;
+      z-index: -1; pointer-events: none;
+    }
+    .sport-bg img {
+      width: 100%; height: 100%; object-fit: cover; opacity: .5;
+      -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 55%);
+      mask-image: linear-gradient(90deg, transparent 0%, #000 55%);
+    }
+    .sport-item:hover .sport-bg img { opacity: .62; }
+    .sport-summary {
+      position: relative; z-index: 1;
+      list-style: none; cursor: pointer; display: flex; align-items: center; gap: 18px;
+      padding: 26px 24px; min-height: 100px;
+    }
+    .sport-summary::-webkit-details-marker { display: none; }
+    .sport-badge {
+      width: 48px; height: 48px; border-radius: 11px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 24px;
+      background: var(--surface-2); border: 1px solid var(--border);
+    }
+    .sport-titles { display: flex; flex-direction: column; }
+    .sport-name { font-size: 18px; font-weight: 800; letter-spacing: -.01em; line-height: 1.15; }
+    .sport-sub { font-size: 12px; color: var(--text-dim); margin-top: 2px; }
+    .sport-live {
+      margin-left: auto; display: inline-flex; align-items: center; gap: 9px;
+      font-size: 11px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase;
+      color: var(--brand-light);
+      border: 1px solid rgba(59,130,246,.4); background: rgba(59,130,246,.1);
+      border-radius: 99px; padding: 8px 8px 8px 15px; white-space: nowrap;
+      transition: background .2s, border-color .2s;
+    }
+    .sport-item:hover .sport-live { background: rgba(59,130,246,.18); }
+    .sport-live-arrow {
+      width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--brand); color: #fff; transition: transform .25s ease;
+    }
+    .sport-live-arrow svg { width: 12px; height: 12px; }
+    .sport-item[open] .sport-live-arrow { transform: rotate(90deg); }
+    .sport-body {
+      position: relative; z-index: 1;
+      padding: 0 24px 22px 90px; font-size: 14px; color: var(--text-muted); line-height: 1.65;
+    }
+    @media (max-width: 600px) {
+      .sport-summary { padding: 15px 15px; gap: 13px; }
+      .sport-badge { width: 42px; height: 42px; font-size: 20px; }
+      .sport-name { font-size: 15.5px; }
+      .sport-live { padding: 6px 6px 6px 12px; font-size: 10px; gap: 7px; }
+      .sport-live-label { display: none; }
+      .sport-body { padding: 0 16px 18px 16px; }
+    }
+
+    /* ── For Sportsbooks panel ────────────────────────────── */
+    .sportsbook-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+    .sportsbook-list { list-style: none; display: grid; gap: 18px; margin: 28px 0 32px; }
+    .sportsbook-list li { display: flex; gap: 12px; align-items: flex-start; font-size: 14.5px; color: var(--text-muted); line-height: 1.55; }
+    .sportsbook-list li strong { color: var(--text); font-weight: 600; }
+    .sportsbook-list .check { color: var(--brand-light); font-weight: 800; flex-shrink: 0; margin-top: 1px; }
+    @media (max-width: 900px) { .sportsbook-grid { grid-template-columns: 1fr; gap: 32px; } }
+    /* CSS-built prop → sportsbook card (mirrors the reference bet-slip mock;
+       no imagery, so it adds no media repetition) */
+    .book-card {
+      max-width: 360px; margin-left: auto;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 24px;
+      box-shadow: 0 24px 60px rgba(0,0,0,.55), 0 0 44px rgba(59,130,246,.07);
+    }
+    .book-card-head {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 11px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase;
+      color: var(--green); margin-bottom: 16px;
+    }
+    .book-card-head .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 7px var(--green); animation: pulse-dot 1.6s ease-in-out infinite; }
+    .book-card-title { font-size: 16px; font-weight: 800; letter-spacing: -.01em; }
+    .book-card-title span { display: block; font-size: 12.5px; font-weight: 500; color: var(--text-dim); margin-top: 2px; }
+    .book-card-market { font-size: 11px; text-transform: uppercase; letter-spacing: .07em; color: var(--text-muted); margin: 18px 0 10px; }
+    .book-line {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 13px 15px; border: 1px solid var(--border); border-radius: 10px;
+      margin-bottom: 8px; background: var(--bg);
+    }
+    .book-line.sel { border-color: rgba(59,130,246,.5); background: rgba(59,130,246,.09); }
+    .book-line-label { font-size: 13.5px; font-weight: 600; }
+    .book-line-odds { font-size: 13.5px; font-weight: 800; color: var(--brand-light); }
+    .book-cta { width: 100%; justify-content: center; margin-top: 10px; }
+
+    /* ── Footer columns ────────────────────────────────────── */
+    .footer-top { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; gap: 32px; padding-bottom: 36px; margin-bottom: 28px; border-bottom: 1px solid var(--border); }
+    .footer-col h4 { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--text-dim); margin-bottom: 14px; }
+    .footer-col a { display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 10px; transition: color .2s; }
+    .footer-col a:hover { color: var(--text); }
+    @media (max-width: 700px) {
+      .footer-top { grid-template-columns: 1fr 1fr; }
+      .footer-col:first-child { grid-column: 1 / -1; margin-bottom: 8px; }
     }
 
     /* ── Splash Screen ───────────────────────────────────── */
@@ -974,12 +1225,13 @@
   <nav>
     <div class="container nav-inner">
       <div class="nav-logo">
-        <div class="dot"></div>
+        <img class="logo-mark" src="assets/newAssets/prop-layer-logo-blue.png" alt="PropLayer" />
         PropLayer
       </div>
       <div class="nav-links">
         <a href="#how-it-works">How It Works</a>
         <a href="#features">Features</a>
+        <a href="#sports">Sports</a>
         <a href="#pricing">Pricing</a>
         <a href="#waitlist">Early Access</a>
         <a href="partners.html">For Partners</a>
@@ -1015,13 +1267,14 @@
       <div class="hero-grid">
         <div class="hero-copy">
           <div class="hero-eyebrow" style="display:flex;gap:8px;flex-wrap:wrap;">
-            <span class="tag tag--green">Now in Alpha</span>
+            <span class="tag tag--green"><span class="live-dot"></span>Live Overlay Active</span>
+            <span class="tag tag--brand">Now in Alpha</span>
             <span class="tag tag--dim">Patent Pending</span>
           </div>
           <h1 class="hero-title">
             Stop checking your<br>
             phone during<br>
-            <span class="accent glow-green">the game.</span>
+            <span class="accent glow-brand">the game.</span>
           </h1>
           <p class="hero-sub">
             PropLayer adds real-time player stats and prop context directly on top of your live sports stream — NBA, MLB, and more. No app switching. No missed plays.
@@ -1047,9 +1300,20 @@
               <div class="hero-stat-label">Alpha — more leagues next</div>
             </div>
           </div>
+          <div class="hero-sports">
+            <span class="hero-sport"><span class="i">🏀</span> NBA</span>
+            <span class="hero-sport"><span class="i">🏈</span> NFL</span>
+            <span class="hero-sport"><span class="i">⚾</span> MLB</span>
+            <span class="hero-sport"><span class="i">🏒</span> NHL</span>
+            <span class="hero-sport"><span class="i">⚽</span> Soccer</span>
+          </div>
         </div>
       </div>
     </div>
+    <a href="#preview" class="hero-scroll" aria-label="Scroll to explore">
+      <span>Scroll to explore</span>
+      <svg viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
   </section>
 
   <!-- ═══ PRODUCT PREVIEW (relocated screenshot carousel) ═══
@@ -1059,8 +1323,8 @@
     <div class="container">
       <div class="preview-grid">
         <div class="preview-copy fade-up">
-          <div class="preview-eyebrow"><span class="tag tag--green">Product Preview</span></div>
-          <h2>See PropLayer in action.</h2>
+          <div class="preview-eyebrow"><span class="tag tag--brand">Product Preview</span></div>
+          <h2>See PropLayer <span class="accent">in action.</span></h2>
           <p class="preview-sub">
             The moment a player steps on screen, PropLayer takes over. Stats, prop lines, and live context — surfaced where you're already looking.
           </p>
@@ -1141,26 +1405,44 @@
     <div class="container">
       <div class="section-header fade-up">
         <div class="section-tag"><span class="tag tag--dim">The Experience</span></div>
-        <h2 class="section-title">Watch the game. The stats come to you.</h2>
+        <h2 class="section-title">Watch the game.<br><span class="accent">The stats come to you.</span></h2>
         <p class="section-sub">You don't change a thing. PropLayer runs in the background and does the work.</p>
       </div>
       <div class="steps-grid">
         <div class="step-connector"></div>
         <div class="step-connector step-connector-2"></div>
         <div class="step fade-up">
-          <div class="step-num step-num--green">1</div>
+          <div class="step-num step-num--brand">01</div>
           <h3>Open Any Stream</h3>
           <p>Any live game on YouTube, ESPN+, Amazon, or cable. PropLayer sits on top — nothing about your setup changes.</p>
+          <div class="step-media">
+            <picture>
+              <source srcset="assets/newAssets/soccer1.webp" type="image/webp" />
+              <img src="assets/newAssets/soccer1.png" alt="A live soccer broadcast playing on screen before the overlay appears" loading="lazy" />
+            </picture>
+          </div>
         </div>
         <div class="step fade-up" style="transition-delay:.1s">
-          <div class="step-num step-num--amber">2</div>
+          <div class="step-num step-num--brand">02</div>
           <h3>Players Are Recognized</h3>
           <p>Players appear. PropLayer identifies them. No searching, no selecting — the right data shows up automatically.</p>
+          <div class="step-media">
+            <picture>
+              <source srcset="assets/newAssets/baseball1.webp" type="image/webp" />
+              <img src="assets/newAssets/baseball1.png" alt="PropLayer locking onto a player as they appear on the broadcast" loading="lazy" />
+            </picture>
+          </div>
         </div>
         <div class="step fade-up" style="transition-delay:.2s">
-          <div class="step-num step-num--blue">3</div>
+          <div class="step-num step-num--brand">03</div>
           <h3>Stats Appear on Screen</h3>
           <p>Stats and prop context appear right on the broadcast — no second look at your phone needed.</p>
+          <div class="step-media">
+            <picture>
+              <source srcset="assets/newAssets/basketball1.webp" type="image/webp" />
+              <img src="assets/newAssets/basketball1.png" alt="A live prop badge surfaced on top of the broadcast" loading="lazy" />
+            </picture>
+          </div>
         </div>
       </div>
     </div>
@@ -1170,56 +1452,181 @@
   <section class="section features-section" id="features">
     <div class="container">
       <div class="section-header fade-up">
-        <div class="section-tag"><span class="tag tag--green">Features</span></div>
-        <h2 class="section-title">Everything you need. Nothing you don't.</h2>
+        <div class="section-tag"><span class="tag tag--brand">Features</span></div>
+        <h2 class="section-title">Everything you need.<br><span class="accent">Nothing you don't.</span></h2>
         <p class="section-sub">Designed for one moment: a player steps on the court and you need to know.</p>
       </div>
-      <div class="features-grid fade-up">
-        <div class="feature-card">
-          <div class="feature-icon feature-icon--green">📺</div>
-          <h3>One Screen Is Enough</h3>
-          <p>Everything lives on the game. No tabs, no apps, no second screen.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon feature-icon--blue">📊</div>
-          <h3>Live Prop Context</h3>
-          <p>"Needs 8 more points." "Rebounds line already hit." You get the answer — not the math.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon feature-icon--amber">📈</div>
-          <h3>Season Stats on Every Badge</h3>
-          <p>Season averages, splits, and game-by-game form — surfaced live for every player the broadcast cuts to.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon feature-icon--green">📡</div>
-          <h3>Any Stream. Any Platform.</h3>
-          <p>YouTube, ESPN+, Amazon, League Pass, cable — if it's on your screen, PropLayer works. No integrations required.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon feature-icon--amber">⚡</div>
-          <h3>Zero Configuration</h3>
-          <p>Install it, open your stream, and go. No accounts to link, no permissions, no friction.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon feature-icon--blue">💰</div>
-          <h3>Live Prop Lines</h3>
-          <p>Current odds from major sportsbooks, right on the player badge. In context — not buried in another app.</p>
-        </div>
-        <div class="features-wide">
-          <div class="feature-card">
-            <div class="feature-icon feature-icon--green">🏦</div>
-            <h3>Built for Sportsbooks</h3>
-            <p>PropLayer isn't a sportsbook — it's the layer before one. Fans see context, form intent, and head to DraftKings or BetMGM ready to act.</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon feature-icon--amber">🏈</div>
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-              <h3 style="margin:0;">Multi-Sport Overlay Engine</h3>
-              <span class="tag tag--amber" style="font-size:10px;">Roadmap</span>
+      <div class="panel-card fade-up">
+        <div class="feature-list">
+          <div class="feature-row">
+            <div class="feature-row-media">
+              <picture>
+                <source srcset="assets/newAssets/basketball2.webp" type="image/webp" />
+                <img src="assets/newAssets/basketball2.png" alt="PropLayer overlay concept on a basketball broadcast — player badge with live prop line and odds" loading="lazy" />
+              </picture>
             </div>
-            <p>NBA and MLB support are now in alpha. NFL, NHL, and college sports are next — same overlay engine, expanded league coverage.</p>
+            <div>
+              <h3>One Screen Is Enough</h3>
+              <p>Everything lives on the game. No tabs, no apps, no second screen.</p>
+            </div>
+          </div>
+          <div class="feature-row">
+            <div class="feature-row-media">
+              <picture>
+                <source srcset="assets/newAssets/football2.webp" type="image/webp" />
+                <img src="assets/newAssets/football2.png" alt="PropLayer overlay concept on a football broadcast — player badge with live prop line and odds" loading="lazy" />
+              </picture>
+            </div>
+            <div>
+              <h3>Live Prop Context</h3>
+              <p>"Needs 8 more points." "Rebounds line already hit." You get the answer — not the math.</p>
+            </div>
+          </div>
+          <div class="feature-row">
+            <div class="feature-row-media">
+              <picture>
+                <source srcset="assets/newAssets/baseball2.webp" type="image/webp" />
+                <img src="assets/newAssets/baseball2.png" alt="PropLayer overlay concept on a baseball broadcast — player badge with live prop line and odds" loading="lazy" />
+              </picture>
+            </div>
+            <div>
+              <h3>Season Stats on Every Badge</h3>
+              <p>Season averages, splits, and game-by-game form — surfaced live for every player the broadcast cuts to.</p>
+            </div>
+          </div>
+          <div class="feature-row">
+            <div class="feature-row-media">
+              <picture>
+                <source srcset="assets/newAssets/hockey2.webp" type="image/webp" />
+                <img src="assets/newAssets/hockey2.png" alt="PropLayer overlay concept on a hockey broadcast — player badge with live prop line and odds" loading="lazy" />
+              </picture>
+            </div>
+            <div>
+              <h3>Any Stream. Any Platform.</h3>
+              <p>YouTube, ESPN+, Amazon, League Pass, cable — if it's on your screen, PropLayer works. No integrations required.</p>
+            </div>
+          </div>
+          <div class="feature-row">
+            <div class="feature-row-media">
+              <picture>
+                <source srcset="assets/newAssets/soccer2.webp" type="image/webp" />
+                <img src="assets/newAssets/soccer2.png" alt="PropLayer overlay concept on a soccer broadcast — player badge with live prop line and odds" loading="lazy" />
+              </picture>
+            </div>
+            <div>
+              <h3>Zero Configuration</h3>
+              <p>Install it, open your stream, and go. No accounts to link, no permissions, no friction.</p>
+            </div>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SPORTS ══════════════════════════════════════════ -->
+  <section class="section" id="sports">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="section-tag"><span class="tag tag--brand">Built For Every Game</span></div>
+        <h2 class="section-title">All major sports.<br><span class="accent">One powerful overlay.</span></h2>
+        <p class="section-sub">NBA and MLB are live in alpha. NFL, NHL, and soccer are next — same overlay engine, expanded league coverage. Tap a sport for the details.</p>
+      </div>
+      <div class="sports-list fade-up">
+        <details class="sport-item">
+          <summary class="sport-summary">
+            <span class="sport-bg" aria-hidden="true">
+              <picture>
+                <source srcset="assets/newAssets/basketball1.webp" type="image/webp" />
+                <img src="assets/newAssets/basketball1.png" alt="" loading="lazy" style="object-position:center 48%" />
+              </picture>
+            </span>
+            <span class="sport-badge">🏀</span>
+            <span class="sport-titles">
+              <span class="sport-name">NBA</span>
+              <span class="sport-sub">Basketball · Now in Alpha</span>
+            </span>
+            <span class="sport-live"><span class="sport-live-label">Live Props</span><span class="sport-live-arrow"><svg viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+          </summary>
+          <div class="sport-body">
+            <p>Real-time player recognition and live prop context for every NBA player the broadcast cuts to — season averages, current point/rebound/assist props, and odds from major sportsbooks, surfaced right on the badge.</p>
+          </div>
+        </details>
+        <details class="sport-item">
+          <summary class="sport-summary">
+            <span class="sport-bg" aria-hidden="true">
+              <picture>
+                <source srcset="assets/newAssets/baseball1.webp" type="image/webp" />
+                <img src="assets/newAssets/baseball1.png" alt="" loading="lazy" style="object-position:center 42%" />
+              </picture>
+            </span>
+            <span class="sport-badge">⚾</span>
+            <span class="sport-titles">
+              <span class="sport-name">MLB</span>
+              <span class="sport-sub">Baseball · Now in Alpha</span>
+            </span>
+            <span class="sport-live"><span class="sport-live-label">Live Props</span><span class="sport-live-arrow"><svg viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+          </summary>
+          <div class="sport-body">
+            <p>Home runs, hits, and season splits surfaced automatically as players step to the plate — the same recognition engine already running for NBA broadcasts, tuned for baseball's pace and camera angles.</p>
+          </div>
+        </details>
+        <details class="sport-item">
+          <summary class="sport-summary">
+            <span class="sport-bg" aria-hidden="true">
+              <picture>
+                <source srcset="assets/newAssets/football1.webp" type="image/webp" />
+                <img src="assets/newAssets/football1.png" alt="" loading="lazy" style="object-position:center 45%" />
+              </picture>
+            </span>
+            <span class="sport-badge">🏈</span>
+            <span class="sport-titles">
+              <span class="sport-name">NFL</span>
+              <span class="sport-sub">Football · On the roadmap</span>
+            </span>
+            <span class="sport-live"><span class="sport-live-label">Live Props</span><span class="sport-live-arrow"><svg viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+          </summary>
+          <div class="sport-body">
+            <p>NFL is next on the roadmap. Same overlay engine, same live prop context — passing yards, receptions, and touchdown props surfaced automatically once NFL support rolls out.</p>
+          </div>
+        </details>
+        <details class="sport-item">
+          <summary class="sport-summary">
+            <span class="sport-bg" aria-hidden="true">
+              <picture>
+                <source srcset="assets/newAssets/hockey1.webp" type="image/webp" />
+                <img src="assets/newAssets/hockey1.png" alt="" loading="lazy" style="object-position:center 46%" />
+              </picture>
+            </span>
+            <span class="sport-badge">🏒</span>
+            <span class="sport-titles">
+              <span class="sport-name">NHL</span>
+              <span class="sport-sub">Hockey · On the roadmap</span>
+            </span>
+            <span class="sport-live"><span class="sport-live-label">Live Props</span><span class="sport-live-arrow"><svg viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+          </summary>
+          <div class="sport-body">
+            <p>NHL follows NFL on the roadmap — goals, assists, and shots-on-goal props, the same overlay engine expanded to hockey broadcasts.</p>
+          </div>
+        </details>
+        <details class="sport-item">
+          <summary class="sport-summary">
+            <span class="sport-bg" aria-hidden="true">
+              <picture>
+                <source srcset="assets/newAssets/soccer1.webp" type="image/webp" />
+                <img src="assets/newAssets/soccer1.png" alt="" loading="lazy" style="object-position:center 55%" />
+              </picture>
+            </span>
+            <span class="sport-badge">⚽</span>
+            <span class="sport-titles">
+              <span class="sport-name">Soccer</span>
+              <span class="sport-sub">Football · On the roadmap</span>
+            </span>
+            <span class="sport-live"><span class="sport-live-label">Live Props</span><span class="sport-live-arrow"><svg viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+          </summary>
+          <div class="sport-body">
+            <p>Soccer rounds out the multi-sport rollout — shots, goals, and card props surfaced live, anywhere the match is streaming.</p>
+          </div>
+        </details>
       </div>
     </div>
   </section>
@@ -1229,7 +1636,7 @@
     <div class="container">
       <div class="section-header fade-up">
         <div class="section-tag"><span class="tag tag--amber">The Demo · Multi-Sport Alpha</span></div>
-        <h2 class="section-title">One overlay engine. Every sport.</h2>
+        <h2 class="section-title">One overlay engine.<br><span class="accent">Every sport.</span></h2>
         <p class="section-sub">The same recognition engine identifies players and surfaces live prop context across basketball, baseball, football, hockey, and soccer — the concept below, live on your stream.</p>
       </div>
       <div class="demo-stage fade-up">
@@ -1306,6 +1713,41 @@
     </div>
   </section>
 
+  <!-- ═══ FOR SPORTSBOOKS ═════════════════════════════════ -->
+  <section class="section" id="partners-preview">
+    <div class="container">
+      <div class="sportsbook-grid">
+        <div class="fade-up">
+          <div class="section-tag"><span class="tag tag--brand">For Sportsbooks</span></div>
+          <h2 class="section-title" style="text-align:left;">For sportsbooks.<br><span class="accent">And media partners.</span></h2>
+          <p class="section-sub" style="text-align:left;margin:0;">PropLayer creates high-intent betting moments by connecting live player visibility to real-time prop context. We do not replace sportsbooks or broadcasts — we route users back to licensed partners.</p>
+          <ul class="sportsbook-list">
+            <li><span class="check">✓</span><span><strong>Player-aware prop discovery.</strong> Directly on the live viewing experience — no separate app to open.</span></li>
+            <li><span class="check">✓</span><span><strong>Sponsored &amp; white-label.</strong> Overlay opportunities built for sportsbook and media partners.</span></li>
+            <li><span class="check">✓</span><span><strong>Drive engagement &amp; traffic.</strong> Fans see context, form intent, and head to DraftKings or BetMGM ready to act — without disrupting the broadcast.</span></li>
+          </ul>
+          <a href="partners.html" class="btn btn--primary btn--lg">Partner With Us</a>
+        </div>
+        <div class="fade-up">
+          <div class="book-card">
+            <div class="book-card-head"><span class="dot"></span> Live Prop Context</div>
+            <div class="book-card-title">A player steps on screen<span>PropLayer surfaces the line — fans form intent</span></div>
+            <div class="book-card-market">Points · Over / Under</div>
+            <div class="book-line sel">
+              <span class="book-line-label">Over 27.5</span>
+              <span class="book-line-odds">-110</span>
+            </div>
+            <div class="book-line">
+              <span class="book-line-label">Under 27.5</span>
+              <span class="book-line-odds">-130</span>
+            </div>
+            <a href="partners.html" class="btn btn--primary book-cta">One tap back to your sportsbook →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ═══ PRICING (coming soon) ═══════════════════════════ -->
   <section class="section pricing-section" id="pricing">
     <div class="container">
@@ -1342,8 +1784,9 @@
   <section class="cta-section" id="waitlist">
     <div class="container">
       <div class="cta-inner fade-up">
-        <div style="margin-bottom:20px"><span class="tag tag--green">Early Access</span></div>
-        <h2>Watch the game smarter.</h2>
+        <img class="logo-mark logo-mark--lg" src="assets/newAssets/prop-layer-logo-blue.png" alt="" style="margin:0 auto 20px;" />
+        <div style="margin-bottom:20px"><span class="tag tag--brand">Early Access</span></div>
+        <h2>Watch the game <span class="accent">smarter.</span></h2>
         <p>Get access to NBA and MLB alpha support before public launch. NFL, NHL, and college sports next.</p>
         <form class="cta-form" onsubmit="handleWaitlist(event)">
           <!-- Honeypot: bots fill this out, humans don't — Formspree ignores submissions where it's filled -->
@@ -1356,6 +1799,10 @@
         </form>
         <p class="cta-note" id="waitlist-msg">No spam. Unsubscribe anytime.</p>
         <p style="margin-top:16px;color:var(--text-dim);font-size:13px;">NBA and MLB live in alpha. Multi-sport rollout continues.</p>
+        <div class="cta-os">
+          <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M0 2.4L6.4 1.5v6H0V2.4zM7.2 1.38L16 0v7.5H7.2V1.38zM0 8.3h6.4v6.2L0 13.6V8.3zM7.2 8.3H16V16l-8.8-1.22V8.3z"/></svg>
+          Available on Windows
+        </div>
       </div>
     </div>
   </section>
@@ -1363,26 +1810,35 @@
 
   <!-- ═══ FOOTER ═══════════════════════════════════════════ -->
   <footer>
-    <div class="container footer-inner">
-      <div>
-        <div class="footer-logo">
-          <div class="dot" style="width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green)"></div>
-          PropLayer
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-col">
+          <div class="footer-logo">
+            <img class="logo-mark" src="assets/newAssets/prop-layer-logo-blue.png" alt="PropLayer" />
+            PropLayer
+          </div>
+          <div style="font-size:12px;color:var(--text-dim);margin-top:10px;max-width:230px;">Multi-Sport AI Overlay — NBA, MLB, and more</div>
         </div>
-        <div style="font-size:12px;color:var(--text-dim);margin-top:6px">Multi-Sport AI Overlay — NBA, MLB, and more</div>
+        <div class="footer-col">
+          <h4>Product</h4>
+          <a href="#features">Features</a>
+          <a href="#how-it-works">How It Works</a>
+          <a href="#sports">Sports</a>
+          <a href="#pricing">Pricing</a>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <a href="partners.html">For Partners</a>
+          <a href="#waitlist">Contact</a>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <a href="privacy.html">Privacy</a>
+          <a href="terms.html">Terms</a>
+        </div>
       </div>
-      <div class="footer-links">
-        <a href="#how-it-works">How It Works</a>
-        <a href="#features">Features</a>
-        <a href="#pricing">Pricing</a>
-        <a href="#waitlist">Contact</a>
-      </div>
-      <div class="footer-right">
+      <div class="footer-inner">
         <div class="footer-copy">&copy; 2026 PropLayer. All rights reserved.</div>
-        <div style="display:flex;gap:16px">
-          <a href="privacy.html" style="font-size:12px;color:var(--text-dim)">Privacy</a>
-          <a href="terms.html" style="font-size:12px;color:var(--text-dim)">Terms</a>
-        </div>
       </div>
     </div>
   </footer>
@@ -1394,6 +1850,14 @@
       { threshold: 0.12 }
     );
     document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    // ── Sports accordion (one open at a time) ────────────
+    const sportItems = document.querySelectorAll('.sport-item');
+    sportItems.forEach(item => {
+      item.addEventListener('toggle', () => {
+        if (item.open) sportItems.forEach(other => { if (other !== item) other.open = false; });
+      });
+    });
 
     // How long each hero slide holds before cross-fading to the next.
     const HERO_SLIDE_MS = 5000;
