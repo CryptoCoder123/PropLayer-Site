@@ -15,3 +15,7 @@ desktop.ini
 # Env / secrets
 .env
 .env.local
+
+# Local preview and browser verification
+node_modules/
+artifacts/

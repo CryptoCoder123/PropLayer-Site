@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://prop-layer.com/sitemap.xml
