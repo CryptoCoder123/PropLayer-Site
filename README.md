@@ -14,6 +14,7 @@ Run `npm run dev`, then open <http://localhost:4173>. The preview server binds t
 - A compact Game Info panel, minimize/restore, mobile navigation between scene and controls, and a three-step orientation. The separate lower explorer, scene thumbnails, Settings tab, save/share controls and preference storage have been removed. Previously shared scene links still resolve with validated values. No account service or new integration is required.
 - Early-access and partnership forms using the existing Formspree endpoint, `mpqorvvk`. Submissions include a `request_type` and distinct subject. Validation, pending, confirmed success, timeout and error states are implemented. Failure preserves entered details; email is an alternative.
 - The sports section uses the original five-sport concept collage; its credit notes that soccer is shown as planned.
+- Launch splash from the previous site (layered mark, +100, progress bar, about 4.7 seconds) plays on each load of the home page and is skipped under reduced motion.
 - Shared navigation, footer and typography on the partnership, privacy, terms, brand and 404 pages. Existing terms and app privacy copy are retained, with a factual website-data addition to privacy.
 
 ## Product truth

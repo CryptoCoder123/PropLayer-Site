@@ -252,3 +252,25 @@
   .arena-window { transform: none; }
   .arena-hero *, .arena-hero *::before, .arena-hero *::after { transition: none !important; }
 }
+
+/* Launch splash, restored from the previous site: layered mark drops in, +100 pops, bar fills, then fades.
+   Skipped under reduced motion. Without JavaScript the CSS fade still clears it. */
+#splash { position: fixed; inset: 0; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 48px; background: #000; animation: splashFadeOut .9s ease 3.8s forwards; }
+.splash-stage { position: relative; width: min(90vw, 900px); aspect-ratio: 16/9; display: grid; place-items: center; }
+.splash-logo-wrap { position: relative; width: min(62vw, 520px); aspect-ratio: 1.2/1; filter: drop-shadow(0 0 4px #72ff5473) drop-shadow(0 0 14px #72ff541a); animation: splashGlowPulse 3s ease-in-out infinite; }
+.splash-badge { position: absolute; top: 7%; left: 50%; transform: translateX(-55%) scale(.3); opacity: 0; color: #72ff54; font: 700 clamp(28px, 4vw, 58px) Arial, Helvetica, sans-serif; letter-spacing: .5px; text-shadow: 0 0 10px #72ff544d; animation: splashBadgePop .5s 2.8s forwards; }
+.splash-logo-wrap svg { width: 100%; height: 100%; }
+.splash-stroke { fill: none; stroke: #72ff54; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+.splash-filled { fill: #000; }
+.splash-dotted { stroke-dasharray: 2 10; }
+.splash-detail { stroke: #72ff54; stroke-width: 3; fill: none; }
+.splash-layer-mid { animation: splashFallBounce 1s linear .85s both; }
+.splash-layer-top { animation: splashFallBounce 1s linear 1.55s both; }
+.splash-bar-track { width: min(260px, 70vw); height: 3px; border-radius: 99px; background: #72ff541a; overflow: hidden; }
+.splash-bar-fill { width: 0; height: 100%; background: #72ff54; box-shadow: 0 0 10px #72ff54, 0 0 4px #72ff54; animation: splashBarGrow 3.8s cubic-bezier(.4,0,.6,1) forwards; }
+@keyframes splashFallBounce { 0% { opacity: 0; transform: translateY(-520px); } 62% { transform: translateY(0); } 74% { transform: translateY(-22px); } 84% { transform: translateY(0); } 100% { opacity: 1; transform: translateY(0); } }
+@keyframes splashBadgePop { 0% { opacity: 0; transform: translateX(-55%) scale(.3); } 100% { opacity: 1; transform: translateX(-55%) scale(1); } }
+@keyframes splashGlowPulse { 0%, 100% { filter: drop-shadow(0 0 4px #72ff5473) drop-shadow(0 0 14px #72ff541a); } 50% { filter: drop-shadow(0 0 7px #72ff54cc) drop-shadow(0 0 20px #72ff542e); } }
+@keyframes splashBarGrow { 0% { width: 0; } 100% { width: 100%; } }
+@keyframes splashFadeOut { 0% { opacity: 1; pointer-events: all; } 100% { opacity: 0; pointer-events: none; visibility: hidden; } }
+@media(prefers-reduced-motion:reduce) { #splash { display: none; } }
