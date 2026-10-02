@@ -16,7 +16,7 @@
 .opening-media video { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; background: #090c12; --feather: linear-gradient(90deg, transparent, #0000002e 16%, #00000080 30%, #000000c7 42%, #000 52%, #000 90%, transparent), linear-gradient(transparent, #000 6%, #000 80%, transparent); -webkit-mask-image: var(--feather); -webkit-mask-composite: source-in; mask-image: var(--feather); mask-composite: intersect; }
 .opening-media-label { position: absolute; z-index: 2; right: max(56px, calc((100vw - 1280px) / 2)); bottom: 14px; display: flex; align-items: center; gap: 9px; font: 7px var(--mono); letter-spacing: 1.2px; color: #a3b3cc; }
 .opening-media-label > span { color: var(--scene-accent); border: 1px solid #435573; padding: 3px 4px; }
-.arena-intro { max-width: 46%; margin-block: auto; padding-block: 34px 10px; }
+.arena-intro { max-width: 46%; margin-block: auto; padding-block: 14px 86px; }
 .arena-intro h1 { font: 700 clamp(60px, 5.6vw, 92px)/.88 var(--display); letter-spacing: -1.8px; margin: 0; }
 .arena-intro h1 em { display: inline-block; white-space: nowrap; padding-right: 10px; color: #7299ff; font-style: italic; }
 .arena-intro-copy { max-width: 440px; margin-top: 30px; padding: 2px 0 2px 24px; border-left: 1px solid #344564; }
@@ -107,10 +107,16 @@
 .app-team-row { display: grid; grid-template-columns: minmax(0,1.5fr) auto minmax(0,1fr); align-items: center; gap: 4px; }
 .app-readout { display: block; min-width: 0; min-height: 36px; padding: 8px 6px; border: 1px solid #394760; border-radius: 6px; background: #1c2437; color: #d6dfef; font-size: 10px; line-height: 1.5; }
 .app-empty { color: transparent; text-shadow: 0 0 6px #a0aec7cc; background: #191e2f; border-color: #303c54; user-select: none; }
+/* Game menu: the closed select shows the team, "vs" and a blurred opponent placeholder. */
+.app-select-wrap { position: relative; }
+#panel-game { color: transparent; }
+#panel-game option { color: #e2e9f7; }
+.app-select-display { position: absolute; inset: 0 25px 0 8px; overflow: hidden; display: flex; align-items: center; gap: 5px; min-width: 0; color: #e2e9f7; font: 12px Arial, sans-serif; white-space: nowrap; pointer-events: none; }
+.app-select-display > span:first-child { flex-shrink: 0; }
+.app-select-display .app-versus { flex-shrink: 0; }
+.app-blur { min-width: 0; flex-shrink: 1; overflow: hidden; color: transparent; text-shadow: 0 0 6px #c3cee0d9; user-select: none; }
 .app-versus { font-size: 9px; color: #9aa9c2; }
 .app-player-controls { display: flex; gap: 6px; }
-.app-player-summary { color: #c0d0eb; font-size: 11px; line-height: 1.6; margin-top: 7px; }
-.app-player-summary strong { font-weight: 400; color: #dae7fb; }
 .app-panel-footer { display: flex; align-items: center; gap: 8px; min-height: 42px; padding: 0 12px; border-top: 1px solid #303d56; background: #111a2c; }
 .app-panel-footer p { font-size: 10px; color: #bdcfe9; line-height: 1.5; }
 .app-panel-footer button { min-width: 34px; min-height: 36px; margin-left: auto; padding: 0; background: transparent; color: #a9cbff; font-size: 18px; }
@@ -216,7 +222,7 @@
   .app-sports button { min-height: 38px; }
   .app-panel select, .app-icon-button { height: 44px; }
   .app-icon-button { min-width: 40px; }
-  .app-panel select { font-size: 16px; }
+  .app-panel select, .app-select-display { font-size: 16px; }
   .app-readout { min-height: 44px; font-size: 11px; }
   .app-field-note { font-size: 11px; }
   .app-panel-footer { min-height: 47px; }

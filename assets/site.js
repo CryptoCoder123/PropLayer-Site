@@ -145,12 +145,10 @@
     $('#scene-team').textContent = scene.team;
     $('#scene-league').textContent = leagues[scene.sport];
     $('#panel-team').textContent = scene.team;
-    $('#badge-metric').textContent = scene.metric;
-    $('#badge-line').textContent = `O/U ${scene.line}`;
-    $('#badge-odds').textContent = scene.odds;
+    $('#panel-game-team').textContent = scene.team;
     if (gameSelect.dataset.sport !== scene.sport) {
       gameSelect.dataset.sport = scene.sport;
-      gameSelect.replaceChildren(...ids.map(id => new Option(scenes[id].team, id)));
+      gameSelect.replaceChildren(...ids.map(id => new Option(`${scenes[id].team} vs Unassigned`, id)));
       playerSelect.replaceChildren(...ids.map(id => new Option(scenes[id].name, id)));
     }
     gameSelect.value = playerSelect.value = state.player;
