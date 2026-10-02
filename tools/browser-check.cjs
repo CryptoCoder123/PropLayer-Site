@@ -29,7 +29,7 @@ const { chromium } = require('@playwright/test');
     }
     assert.equal(await page.locator('.sport-list details').last().locator('.availability').textContent(), 'PLANNED');
     assert.equal(await page.locator('.arena-selector').count(), 0);
-    assert.equal(await page.locator('.value-band > li').count(), 4);
+    assert.equal(await page.locator('.value-band > li').count(), 3);
     assert.equal(await page.locator('.sport-feature img').getAttribute('src'), 'assets/newAssets/collage.webp');
     assert.equal(await page.locator('#opening-video').getAttribute('aria-hidden'), 'true');
   });
