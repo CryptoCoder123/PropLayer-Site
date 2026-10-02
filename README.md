@@ -9,10 +9,11 @@ Run `npm run dev`, then open <http://localhost:4173>. The preview server binds t
 ## What is implemented
 
 - A responsive visual system built around the supplied, unmodified blue logo and original sports artwork.
-- An interactive opening combines oversized editorial typography, a four-sport selector, a layered scene frame and the compact Prop Layer panel. Sport-specific lighting, restrained pointer-driven depth and user-triggered image transitions respond to the visitor. Motion respects reduced-motion preferences and the scene remains steady on touch devices.
-- Eight original basketball, football, baseball and hockey illustrations keep their embedded player badges intact. The Game and Player 1 menus load the corresponding player, team, image and badge values. The main sport selector and the panel's league buttons stay synchronized. Clicking the image, Focus badge, or the panel arrow zooms into the original badge. Arrow keys switch between the two players in the active sport.
+- The opening pairs oversized editorial typography on the left with looping AI-generated concept footage (`aiBaseball.mp4`, labeled as such) on the right; on narrow screens the footage becomes a card below the copy. The footage pauses off-screen and stays on its poster frame under reduced motion. A four-figure value band follows, then a layered scene frame and the compact Prop Layer panel. Sport-specific lighting, restrained pointer-driven depth and user-triggered image transitions respond to the visitor. Motion respects reduced-motion preferences and the scene remains steady on touch devices.
+- Eight original basketball, football, baseball and hockey illustrations keep their embedded player badges intact. The Game and Player 1 menus load the corresponding player, team, image and badge values. The panel's league buttons switch sports. Clicking the image, Focus badge, or the panel arrow zooms into the original badge. Arrow keys switch between the two players in the active sport.
 - A compact Game Info panel, minimize/restore, mobile navigation between scene and controls, and a three-step orientation. The separate lower explorer, scene thumbnails, Settings tab, save/share controls and preference storage have been removed. Previously shared scene links still resolve with validated values. No account service or new integration is required.
 - Early-access and partnership forms using the existing Formspree endpoint, `mpqorvvk`. Submissions include a `request_type` and distinct subject. Validation, pending, confirmed success, timeout and error states are implemented. Failure preserves entered details; email is an alternative.
+- The sports section uses the original five-sport concept collage; its credit notes that soccer is shown as planned.
 - Shared navigation, footer and typography on the partnership, privacy, terms, brand and 404 pages. Existing terms and app privacy copy are retained, with a factual website-data addition to privacy.
 
 ## Product truth
@@ -37,7 +38,7 @@ The website demo uses the repository’s original concept artwork, with its exis
 
 Install development-only tools with `npm ci`. With `npm run dev` running in another terminal, run `npm test`. Tests use an installed Google Chrome through Playwright. Screenshots and a verification report are saved to ignored `artifacts/`.
 
-Tests cover the removal of the old controls, the four supported sports, all eight player/team/image/badge mappings, synchronized sport and panel selectors, uncropped artwork, badge inspection, keyboard navigation, minimize/restore, mobile scene/panel navigation, old demo links, blocked storage, pointer depth, walkthrough focus, reduced motion, six responsive widths, local destinations, no-JavaScript form fallback, and both forms’ accepted/failed responses. Analytics and form calls are intercepted in tests. **No real lead submissions are sent.**
+Tests cover the removal of the old controls, the four supported sports, all eight player/team/image/badge mappings, panel sport buttons, the value band and collage, uncropped artwork, badge inspection, keyboard navigation, minimize/restore, mobile scene/panel navigation, old demo links, blocked storage, pointer depth, walkthrough focus, reduced motion, six responsive widths, local destinations, no-JavaScript form fallback, and both forms’ accepted/failed responses. Analytics and form calls are intercepted in tests. **No real lead submissions are sent.**
 
 ## External services and launch checks
 

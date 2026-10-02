@@ -150,7 +150,7 @@
     $('#badge-odds').textContent = scene.odds;
     if (gameSelect.dataset.sport !== scene.sport) {
       gameSelect.dataset.sport = scene.sport;
-      gameSelect.replaceChildren(...ids.map(id => new Option(`${scenes[id].team} · sample scene`, id)));
+      gameSelect.replaceChildren(...ids.map(id => new Option(scenes[id].team, id)));
       playerSelect.replaceChildren(...ids.map(id => new Option(scenes[id].name, id)));
     }
     gameSelect.value = playerSelect.value = state.player;
@@ -233,6 +233,18 @@
   }
   frame.addEventListener('pointerleave', clearDepth);
   reducedMotion.addEventListener('change', () => { clearDepth(); imageAnimation?.cancel(); });
+
+  // Opening footage loops only while visible, and stays on its poster frame under reduced motion.
+  const openingVideo = $('#opening-video');
+  if (openingVideo) {
+    let videoVisible = true;
+    const syncVideo = () => {
+      if (videoVisible && !reducedMotion.matches) openingVideo.play().catch(() => {});
+      else openingVideo.pause();
+    };
+    new IntersectionObserver(([entry]) => { videoVisible = entry.isIntersecting; syncVideo(); }).observe(openingVideo);
+    reducedMotion.addEventListener('change', syncVideo);
+  }
 
   const guide = $('#walkthrough');
   let step = 0;

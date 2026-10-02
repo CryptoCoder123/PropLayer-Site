@@ -28,8 +28,12 @@ const { chromium } = require('@playwright/test');
       assert.equal(await row.locator('.availability').textContent(), 'SUPPORTED');
     }
     assert.equal(await page.locator('.sport-list details').last().locator('.availability').textContent(), 'PLANNED');
+    assert.equal(await page.locator('.arena-selector').count(), 0);
+    assert.equal(await page.locator('.value-band > li').count(), 4);
+    assert.equal(await page.locator('.sport-feature img').getAttribute('src'), 'assets/newAssets/collage.webp');
+    assert.equal(await page.locator('#opening-video').getAttribute('aria-hidden'), 'true');
   });
-  await check('Both sport selectors and both panel menus map all eight players to the original images and values', async () => {
+  await check('The panel sport buttons and both panel menus map all eight players to the original images and values', async () => {
     const samples = [
       ['basketball', 'devon', 'Devon Kier', 'Silverdale Phantoms', 'basketball1.webp', 'Points', '24.5', '+135'],
       ['basketball', 'kenji', 'Kenji Blake', 'Crown Heights Titans', 'basketball2.webp', 'Points', '26.5', '+140'],
@@ -41,7 +45,7 @@ const { chromium } = require('@playwright/test');
       ['hockey', 'luka', 'Luka Vasilev', 'Frost Guard', 'hockey2.webp', 'Shots on goal', '3.5', '+205']
     ];
     for (const [index, [sport, id, name, team, file, metric, line, odds]] of samples.entries()) {
-      await page.locator(`${index % 2 ? '.app-sports' : '.arena-selector'} button[data-sport="${sport}"]`).click();
+      await page.locator(`.app-sports button[data-sport="${sport}"]`).click();
       await page.locator('#panel-player').selectOption(id);
       await page.locator('#explorer-image').evaluate(img => img.decode());
       assert.equal(await page.locator('#panel-player option').count(), 2);
@@ -52,7 +56,7 @@ const { chromium } = require('@playwright/test');
       assert.equal(await page.locator('#badge-metric').textContent(), metric);
       assert.equal(await page.locator('#badge-line').textContent(), `O/U ${line}`);
       assert.equal(await page.locator('#badge-odds').textContent(), odds);
-      assert.equal(await page.locator(`button[data-sport="${sport}"][aria-pressed=true]`).count(), 2);
+      assert.equal(await page.locator(`button[data-sport="${sport}"][aria-pressed=true]`).count(), 1);
       await fullImageFits();
       await page.locator('#panel-game').selectOption({ index: index % 2 ? 0 : 1 });
       assert.equal(await page.locator('#panel-game').inputValue(), await page.locator('#panel-player').inputValue());
@@ -73,7 +77,7 @@ const { chromium } = require('@playwright/test');
     await fullImageFits();
   });
   await check('Keyboard controls select players and focus badges without motion when requested', async () => {
-    await page.locator('.arena-selector button[data-sport=basketball]').click();
+    await page.locator('.app-sports button[data-sport=basketball]').click();
     await page.locator('#explorer-canvas').focus();
     await page.keyboard.press('ArrowRight');
     assert.equal(await page.locator('#panel-player').inputValue(), 'kenji');
@@ -139,7 +143,7 @@ const { chromium } = require('@playwright/test');
     await restricted.route('**/googletagmanager.com/**', route => route.fulfill({ status: 200, body: '' }));
     await restricted.addInitScript(() => Object.defineProperty(window, 'localStorage', { get() { throw new Error('Blocked'); } }));
     const p = await restricted.newPage(); await p.goto(base);
-    await p.locator('.arena-selector button[data-sport=hockey]').click();
+    await p.locator('.app-sports button[data-sport=hockey]').click();
     assert.equal(await p.locator('#panel-player').inputValue(), 'marcus_hockey');
     await restricted.close();
   });
@@ -212,16 +216,16 @@ const { chromium } = require('@playwright/test');
   await page.screenshot({ path: 'artifacts/opening-desktop.png' });
   await page.locator('.arena-hero').screenshot({ ...cleanCapture, path: 'artifacts/opening-full.png' });
   await page.locator('#app-panel').screenshot({ ...cleanCapture, path: 'artifacts/game-info-panel.png' });
-  await page.locator('.arena-selector button[data-sport=football]').click();
+  await page.locator('.app-sports button[data-sport=football]').click();
   await page.locator('#explorer-image').evaluate(img => img.decode());
   await page.locator('.arena-hero').screenshot({ ...cleanCapture, path: 'artifacts/opening-football.png' });
-  await page.locator('.arena-selector button[data-sport=hockey]').click();
+  await page.locator('.app-sports button[data-sport=hockey]').click();
   await page.locator('#panel-player').selectOption('luka');
   await page.locator('#focus-badge').click();
   await page.locator('#explorer-image').evaluate(img => img.decode());
   await page.locator('.arena-deck').screenshot({ ...cleanCapture, path: 'artifacts/opening-badge.png' });
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.locator('.arena-selector button[data-sport=basketball]').click();
+  await page.locator('.app-sports button[data-sport=basketball]').click();
   await page.locator('#explorer-image').evaluate(img => img.decode());
   await page.evaluate(() => scrollTo({ top: 0, behavior: 'instant' }));
   await page.screenshot({ path: 'artifacts/opening-mobile.png' });
