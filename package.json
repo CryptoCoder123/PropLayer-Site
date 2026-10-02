@@ -1,0 +1,13 @@
+{
+  "name": "prop-layer-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Prop Layer static website. No production dependencies or build step.",
+  "scripts": {
+    "dev": "node tools/serve.cjs",
+    "test": "node tools/browser-check.cjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0"
+  }
+}

@@ -1,82 +1,101 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Privacy Policy — PropLayer</title>
-  <style>
-    :root {
-      --bg: #09090b; --surface: #111116; --border: #27272a;
-      --green: #4ade80; --text: #fafafa; --text-muted: #a1a1aa; --text-dim: #71717a;
-    }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
-    a { color: var(--green); text-decoration: none; }
-    nav { border-bottom: 1px solid var(--border); padding: 0 24px; height: 60px; display: flex; align-items: center; justify-content: space-between; background: rgba(9,9,11,.95); }
-    .nav-logo { font-size: 18px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
-    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green); }
-    .content { max-width: 720px; margin: 0 auto; padding: 64px 24px; }
-    h1 { font-size: 32px; font-weight: 900; letter-spacing: -.02em; margin-bottom: 8px; }
-    .meta { font-size: 13px; color: var(--text-dim); margin-bottom: 48px; }
-    h2 { font-size: 18px; font-weight: 700; margin: 40px 0 12px; }
-    p { font-size: 15px; color: var(--text-muted); margin-bottom: 16px; }
-    ul { padding-left: 20px; margin-bottom: 16px; }
-    li { font-size: 15px; color: var(--text-muted); margin-bottom: 8px; }
-    footer { border-top: 1px solid var(--border); padding: 24px; text-align: center; font-size: 12px; color: var(--text-dim); margin-top: 80px; }
-  </style>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y0S7K0W3W5"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-Y0S7K0W3W5');
-  </script>
-</head>
-<body>
-  <nav>
-    <a href="index.html" class="nav-logo" style="color:inherit;">
-      <div class="dot"></div>
-      PropLayer
-    </a>
-    <a href="index.html" style="font-size:14px;color:var(--text-muted);">← Back to Home</a>
-  </nav>
-
-  <div class="content">
-    <h1>Privacy Policy</h1>
-    <p class="meta">Last updated: March 2026</p>
-
-    <h2>1. Overview</h2>
-    <p>PropLayer ("we", "our", "us") is a desktop application that overlays real-time player stats and prop odds on sports broadcasts. We take your privacy seriously. This policy explains what data we collect, how we use it, and your rights.</p>
-
-    <h2>2. Data We Collect</h2>
-    <p>PropLayer is designed with privacy in mind. Specifically:</p>
-    <ul>
-      <li><strong>No video data is sent to our servers.</strong> All computer vision inference runs locally on your machine.</li>
-      <li><strong>API keys stay local.</strong> Your Anthropic Claude API key and The Odds API key are stored only on your device and are never transmitted to PropLayer servers.</li>
-      <li><strong>Waitlist email.</strong> If you join our waitlist, we collect your email address solely to notify you about product updates and early access.</li>
-    </ul>
-
-    <h2>3. Third-Party Services</h2>
-    <p>PropLayer integrates with third-party APIs at your direction:</p>
-    <ul>
-      <li><strong>Anthropic Claude API</strong> — used for jersey identification. Subject to <a href="https://www.anthropic.com/legal/privacy" target="_blank">Anthropic's Privacy Policy</a>.</li>
-      <li><strong>The Odds API</strong> — used for live prop odds. Subject to their own privacy policy.</li>
-    </ul>
-
-    <h2>4. Data Retention</h2>
-    <p>We retain waitlist email addresses until you unsubscribe or request deletion. We do not sell or share your email with third parties.</p>
-
-    <h2>5. Your Rights</h2>
-    <p>You may request access to, correction of, or deletion of your personal data at any time by contacting us at <a href="mailto:Help@prop-layer.com">Help@prop-layer.com</a>.</p>
-
-    <h2>6. Changes to This Policy</h2>
-    <p>We may update this policy from time to time. We will notify waitlist subscribers of material changes via email.</p>
-
-    <h2>7. Contact</h2>
-    <p>Questions? Email us at <a href="mailto:Help@prop-layer.com">Help@prop-layer.com</a>.</p>
-  </div>
-
-  <footer>&copy; 2026 PropLayer. All rights reserved.</footer>
-</body>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#080a0e">
+    <title>Privacy Policy — Prop Layer</title>
+    <meta name="description" content="Privacy Policy for Prop Layer.">
+    <link rel="icon" href="assets/newAssets/prop-layer-logo-blue.png">
+    <link rel="preload" href="assets/fonts/barlow-condensed-bold.woff" as="font" type="font/woff" crossorigin>
+    <link rel="stylesheet" href="assets/site.css">
+    <script src="assets/site.js" defer></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y0S7K0W3W5"></script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-Y0S7K0W3W5');</script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <nav class="nav-shell shell" aria-label="Main navigation">
+        <a class="brand" href="index.html" aria-label="Prop Layer home">
+          <img src="assets/newAssets/prop-layer-logo-blue.png" width="33" height="38" alt="">
+          <span>PROP LAYER<span class="brand-period">.</span>
+          </span>
+        </a>
+        <div class="nav-links" id="nav-links">
+          <a href="index.html#experience">The experience</a>
+          <a href="index.html#how-it-works">How it works</a>
+          <a href="index.html#sports">Sports</a>
+          <a href="partners.html">For partners <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+        <a class="button button-small nav-cta" href="index.html#waitlist">Get early access <span aria-hidden="true">↗</span>
+        </a>
+        <button class="menu-toggle" aria-label="Open navigation" aria-controls="nav-links" aria-expanded="false">
+          <span></span>
+          <span></span>
+        </button>
+      </nav>
+    </header>
+    <main id="main" class="shell legal-main">
+      <h1>Privacy Policy</h1>
+      <p class="meta">Last updated: October 2026</p>
+      <h2>1. Overview</h2>
+      <p>Prop Layer ("we", "our", "us") is a desktop application that overlays real-time player stats and prop odds on sports broadcasts. We take your privacy seriously. This policy explains what data we collect, how we use it, and your rights.</p>
+      <h2>2. Data We Collect</h2>
+      <p>Prop Layer is designed with privacy in mind. Specifically:</p>
+      <ul>
+        <li>
+          <strong>No video data is sent to our servers.</strong> All computer vision inference runs locally on your machine.</li>
+        <li>
+          <strong>API keys stay local.</strong> Your Anthropic Claude API key and The Odds API key are stored only on your device and are never transmitted to Prop Layer servers.</li>
+        <li>
+          <strong>Waitlist email.</strong> If you join our waitlist, we collect your email address solely to notify you about product updates and early access.</li>
+      </ul>
+      <h2>3. Third-Party Services</h2>
+      <p>Prop Layer integrates with third-party APIs at your direction:</p>
+      <ul>
+        <li>
+          <strong>Anthropic Claude API</strong> — used for jersey identification. Subject to <a href="https://www.anthropic.com/legal/privacy" target="_blank" rel="noopener noreferrer">Anthropic's Privacy Policy</a>.</li>
+        <li>
+          <strong>The Odds API</strong> — used for live prop odds. Subject to their own privacy policy.</li>
+      </ul>
+      <h2>4. Data Retention</h2>
+      <p>We retain waitlist email addresses until you unsubscribe or request deletion. We do not sell or share your email with third parties.</p>
+      <h2>5. Your Rights</h2>
+      <p>You may request access to, correction of, or deletion of your personal data at any time by contacting us at <a href="mailto:Help@prop-layer.com">Help@prop-layer.com</a>.</p>
+      <h2>6. Changes to This Policy</h2>
+      <p>We may update this policy from time to time. We will notify waitlist subscribers of material changes via email.</p>
+      <h2>7. Contact</h2>
+      <p>Questions? Email us at <a href="mailto:Help@prop-layer.com">Help@prop-layer.com</a>.</p>
+      <h2>Website forms, analytics and interactive demo</h2>
+      <p>Website additions updated October 2026. Early-access requests may include your email, sport preference, device and request for a recorded demo. Partnership inquiries may include your email, name, organization, area of interest and message. We use these details to respond to your request and provide the updates described on the form.</p>
+      <p>Forms are processed by <a href="https://formspree.io/legal/privacy-policy/" target="_blank" rel="noopener noreferrer">Formspree</a>. This website uses Google Analytics to understand site use and successful form submissions. Names, email addresses and form messages are not included in the custom submission event.</p>
+      <p>The interactive website demo uses fictional players and sample artwork. Your scene selections stay within the current page and are not saved to browser storage or sent to a product account. Older demo links may include a fictional player selection and image view; these contain no form information.</p>
+    </main>
+    <footer class="site-footer">
+      <div class="shell">
+        <div class="footer-top">
+          <a class="brand" href="index.html">
+            <img src="assets/newAssets/prop-layer-logo-blue.png" width="33" height="38" alt="">
+            <span>PROP LAYER<span class="brand-period">.</span>
+            </span>
+          </a>
+          <p>The game has another dimension.</p>
+          <a class="back-top" href="index.html#main">Back to top ↑</a>
+        </div>
+        <div class="footer-bottom">
+          <span>© 2026 Prop Layer</span>
+          <div>
+            <a href="index.html#experience">Experience</a>
+            <a href="partners.html">Partners</a>
+            <a href="mailto:Help@prop-layer.com">Contact</a>
+            <a href="privacy.html">Privacy</a>
+            <a href="terms.html">Terms</a>
+          </div>
+          <span>STAY IN THE GAME.</span>
+        </div>
+      </div>
+    </footer>
+  </body>
 </html>
