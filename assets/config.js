@@ -5,5 +5,5 @@ window.PROPLAYER_CONFIG = Object.freeze({
   siteUrl: 'https://prop-layer.com',
   releasesRepo: 'CryptoCoder123/PropLayer-Releases',
   planName: 'Prop Layer Monthly',
-  priceDisplay: '__SET_ME__'               // e.g. "$14.99 / month" — must match the Stripe price
+  priceDisplay: '$20.00 / month'               // e.g. "$14.99 / month" — must match the Stripe price
 });

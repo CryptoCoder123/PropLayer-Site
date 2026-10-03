@@ -185,9 +185,14 @@ try {
   created.customerId = customer.id;
   expect('created a customer on the test clock', Boolean(customer.id), customer.id);
 
-  await stripe.paymentMethods.attach('pm_card_visa', { customer: customer.id });
-  await stripe.customers.update(customer.id, { invoice_settings: { default_payment_method: 'pm_card_visa' } });
-  expect('attached a test card', true, 'pm_card_visa');
+  // Attaching the shared `pm_card_visa` token mints a *new* PaymentMethod for this
+  // customer; the default must be that returned id, not the token, or Stripe looks for a
+  // method the customer does not have.
+  const paymentMethod = await stripe.paymentMethods.attach('pm_card_visa', { customer: customer.id });
+  await stripe.customers.update(customer.id, {
+    invoice_settings: { default_payment_method: paymentMethod.id }
+  });
+  expect('attached a test card', Boolean(paymentMethod.id), `pm_card_visa → ${paymentMethod.id}`);
 
   const subscription = await stripe.subscriptions.create({
     customer: customer.id,
