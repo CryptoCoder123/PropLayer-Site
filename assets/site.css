@@ -1950,3 +1950,290 @@ html {
     font-size: 70px;
   }
 }
+
+/* ---------------------------------------------------------------- account and download
+   New pages (contract PL-ACCOUNT-1). These reuse the tokens, .button, .inquiry-form and
+   .form-status components above; only layout and the few new states are defined here. */
+.account-main,.download-main {
+  padding:96px 0 90px;
+  max-width:860px;
+}
+.account-main>.eyebrow,.download-main>.eyebrow {
+  margin-bottom:18px;
+}
+.account-main h1,.download-main h1 {
+  font:700 46px/1.1 var(--display);
+  letter-spacing:-1px;
+  margin:0 0 14px;
+  text-transform:uppercase;
+}
+.account-main h1:focus-visible,.download-main h1:focus-visible {
+  outline:2px solid var(--blue);
+  outline-offset:6px;
+}
+.account-main h2,.download-main h2 {
+  font:700 23px/1.25 var(--display);
+  letter-spacing:-.3px;
+  margin:0 0 10px;
+  text-transform:uppercase;
+}
+.account-main p,.download-main p {
+  color:#c3cbd8;
+  margin:0 0 14px;
+}
+.account-status {
+  max-width:46rem;
+}
+.account-status[data-state=success] {
+  color:#c6f0d4;
+  border-color:#4e8f67;
+  background:#285a3b24;
+}
+.account-form {
+  max-width:27rem;
+  margin-top:26px;
+}
+.account-form>label:not(:first-of-type) {
+  margin-top:22px;
+}
+.password-field {
+  display:flex;
+  gap:8px;
+  align-items:stretch;
+}
+.password-field input {
+  flex:1 1 auto;
+  min-width:0;
+}
+.password-toggle {
+  flex:0 0 auto;
+  padding:0 13px;
+  min-height:47px;
+  background:#141e30;
+  border:1px solid #344258;
+  color:#b6c6de;
+  font:10px/1 var(--mono);
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+.password-toggle:hover {
+  border-color:var(--blue);
+  color:var(--text);
+}
+.field-hint {
+  font-size:10px;
+  color:#8d9bb1;
+  margin:8px 0 0;
+}
+.field-error {
+  font-size:12px;
+  line-height:1.7;
+  color:#ffd0b9;
+  border-left:2px solid #ab7151;
+  padding-left:11px;
+  margin:18px 0 0;
+}
+.text-button {
+  background:none;
+  padding:0;
+  font-size:11px;
+  color:#bbd2f7;
+  text-decoration:underline;
+  text-underline-offset:3px;
+}
+.account-link {
+  color:#bbd2f7;
+  text-decoration:underline;
+  text-underline-offset:3px;
+}
+.account-alt {
+  margin:16px 0 0;
+}
+.account-identity {
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  border:1px solid var(--line);
+  background:#0c1423dc;
+  padding:18px 20px;
+  margin-bottom:26px;
+}
+.account-email-row {
+  margin:0;
+  font-size:12px;
+}
+.account-email-row strong {
+  color:var(--text);
+  word-break:break-all;
+}
+.account-card {
+  border:1px solid var(--line);
+  background:var(--panel);
+  padding:28px;
+  margin-bottom:22px;
+}
+.account-card>.eyebrow {
+  margin-bottom:14px;
+}
+.account-card>p:last-child {
+  margin-bottom:0;
+}
+.account-includes {
+  list-style:none;
+  margin:0 0 20px;
+  padding:0;
+  display:grid;
+  gap:9px;
+}
+.account-includes li {
+  position:relative;
+  padding-left:19px;
+  font-size:12px;
+  color:#c3cbd8;
+}
+.account-includes li::before {
+  content:'';
+  position:absolute;
+  left:0;
+  top:.55em;
+  width:5px;
+  height:5px;
+  background:var(--blue);
+}
+.account-actions {
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  margin:20px 0 0;
+}
+.account-actions:last-child {
+  margin-bottom:0;
+}
+.account-actions .button {
+  flex:0 1 auto;
+}
+.release-facts {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:16px;
+  margin:0 0 4px;
+  padding:18px 0;
+  border-block:1px solid var(--line);
+}
+.release-facts dt {
+  font:10px/1.5 var(--mono);
+  letter-spacing:1.2px;
+  color:#8d9bb1;
+  text-transform:uppercase;
+}
+.release-facts dd {
+  margin:5px 0 0;
+  font-size:15px;
+  font-weight:700;
+}
+.release-hash {
+  margin:18px 0 0;
+  font-size:11px;
+}
+.release-hash-label {
+  display:block;
+  font:10px/1.5 var(--mono);
+  letter-spacing:1.2px;
+  color:#8d9bb1;
+  margin-bottom:5px;
+}
+.release-hash code {
+  font:11px/1.6 var(--mono);
+  color:#b6d7ff;
+  word-break:break-all;
+}
+.release-extra {
+  display:flex;
+  flex-wrap:wrap;
+  gap:18px;
+  margin:18px 0 0;
+}
+.release-notes {
+  font-size:12px;
+  line-height:1.8;
+  color:#c3cbd8;
+}
+.release-notes h3,.release-notes h4,.release-notes h5,.release-notes h6 {
+  font:700 13px/1.4 var(--sans);
+  letter-spacing:.2px;
+  color:var(--text);
+  margin:18px 0 7px;
+  text-transform:none;
+}
+.release-notes ul {
+  margin:0 0 12px;
+  padding-left:19px;
+}
+.release-notes code {
+  font:11px var(--mono);
+  color:#b6d7ff;
+  word-break:break-word;
+}
+.release-notes a {
+  color:#bbd2f7;
+  text-decoration:underline;
+  text-underline-offset:3px;
+  word-break:break-word;
+}
+.install-steps {
+  margin:0 0 16px;
+  padding-left:20px;
+  display:grid;
+  gap:11px;
+  font-size:12px;
+  color:#c3cbd8;
+}
+.install-steps strong {
+  color:var(--text);
+}
+.install-steps kbd {
+  font:10px var(--mono);
+  border:1px solid #3c4553;
+  background:#141e30;
+  padding:2px 5px;
+}
+.pricing-section {
+  border-top:1px solid var(--line);
+}
+.pricing-card {
+  border:1px solid #34445e;
+  background:#0c1423dc;
+  padding:32px;
+  max-width:33rem;
+}
+.pricing-price {
+  font:700 40px/1 var(--display);
+  letter-spacing:-1px;
+  margin:4px 0 16px;
+  color:var(--text);
+}
+@media(max-width:680px) {
+.account-main,.download-main {
+    padding:72px 0 70px;
+  }
+.account-main h1,.download-main h1 {
+    font-size:36px;
+  }
+.account-card,.pricing-card {
+    padding:22px;
+  }
+.account-actions .button {
+    width:100%;
+    justify-content:space-between;
+  }
+}
+@media(max-width:370px) {
+.account-main h1,.download-main h1 {
+    font-size:30px;
+  }
+.account-card,.pricing-card {
+    padding:18px;
+  }
+}

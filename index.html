@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="assets/site.css">
     <link rel="stylesheet" href="assets/experience.css">
     <link rel="preload" as="image" href="assets/newAssets/aiBaseball-poster.webp">
+    <script src="assets/config.js" defer></script>
     <script src="assets/site.js" defer></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y0S7K0W3W5"></script>
     <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-Y0S7K0W3W5');</script>
@@ -69,10 +70,12 @@
           <a href="#experience">The experience</a>
           <a href="#how-it-works">How it works</a>
           <a href="#sports">Sports</a>
+          <a href="download.html">Download</a>
+          <a href="account.html">Account</a>
           <a href="partners.html">For partners <span aria-hidden="true">↗</span>
           </a>
         </div>
-        <a class="button button-small nav-cta" href="#waitlist">Get early access <span aria-hidden="true">↗</span>
+        <a class="button button-small nav-cta" href="#pricing">Get Prop Layer <span aria-hidden="true">↗</span>
         </a>
         <button class="menu-toggle" aria-label="Open navigation" aria-controls="nav-links" aria-expanded="false">
           <span></span>
@@ -277,17 +280,17 @@
           <details>
             <summary>What can I use today?<span>+</span>
             </summary>
-            <p>Basketball (NBA), football (NFL), baseball (MLB) and hockey (NHL) are working in Prop Layer’s Windows alpha. You can request early access or a recorded alpha demo using the form below. Access is coordinated by the team; submitting the form does not immediately unlock a download.</p>
+            <p>Basketball (NBA), football (NFL), baseball (MLB) and hockey (NHL) are working in Prop Layer’s Windows alpha. The <a href="download.html">download is public</a> and needs no account. Running the app requires an active monthly subscription, which you start on your <a href="account.html#subscribe">account page</a>.</p>
           </details>
           <details>
             <summary>What do I need to run Prop Layer?<span>+</span>
             </summary>
-            <p>The current alpha is for Windows. Depending on the alpha setup, third-party API keys may be required for player identification and odds. Setup, compatibility and any third-party costs should be confirmed with the team before you begin.</p>
+            <p>Windows 10 or 11 (64-bit) and about 400 MB of disk space — the <a href="download.html">download page</a> has the full list. Two features are optional and use your own third-party keys, billed to you by those providers: Claude-based jersey identification uses your Anthropic API key, and live odds use your The Odds API key. Prop Layer works without either.</p>
           </details>
-          <details id="pricing">
+          <details>
             <summary>How much does it cost?<span>+</span>
             </summary>
-            <p>Pricing has not been announced. Joining the early-access list is free and does not require payment details. Product pricing and availability will be shared as plans are finalized.</p>
+            <p>Prop Layer is one monthly subscription — see <a href="#pricing">the current price</a> above. You can cancel anytime from your account page and keep access until the end of the period you have already paid for. Downloading the app is free.</p>
           </details>
           <details>
             <summary>Can I place a bet through Prop Layer?<span>+</span>
@@ -296,23 +299,50 @@
           </details>
         </div>
       </section>
+      <section class="section pricing-section shell" id="pricing" aria-labelledby="pricing-title">
+        <div>
+          <p class="eyebrow">
+            <span class="section-index">04 /</span> PRICING</p>
+          <h2 id="pricing-title">One plan.<br>Cancel anytime.</h2>
+        </div>
+        <div class="pricing-card">
+          <p class="eyebrow" id="plan-name">Prop Layer Monthly</p>
+          <!-- site.js replaces this with priceDisplay from assets/config.js once it is set. -->
+          <p class="pricing-price" id="plan-price">See pricing on your account page</p>
+          <ul class="account-includes">
+            <li>The Prop Layer app for Windows 10/11 (64-bit)</li>
+            <li>Basketball (NBA), football (NFL), baseball (MLB) and hockey (NHL)</li>
+            <li>Every update released while you&rsquo;re subscribed</li>
+            <li>Cancel anytime &mdash; access continues to the end of the paid period</li>
+          </ul>
+          <p class="account-actions">
+            <a class="button" href="account.html#subscribe">Subscribe <span aria-hidden="true">&#8599;</span>
+            </a>
+            <a class="button button-outline" href="download.html">Download first <span aria-hidden="true">&#8595;</span>
+            </a>
+          </p>
+          <p class="form-fineprint">Billed monthly by Stripe, plus any applicable tax. The download
+            is free; an active subscription is needed to run the overlay. See the
+            <a href="terms.html">Terms</a>.</p>
+        </div>
+      </section>
       <section class="access-section" id="waitlist" aria-labelledby="access-title">
         <div class="shell access-grid">
           <div class="access-copy">
             <p class="eyebrow">
-              <span class="status-dot"></span> YOUR NEXT VIEW STARTS HERE</p>
-            <h2 id="access-title">BE EARLY.<br>
-              <span>SEE MORE.</span>
+              <span class="status-dot"></span> PRODUCT UPDATES AND DEMOS</p>
+            <h2 id="access-title">STAY IN<br>
+              <span>THE LOOP.</span>
             </h2>
-            <p>Help shape a better way to watch.<br>Request early access to Prop Layer.</p>
+            <p>Product updates, new sports and recorded demos.<br>The app itself is ready to <a href="download.html">download now</a>.</p>
             <div class="access-meta">
               <span>WINDOWS ALPHA</span>
               <span>NBA · NFL · MLB · NHL</span>
-              <span>NO PAYMENT REQUIRED</span>
+              <span>UPDATES &amp; DEMOS</span>
             </div>
           </div>
           <form class="inquiry-form" id="access-form" action="https://formspree.io/f/mpqorvvk" method="POST" data-inquiry="early_access">
-            <input type="hidden" name="_subject" value="Prop Layer — Early access request">
+            <input type="hidden" name="_subject" value="Prop Layer — Product updates request">
             <input type="hidden" name="request_type" value="early_access">
             <div class="honeypot" aria-hidden="true">
               <label for="access-company-url">Leave this empty</label>
@@ -341,17 +371,17 @@
                 </select>
               </div>
             </div>
-            <p class="platform-note" id="platform-note" hidden>The alpha is Windows-only. You can still register interest for your device.</p>
+            <p class="platform-note" id="platform-note" hidden>Prop Layer is Windows-only today. You can still register interest for your device.</p>
             <label class="checkbox-label">
               <input type="checkbox" name="request_recorded_demo" value="yes">
-              <span>I'd also like to see a recorded alpha demo.</span>
+              <span>I'd also like to see a recorded demo.</span>
             </label>
-            <button class="button" type="submit">Request early access <span aria-hidden="true">↗</span>
+            <button class="button" type="submit">Keep me posted <span aria-hidden="true">↗</span>
             </button>
-            <p class="form-fineprint">By submitting, you agree to receive Prop Layer access and product updates. Unsubscribe anytime. <a href="privacy.html">Privacy policy</a>
+            <p class="form-fineprint">By submitting, you agree to receive Prop Layer product updates. Unsubscribe anytime. <a href="privacy.html">Privacy policy</a>
             </p>
             <div class="form-status" role="status" aria-live="polite"></div>
-            <p class="form-alternative">Prefer email? <a href="mailto:Help@prop-layer.com?subject=Prop%20Layer%20early%20access">Help@prop-layer.com ↗</a>
+            <p class="form-alternative">Prefer email? <a href="mailto:Help@prop-layer.com?subject=Prop%20Layer%20product%20updates">Help@prop-layer.com ↗</a>
             </p>
           </form>
         </div>
@@ -372,6 +402,8 @@
           <span>© 2026 Prop Layer</span>
           <div>
             <a href="#experience">Experience</a>
+            <a href="download.html">Download</a>
+            <a href="account.html">Account</a>
             <a href="partners.html">Partners</a>
             <a href="mailto:Help@prop-layer.com">Contact</a>
             <a href="privacy.html">Privacy</a>

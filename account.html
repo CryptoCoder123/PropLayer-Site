@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#080a0e">
+    <title>Your account — Prop Layer</title>
+    <meta name="description" content="Create a Prop Layer account, manage your monthly subscription and download the Windows app.">
+    <meta name="robots" content="noindex">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; connect-src 'self' https://*.supabase.co https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com; style-src 'self'; font-src 'self'; base-uri 'self'; form-action 'self'">
+    <link rel="icon" href="assets/newAssets/prop-layer-logo-blue.png">
+    <link rel="preload" href="assets/fonts/barlow-condensed-bold.woff" as="font" type="font/woff" crossorigin>
+    <link rel="stylesheet" href="assets/site.css">
+    <script src="assets/analytics.js" defer></script>
+    <script src="assets/config.js" defer></script>
+    <script src="assets/vendor/supabase.js" defer></script>
+    <script src="assets/site.js" defer></script>
+    <script src="assets/account.js" defer></script>
+  </head>
+  <body class="account-body">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <nav class="nav-shell shell" aria-label="Main navigation">
+        <a class="brand" href="index.html" aria-label="Prop Layer home">
+          <img src="assets/newAssets/prop-layer-logo-blue.png" width="33" height="38" alt="">
+          <span>PROP LAYER<span class="brand-period">.</span>
+          </span>
+        </a>
+        <div class="nav-links" id="nav-links">
+          <a href="index.html#experience">The experience</a>
+          <a href="index.html#how-it-works">How it works</a>
+          <a href="download.html">Download</a>
+          <a href="account.html" aria-current="page">Account</a>
+          <a href="partners.html">For partners <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+        <a class="button button-small nav-cta" href="index.html#pricing">Get Prop Layer <span aria-hidden="true">↗</span>
+        </a>
+        <button class="menu-toggle" aria-label="Open navigation" aria-controls="nav-links" aria-expanded="false">
+          <span></span>
+          <span></span>
+        </button>
+      </nav>
+    </header>
+
+    <main id="main" class="account-main shell">
+      <p class="eyebrow">
+        <span class="status-dot"></span> YOUR PROP LAYER ACCOUNT</p>
+
+      <!-- One status region for the whole page, so screen readers hear every outcome. -->
+      <p class="form-status account-status" id="account-status" role="status" aria-live="polite"></p>
+
+      <noscript>
+        <p class="notice">The account page needs JavaScript to sign you in. The
+          <a href="download.html">download page</a> works without it, and you can reach us at
+          <a href="mailto:Help@prop-layer.com">Help@prop-layer.com</a>.</p>
+      </noscript>
+
+      <!-- Shown until account.js decides which view applies, so nothing flickers. -->
+      <section class="account-view" id="view-loading" data-view="loading">
+        <h1 id="loading-heading" tabindex="-1">Checking your account…</h1>
+        <p class="muted">One moment.</p>
+      </section>
+
+      <!-- config.js still holds __SET_ME__: no network call is made at all. -->
+      <section class="account-view" id="view-unconfigured" data-view="unconfigured" hidden>
+        <h1 id="unconfigured-heading" tabindex="-1">Accounts are opening soon.</h1>
+        <p>Prop Layer accounts and subscriptions are not switched on yet. The
+          <a href="download.html">download</a> is already public, and the app will ask you to sign
+          in once accounts open.</p>
+        <p>Questions in the meantime? <a class="text-link" href="mailto:Help@prop-layer.com">Help@prop-layer.com</a></p>
+      </section>
+
+      <!-- ------------------------------------------------------------ signed out -->
+      <section class="account-view" id="view-signin" data-view="signin" hidden>
+        <h1 id="signin-heading" tabindex="-1">Sign in</h1>
+        <p class="muted">Use the same account in the Prop Layer desktop app.</p>
+        <form class="inquiry-form account-form" id="signin-form" novalidate>
+          <label for="signin-email">Email <span>REQUIRED</span>
+          </label>
+          <input type="email" id="signin-email" name="email" autocomplete="email" maxlength="254" placeholder="you@example.com" required>
+          <label for="signin-password">Password <span>REQUIRED</span>
+          </label>
+          <div class="password-field">
+            <input type="password" id="signin-password" name="password" autocomplete="current-password" required>
+            <button class="password-toggle" type="button" data-toggle-password="signin-password" aria-pressed="false">Show</button>
+          </div>
+          <p class="field-error" id="signin-error" role="alert" hidden></p>
+          <button class="button" type="submit" id="signin-submit">Sign in <span aria-hidden="true">↗</span>
+          </button>
+          <p class="account-alt" id="resend-row" hidden>
+            <button class="text-button" type="button" id="resend-confirmation">Resend confirmation email</button>
+          </p>
+          <p class="form-alternative">
+            <a class="account-link" href="#forgot" data-view-link="forgot">Forgot your password?</a>
+            <span aria-hidden="true"> · </span>
+            <a class="account-link" href="#signup" data-view-link="signup">Create an account</a>
+          </p>
+        </form>
+      </section>
+
+      <section class="account-view" id="view-signup" data-view="signup" hidden>
+        <h1 id="signup-heading" tabindex="-1">Create your account</h1>
+        <p class="muted">Free to create. You choose whether to subscribe afterwards.</p>
+        <form class="inquiry-form account-form" id="signup-form" novalidate>
+          <label for="signup-email">Email <span>REQUIRED</span>
+          </label>
+          <input type="email" id="signup-email" name="email" autocomplete="email" maxlength="254" placeholder="you@example.com" required>
+          <label for="signup-password">Password <span>8+ CHARACTERS</span>
+          </label>
+          <div class="password-field">
+            <input type="password" id="signup-password" name="password" autocomplete="new-password" minlength="8" required aria-describedby="signup-password-hint">
+            <button class="password-toggle" type="button" data-toggle-password="signup-password" aria-pressed="false">Show</button>
+          </div>
+          <p class="field-hint" id="signup-password-hint">At least 8 characters.</p>
+          <label for="signup-confirm">Confirm password <span>REQUIRED</span>
+          </label>
+          <div class="password-field">
+            <input type="password" id="signup-confirm" name="confirm" autocomplete="new-password" minlength="8" required>
+            <button class="password-toggle" type="button" data-toggle-password="signup-confirm" aria-pressed="false">Show</button>
+          </div>
+          <p class="field-error" id="signup-error" role="alert" hidden></p>
+          <button class="button" type="submit" id="signup-submit">Create account <span aria-hidden="true">↗</span>
+          </button>
+          <p class="form-fineprint">By creating an account you agree to the
+            <a href="terms.html">Terms</a> and the <a href="privacy.html">Privacy policy</a>.</p>
+          <p class="form-alternative">Already have an account?
+            <a class="account-link" href="#signin" data-view-link="signin">Sign in</a>
+          </p>
+        </form>
+      </section>
+
+      <section class="account-view" id="view-forgot" data-view="forgot" hidden>
+        <h1 id="forgot-heading" tabindex="-1">Reset your password</h1>
+        <p class="muted">We'll email you a link to choose a new one.</p>
+        <form class="inquiry-form account-form" id="forgot-form" novalidate>
+          <label for="forgot-email">Email <span>REQUIRED</span>
+          </label>
+          <input type="email" id="forgot-email" name="email" autocomplete="email" maxlength="254" placeholder="you@example.com" required>
+          <p class="field-error" id="forgot-error" role="alert" hidden></p>
+          <button class="button" type="submit" id="forgot-submit">Send reset link <span aria-hidden="true">↗</span>
+          </button>
+          <p class="form-alternative">
+            <a class="account-link" href="#signin" data-view-link="signin">Back to sign in</a>
+          </p>
+        </form>
+      </section>
+
+      <section class="account-view" id="view-reset" data-view="reset" hidden>
+        <h1 id="reset-heading" tabindex="-1">Choose a new password</h1>
+        <p class="muted">You followed a reset link. Pick a new password to finish.</p>
+        <form class="inquiry-form account-form" id="reset-form" novalidate>
+          <label for="reset-password">New password <span>8+ CHARACTERS</span>
+          </label>
+          <div class="password-field">
+            <input type="password" id="reset-password" name="password" autocomplete="new-password" minlength="8" required>
+            <button class="password-toggle" type="button" data-toggle-password="reset-password" aria-pressed="false">Show</button>
+          </div>
+          <label for="reset-confirm">Confirm new password <span>REQUIRED</span>
+          </label>
+          <div class="password-field">
+            <input type="password" id="reset-confirm" name="confirm" autocomplete="new-password" minlength="8" required>
+            <button class="password-toggle" type="button" data-toggle-password="reset-confirm" aria-pressed="false">Show</button>
+          </div>
+          <p class="field-error" id="reset-error" role="alert" hidden></p>
+          <button class="button" type="submit" id="reset-submit">Save new password <span aria-hidden="true">↗</span>
+          </button>
+        </form>
+      </section>
+
+      <!-- An expired or already-used email link lands here (error= in the URL fragment). -->
+      <section class="account-view" id="view-link-error" data-view="link-error" hidden>
+        <h1 id="link-error-heading" tabindex="-1">That link has expired</h1>
+        <p id="link-error-detail">Email links can only be used once, and they stop working after a
+          while. Ask for a new one and it will arrive in a moment.</p>
+        <p class="account-actions">
+          <a class="button" href="#forgot" data-view-link="forgot">Send a new link <span aria-hidden="true">↗</span>
+          </a>
+          <a class="button button-outline" href="#signin" data-view-link="signin">Back to sign in <span aria-hidden="true">↗</span>
+          </a>
+        </p>
+      </section>
+
+      <!-- ------------------------------------------------------------ signed in -->
+      <section class="account-view" id="view-account" data-view="account" hidden>
+        <h1 id="account-heading" tabindex="-1">Your account</h1>
+        <div class="account-identity">
+          <p class="account-email-row">Signed in as <strong id="account-email"></strong></p>
+          <button class="button button-small button-outline" type="button" id="sign-out">Sign out</button>
+        </div>
+
+        <section class="account-card" id="subscription-card" aria-labelledby="subscription-title">
+          <p class="eyebrow">
+            <span class="section-index">01 /</span> SUBSCRIPTION</p>
+          <h2 id="subscription-title">Checking your subscription…</h2>
+          <p id="subscription-detail"></p>
+          <ul class="account-includes" id="subscription-includes" hidden>
+            <li>The Prop Layer app for Windows 10/11 (64-bit)</li>
+            <li>Basketball, football, baseball and hockey</li>
+            <li>Every update released while you're subscribed</li>
+            <li>Cancel anytime — access continues to the end of the paid period</li>
+          </ul>
+          <p class="account-actions" id="subscription-actions">
+            <button class="button" type="button" id="subscribe-button" hidden>Subscribe <span aria-hidden="true">↗</span>
+            </button>
+            <button class="button button-outline" type="button" id="manage-button" hidden>Manage billing <span aria-hidden="true">↗</span>
+            </button>
+            <button class="button button-outline" type="button" id="retry-button" hidden>Try again <span aria-hidden="true">↻</span>
+            </button>
+          </p>
+          <p class="field-error" id="subscription-error" role="alert" hidden></p>
+        </section>
+
+        <section class="account-card" aria-labelledby="download-title">
+          <p class="eyebrow">
+            <span class="section-index">02 /</span> THE APP</p>
+          <h2 id="download-title">Get Prop Layer for Windows</h2>
+          <p>The download is public and does not need an account. Open Prop Layer on your PC and
+            sign in with this email to start watching.</p>
+          <p class="account-actions">
+            <a class="button button-outline" href="download.html">Go to download <span aria-hidden="true">↗</span>
+            </a>
+          </p>
+        </section>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="shell">
+        <div class="footer-bottom">
+          <span>© 2026 Prop Layer</span>
+          <div>
+            <a href="index.html#experience">Experience</a>
+            <a href="download.html">Download</a>
+            <a href="account.html">Account</a>
+            <a href="partners.html">Partners</a>
+            <a href="mailto:Help@prop-layer.com">Contact</a>
+            <a href="privacy.html">Privacy</a>
+            <a href="terms.html">Terms</a>
+          </div>
+          <span>STAY IN THE GAME.</span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

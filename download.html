@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#080a0e">
+    <title>Download Prop Layer for Windows</title>
+    <meta name="description" content="Download the Prop Layer app for Windows 10 and 11. Free to download; a subscription is needed to run it.">
+    <link rel="canonical" href="https://prop-layer.com/download.html">
+    <meta property="og:title" content="Download Prop Layer for Windows">
+    <meta property="og:description" content="Get the Prop Layer Windows app. Free to download; a subscription is needed to run it.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://prop-layer.com/download.html">
+    <meta property="og:image" content="https://prop-layer.com/assets/newAssets/basketball1.webp">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; connect-src 'self' https://api.github.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com; style-src 'self'; font-src 'self'; base-uri 'self'; form-action 'self'">
+    <link rel="icon" href="assets/newAssets/prop-layer-logo-blue.png">
+    <link rel="preload" href="assets/fonts/barlow-condensed-bold.woff" as="font" type="font/woff" crossorigin>
+    <link rel="stylesheet" href="assets/site.css">
+    <script src="assets/analytics.js" defer></script>
+    <script src="assets/config.js" defer></script>
+    <script src="assets/site.js" defer></script>
+    <script src="assets/download.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <nav class="nav-shell shell" aria-label="Main navigation">
+        <a class="brand" href="index.html" aria-label="Prop Layer home">
+          <img src="assets/newAssets/prop-layer-logo-blue.png" width="33" height="38" alt="">
+          <span>PROP LAYER<span class="brand-period">.</span>
+          </span>
+        </a>
+        <div class="nav-links" id="nav-links">
+          <a href="index.html#experience">The experience</a>
+          <a href="index.html#how-it-works">How it works</a>
+          <a href="download.html" aria-current="page">Download</a>
+          <a href="account.html">Account</a>
+          <a href="partners.html">For partners <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+        <a class="button button-small nav-cta" href="index.html#pricing">Get Prop Layer <span aria-hidden="true">↗</span>
+        </a>
+        <button class="menu-toggle" aria-label="Open navigation" aria-controls="nav-links" aria-expanded="false">
+          <span></span>
+          <span></span>
+        </button>
+      </nav>
+    </header>
+
+    <main id="main" class="download-main shell">
+      <p class="eyebrow">
+        <span class="status-dot"></span> WINDOWS 10 / 11 · 64-BIT</p>
+      <h1 id="download-title">Download Prop Layer</h1>
+      <p class="section-intro">Free to download. Running the overlay needs an active subscription —
+        you can <a href="account.html#subscribe">start one on your account page</a>.</p>
+
+      <!-- Filled by download.js from the latest GitHub release. -->
+      <section class="account-card release-card" id="release-card" aria-labelledby="release-title" aria-busy="true">
+        <p class="eyebrow">
+          <span class="section-index">01 /</span> LATEST RELEASE</p>
+        <h2 id="release-title">Looking up the latest release…</h2>
+        <dl class="release-facts" id="release-facts" hidden>
+          <div>
+            <dt>Version</dt>
+            <dd id="release-version"></dd>
+          </div>
+          <div>
+            <dt>Published</dt>
+            <dd id="release-published"></dd>
+          </div>
+          <div>
+            <dt>Installer size</dt>
+            <dd id="release-size"></dd>
+          </div>
+        </dl>
+        <p class="account-actions">
+          <a class="button" id="release-download" hidden>Download for Windows (x64) <span aria-hidden="true">↓</span>
+          </a>
+        </p>
+        <p class="release-hash" id="release-hash" hidden>
+          <span class="release-hash-label">SHA-256</span>
+          <code id="release-hash-value"></code>
+        </p>
+        <p class="release-extra" id="release-extra" hidden>
+          <a class="text-link" id="release-ffmpeg" hidden>FFmpeg source archive <span aria-hidden="true">↗</span>
+          </a>
+          <a class="text-link" id="release-checksums" hidden>SHA256SUMS.txt <span aria-hidden="true">↗</span>
+          </a>
+        </p>
+
+        <!-- Rate limit, network failure or a release without the installer asset lands here. -->
+        <div class="release-fallback" id="release-fallback" hidden>
+          <p id="release-fallback-detail">We couldn't read the release list just now.</p>
+          <p class="account-actions">
+            <a class="button" id="release-fallback-link" href="https://github.com">Open the releases page <span aria-hidden="true">↗</span>
+            </a>
+          </p>
+        </div>
+      </section>
+
+      <noscript>
+        <section class="account-card">
+          <h2>Download without JavaScript</h2>
+          <p>Every build, including the installer and the FFmpeg source archive, is on the
+            releases page:</p>
+          <p class="account-actions">
+            <a class="button" id="noscript-link" href="https://github.com/CryptoCoder123/PropLayer-Releases/releases/latest">Open the releases page <span aria-hidden="true">↗</span>
+            </a>
+          </p>
+        </section>
+      </noscript>
+
+      <!-- The release body is the build's DOWNLOAD-NOTICE.md (FFmpeg/LGPL notice). -->
+      <section class="account-card" id="release-notes-card" aria-labelledby="release-notes-title" hidden>
+        <p class="eyebrow">
+          <span class="section-index">02 /</span> RELEASE NOTICE</p>
+        <h2 id="release-notes-title">What's in this build</h2>
+        <div class="release-notes" id="release-notes"></div>
+      </section>
+
+      <section class="account-card" aria-labelledby="requirements-title">
+        <p class="eyebrow">
+          <span class="section-index">03 /</span> BEFORE YOU START</p>
+        <h2 id="requirements-title">System requirements</h2>
+        <ul class="account-includes">
+          <li>Windows 10 or Windows 11, 64-bit (x64)</li>
+          <li>About 400 MB of free disk space</li>
+          <li>An internet connection to sign in and check your subscription</li>
+          <li>A Prop Layer account with an active subscription to run the overlay</li>
+        </ul>
+      </section>
+
+      <section class="account-card" aria-labelledby="install-title">
+        <p class="eyebrow">
+          <span class="section-index">04 /</span> INSTALLING</p>
+        <h2 id="install-title">Four steps</h2>
+        <ol class="install-steps">
+          <li>Run the installer you just downloaded.</li>
+          <li>The app is not code-signed yet, so Windows SmartScreen shows
+            <strong>“Windows protected your PC”</strong>. Choose <strong>More info</strong>, then
+            <strong>Run anyway</strong>.</li>
+          <li>Open Prop Layer and sign in with your Prop Layer account.</li>
+          <li>Start your stream and press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd> to show
+            the overlay.</li>
+        </ol>
+        <p>Need a subscription? <a class="text-link" href="account.html#subscribe">Go to your account <span aria-hidden="true">↗</span></a>
+        </p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="shell">
+        <div class="footer-bottom">
+          <span>© 2026 Prop Layer</span>
+          <div>
+            <a href="index.html#experience">Experience</a>
+            <a href="download.html">Download</a>
+            <a href="account.html">Account</a>
+            <a href="partners.html">Partners</a>
+            <a href="mailto:Help@prop-layer.com">Contact</a>
+            <a href="privacy.html">Privacy</a>
+            <a href="terms.html">Terms</a>
+          </div>
+          <span>STAY IN THE GAME.</span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -75,6 +75,20 @@
   $('#access-platform')?.addEventListener('change', event => {
     $('#platform-note').hidden = event.target.value === 'Windows';
   });
+  // Pricing copy comes from assets/config.js (contract C2) so the price lives in one place.
+  // The static fallback already in the HTML stands until a real price is configured.
+  const planConfig = window.PROPLAYER_CONFIG;
+  if (planConfig) {
+    const planName = $('#plan-name');
+    const planPrice = $('#plan-price');
+    if (planName && typeof planConfig.planName === 'string' && planConfig.planName !== '__SET_ME__') {
+      planName.textContent = planConfig.planName;
+    }
+    if (planPrice && typeof planConfig.priceDisplay === 'string' && planConfig.priceDisplay !== '__SET_ME__') {
+      planPrice.textContent = planConfig.priceDisplay;
+    }
+  }
+
   $$('.sport-list details').forEach(detail => detail.addEventListener('toggle', () => {
     if (detail.open) $$('.sport-list details').forEach(other => { if (other !== detail) other.open = false; });
   }));
