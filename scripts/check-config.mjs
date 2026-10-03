@@ -39,9 +39,16 @@ const SECRET_PATTERNS = [
   { name: 'encoded service-role JWT', pattern: /eyJ[A-Za-z0-9_-]{20,}\.eyJ[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{10,}/, decodeJwt: true }
 ];
 
-/** An SMTP password (or any other secret) assigned an actual value. */
+/**
+ * An SMTP password (or any other secret) assigned an actual value.
+ *
+ * The whitespace around the separator is `[ \t]*`, never `\s*`: `\s` matches a newline, so
+ * a greedy `\s*` lets an *empty* assignment swallow the following line and report it as
+ * that variable's value. `.env.example`, which is nothing but empty assignments, is exactly
+ * the file that would misfire.
+ */
 const ASSIGNED_SECRET = new RegExp(
-  String.raw`\b(SMTP_PASS(?:WORD)?|SMTP_PASS|STRIPE_SECRET_KEY|STRIPE_WEBHOOK_SECRET|SUPABASE_SERVICE_ROLE_KEY|SUPABASE_SECRET_KEYS|SUPABASE_ACCESS_TOKEN|SUPABASE_DB_PASSWORD)\b\s*[:=]\s*(?!$|\s|#|["']?\s*$)(["']?)([^\s"'#,;)}\]]+)\2`,
+  String.raw`\b(SMTP_PASS(?:WORD)?|STRIPE_SECRET_KEY|STRIPE_WEBHOOK_SECRET|SUPABASE_SERVICE_ROLE_KEY|SUPABASE_SECRET_KEYS|SUPABASE_ACCESS_TOKEN|SUPABASE_DB_PASSWORD)\b[ \t]*[:=][ \t]*(["']?)([^\s"'#,;)}\]]+)\2`,
   'g'
 );
 
@@ -57,13 +64,28 @@ const NOT_A_VALUE = [
   /^(string|boolean|number)$/
 ];
 
-/** True when the right-hand side is unquoted code rather than a literal value. */
 /** A value a test or a document may legitimately carry in place of a real secret. */
 const FAKE_VALUE_HINT = /fake|example|placeholder|for-test|-tests?[^a-z]?$/i;
 const ELLIPSIS = '.'.repeat(3);
 
-function looksLikeCode(quote, value) {
-  return !quote && /[.(\[{]/.test(value);
+/** Files where an unquoted bare word is a variable, not a value. */
+const SOURCE_EXTENSIONS = new Set(['.js', '.mjs', '.cjs', '.ts', '.tsx', '.jsx']);
+
+/**
+ * True when the right-hand side is source code rather than a literal secret.
+ *
+ * `KEY: ACCESS_TOKEN` in an object literal is a variable reference. But a real secret is
+ * *also* identifier-shaped (`sk_live_51ABC` is letters, digits and underscores), so that
+ * exemption is deliberately narrow:
+ *   - only in source files — in a `.env` an unquoted bare token IS the value;
+ *   - never for anything carrying a known secret prefix.
+ */
+function looksLikeCode(quote, value, file) {
+  if (quote) return false;
+  if (/[.(\[{]/.test(value)) return true;
+  if (!SOURCE_EXTENSIONS.has(path.extname(file).toLowerCase())) return false;
+  if (/^(sk|rk|whsec|sbp|sb)_/i.test(value) || value.startsWith('eyJ')) return false;
+  return /^[A-Za-z_$][A-Za-z0-9_$]*$/.test(value);
 }
 
 const SKIP_EXTENSIONS = new Set([
@@ -148,7 +170,7 @@ for (const file of files) {
     const [whole, variable, , value] = match;
     const quote = match[2];
     if (NOT_A_VALUE.some(allowed => allowed.test(value))) continue;
-    if (looksLikeCode(quote, value)) continue;
+    if (looksLikeCode(quote, value, file)) continue;
     // A file allowed to name secrets may use an obviously fake value for a test.
     if (nameOnly && (FAKE_VALUE_HINT.test(whole) || whole.includes(String.fromCharCode(60)) || whole.includes(ELLIPSIS))) continue;
     const lineNumber = text.slice(0, match.index).split(/\r?\n/).length;
