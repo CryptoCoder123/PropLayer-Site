@@ -1,9 +1,12 @@
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const { chromium } = require('@playwright/test');
+// Installed Google Chrome by default; PLAYWRIGHT_CHANNEL=chromium runs Playwright's bundled
+// build instead, for machines without Chrome.
+const CHANNEL = process.env.PLAYWRIGHT_CHANNEL ?? 'chrome';
 (async () => {
   fs.mkdirSync('artifacts', { recursive: true });
-  const browser = await chromium.launch({ channel: 'chrome', headless: true });
+  const browser = await chromium.launch({ channel: CHANNEL, headless: true });
   const context = await browser.newContext({ viewport: { width: 1440, height: 1000 }, reducedMotion: 'reduce' });
   await context.route('**/googletagmanager.com/**', route => route.fulfill({ status: 200, body: '' }));
   await context.route('**/google-analytics.com/**', route => route.fulfill({ status: 204, body: '' }));
@@ -251,7 +254,7 @@ const { chromium } = require('@playwright/test');
     assert.equal(await page.locator('#splash').count(), 0);
   });
   await check('No uncaught browser errors', async () => assert.deepEqual(errors, []));
-  fs.writeFileSync('artifacts/verification.json', JSON.stringify({ passed: checks, uncaughtErrors: errors, formTests: 'Locally intercepted responses. No real submissions.' }, null, 2));
+  fs.writeFileSync('artifacts/verification.json', JSON.stringify({ browser: CHANNEL, passed: checks, uncaughtErrors: errors, formTests: 'Locally intercepted responses. No real submissions.' }, null, 2));
   await browser.close();
-  console.log(`${checks.length} checks passed.`);
+  console.log(`${checks.length} checks passed (${CHANNEL}).`);
 })().catch(error => { console.error(error); process.exit(1); });

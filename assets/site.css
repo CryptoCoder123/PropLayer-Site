@@ -659,7 +659,7 @@ h2 {
   font-size:11px;
   flex-shrink:0;
 }
-.faq-section {
+.faq-section,.pricing-section {
   display:grid;
   grid-template-columns:1fr 1.5fr;
   gap:110px;
@@ -1109,7 +1109,7 @@ h2 {
 .sports-layout {
     gap:45px;
   }
-.faq-section {
+.faq-section,.pricing-section {
     gap:70px;
   }
 .access-grid {
@@ -1252,7 +1252,7 @@ h2 {
     gap:15px;
     padding:12px;
   }
-.faq-section {
+.faq-section,.pricing-section {
     grid-template-columns:.8fr 1.2fr;
     gap:35px;
   }
@@ -1582,7 +1582,7 @@ html {
     font-size:11px;
     padding:13px 16px;
   }
-.faq-section {
+.faq-section,.pricing-section {
     grid-template-columns:1fr;
     gap:32px;
   }
@@ -1996,6 +1996,12 @@ html {
 .account-form>label:not(:first-of-type) {
   margin-top:22px;
 }
+.account-form>.button {
+  margin-top:26px;
+}
+.field-error+.button {
+  margin-top:18px;
+}
 .password-field {
   display:flex;
   gap:8px;
@@ -2206,7 +2212,6 @@ html {
   border:1px solid #34445e;
   background:#0c1423dc;
   padding:32px;
-  max-width:33rem;
 }
 .pricing-price {
   font:700 40px/1 var(--display);
