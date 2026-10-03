@@ -1,0 +1,10 @@
+{
+  "imports": {
+    "stripe": "npm:stripe@18.5.0",
+    "@supabase/supabase-js": "npm:@supabase/supabase-js@2.117.2"
+  },
+  "compilerOptions": {
+    "strict": true,
+    "lib": ["deno.window", "deno.ns", "dom"]
+  }
+}

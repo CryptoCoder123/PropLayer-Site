@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://prop-layer.com/contract/entitlement.v1.schema.json",
+  "title": "PropLayer entitlement response (contract PL-ACCOUNT-1, schema 1)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "user", "entitled", "reason", "subscription", "checked_at", "recheck_after_seconds", "offline_grace_seconds", "links"],
+  "properties": {
+    "schema": { "const": 1 },
+    "user": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "email"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$" },
+        "email": { "type": "string", "minLength": 3 }
+      }
+    },
+    "entitled": { "type": "boolean" },
+    "reason": {
+      "enum": ["active", "trialing", "canceled_pending", "past_due_grace", "no_subscription", "expired", "payment_failed", "incomplete"]
+    },
+    "subscription": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "plan", "current_period_end", "cancel_at_period_end", "access_until"],
+          "properties": {
+            "status": { "enum": ["incomplete", "incomplete_expired", "trialing", "active", "past_due", "canceled", "unpaid", "paused"] },
+            "plan": { "type": "string", "minLength": 1 },
+            "current_period_end": { "type": ["string", "null"], "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$" },
+            "cancel_at_period_end": { "type": "boolean" },
+            "access_until": { "type": ["string", "null"], "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$" }
+          }
+        }
+      ]
+    },
+    "checked_at": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$" },
+    "recheck_after_seconds": { "type": "integer", "minimum": 300, "maximum": 86400 },
+    "offline_grace_seconds": { "type": "integer", "minimum": 0, "maximum": 604800 },
+    "links": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["account", "subscribe", "manage", "download"],
+      "properties": {
+        "account":   { "type": "string", "pattern": "^https://" },
+        "subscribe": { "type": "string", "pattern": "^https://" },
+        "manage":    { "type": "string", "pattern": "^https://" },
+        "download":  { "type": "string", "pattern": "^https://" }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "entitled": { "const": true } } },
+      "then": {
+        "properties": {
+          "reason": { "enum": ["active", "trialing", "canceled_pending", "past_due_grace"] },
+          "subscription": { "type": "object", "properties": { "access_until": { "type": "string" } } }
+        }
+      },
+      "else": {
+        "properties": { "reason": { "enum": ["no_subscription", "expired", "payment_failed", "incomplete"] } }
+      }
+    },
+    {
+      "if": { "properties": { "reason": { "const": "no_subscription" } } },
+      "then": { "properties": { "subscription": { "type": "null" } } },
+      "else": { "properties": { "subscription": { "type": "object" } } }
+    }
+  ]
+}

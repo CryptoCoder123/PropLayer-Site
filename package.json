@@ -5,9 +5,26 @@
   "description": "Prop Layer static website. No production dependencies or build step.",
   "scripts": {
     "dev": "node tools/serve.cjs",
-    "test": "node tools/browser-check.cjs"
+    "test": "node tools/contract-check.cjs && node tools/browser-check.cjs && node tools/account-check.cjs",
+    "test:site": "node tools/browser-check.cjs",
+    "test:account": "node tools/account-check.cjs",
+    "test:contract": "node tools/contract-check.cjs",
+    "test:functions": "deno test --allow-env --allow-read --allow-net=127.0.0.1 supabase/functions/tests",
+    "test:db": "supabase test db",
+    "test:db:psql": "node scripts/db-test-psql.mjs",
+    "check:config": "node scripts/check-config.mjs",
+    "vendor:supabase": "node scripts/vendor-supabase.mjs",
+    "backend:deploy": "node scripts/deploy-backend.mjs",
+    "billing:setup": "node scripts/setup-billing.mjs",
+    "e2e:billing": "node scripts/e2e-billing.mjs"
   },
   "devDependencies": {
-    "@playwright/test": "^1.63.0"
+    "@playwright/test": "^1.63.0",
+    "@supabase/supabase-js": "^2.117.2",
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1",
+    "pg": "^8.23.1",
+    "stripe": "^18.5.0",
+    "supabase": "^2.119.0"
   }
 }

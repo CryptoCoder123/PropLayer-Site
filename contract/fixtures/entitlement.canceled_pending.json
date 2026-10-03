@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "user": {
+    "id": "3f6c2a1e-8b4d-4c1a-9e2f-5a7b9c0d1e2f",
+    "email": "fan@example.com"
+  },
+  "entitled": true,
+  "reason": "canceled_pending",
+  "subscription": {
+    "status": "active",
+    "plan": "proplayer_monthly",
+    "current_period_end": "2026-10-20T16:00:00Z",
+    "cancel_at_period_end": true,
+    "access_until": "2026-10-20T16:00:00Z"
+  },
+  "checked_at": "2026-10-03T16:00:00Z",
+  "recheck_after_seconds": 3600,
+  "offline_grace_seconds": 259200,
+  "links": {
+    "account": "https://prop-layer.com/account.html",
+    "subscribe": "https://prop-layer.com/account.html#subscribe",
+    "manage": "https://prop-layer.com/account.html#billing",
+    "download": "https://prop-layer.com/download.html"
+  }
+}
